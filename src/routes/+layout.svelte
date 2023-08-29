@@ -33,7 +33,9 @@
 			</div>
 		</div>
 		<!-- Page content here -->
-		<slot />
+		<div class="mx-2 my-2">
+			<slot />
+		</div>
 	</div>
 	<div class="drawer-side">
 		<label for="my-drawer-3" class="drawer-overlay" />
