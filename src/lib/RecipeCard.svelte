@@ -4,10 +4,15 @@
 	export let recipe: Recipe;
 </script>
 
-<a href="/">
+<a href={`/recipe/${recipe.id}`}>
 	<div class="card w-full h-96 bg-base-100 shadow-xl">
-		<figure>
-			<img src={recipe.image} alt="Burger" style="object-fit: cover;" />
+		<figure class="h-64 overflow-x-hidden">
+			<img
+				class="h-full w-full"
+				src={recipe.image}
+				alt={`${recipe.title} Cover`}
+				style="object-fit: cover;"
+			/>
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title">

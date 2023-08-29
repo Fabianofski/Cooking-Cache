@@ -27,22 +27,24 @@
 			<div class="flex-none hidden lg:block">
 				<ul class="menu menu-horizontal">
 					<!-- Navbar menu content here -->
-					<li><a href="random">Random Picker</a></li>
-					<li><a href="recipes">All Recipes</a></li>
+					<li><a href="/random">Random Picker</a></li>
+					<li><a href="/recipes">All Recipes</a></li>
 				</ul>
 			</div>
 		</div>
 		<!-- Page content here -->
-		<div class="mx-2 my-2">
-			<slot />
+		<div class="flex flex-col justify-start items-center px-2 py-2">
+			<div class="max-w-3xl w-full">
+				<slot />
+			</div>
 		</div>
 	</div>
 	<div class="drawer-side">
 		<label for="my-drawer-3" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 min-h-full bg-base-200">
 			<!-- Sidebar content here -->
-			<li><a href="random">Random Picker</a></li>
-			<li><a href="recipes">All Recipes</a></li>
+			<li><a href="/random">Random Picker</a></li>
+			<li><a href="/recipes">All Recipes</a></li>
 		</ul>
 	</div>
 </div>

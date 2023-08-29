@@ -9,10 +9,13 @@
 	});
 </script>
 
-<button class="btn btn-primary w-full"> + </button>
-
 <div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
 	{#each recipes as recipe}
 		<RecipeCard {recipe} />
 	{/each}
+	<div class="join justify-center">
+		<button class="join-item btn">«</button>
+		<button class="join-item btn">Page 1</button>
+		<button class="join-item btn">»</button>
+	</div>
 </div>
