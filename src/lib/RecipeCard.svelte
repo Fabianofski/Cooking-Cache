@@ -23,7 +23,7 @@
 					{/each}
 				</div>
 			</h2>
-			<p>{recipe.description}</p>
+			<p>{recipe.tagline}</p>
 		</div>
 	</div>
 </a>

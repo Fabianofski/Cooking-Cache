@@ -1,8 +1,14 @@
+import type Ingredient from './Ingredient';
+
 export interface Recipe {
-	title: string;
-	description: string;
 	image: string;
+	title: string;
+	tagline: string;
 	tags: string[];
+
+	ingredients: Ingredient[];
+	description: string;
+
 	id: string;
 	url: string;
 }
