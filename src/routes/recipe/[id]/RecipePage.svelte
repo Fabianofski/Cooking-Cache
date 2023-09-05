@@ -30,15 +30,15 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th>Zutat</th>
 						<th>Anzahl</th>
+						<th>Zutat</th>
 					</tr>
 				</thead>
 				<tbody>
 					{#each recipe.ingredients as ingredient}
 						<tr class="hover">
-							<th>{ingredient.name}</th>
 							<td>{ingredient.amount}</td>
+							<th>{ingredient.name}</th>
 						</tr>
 					{/each}
 				</tbody>
