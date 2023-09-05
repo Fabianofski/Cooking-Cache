@@ -32,7 +32,7 @@
 	};
 </script>
 
-<div class="join">
+<div class="join mb-2">
 	<input
 		class="join-item btn"
 		type="radio"
@@ -59,7 +59,7 @@
 			</label>
 			<input accept="image/png, image/jpeg" bind:files type="file" class="file-input w-full" />
 		</div>
-		<div class="grid grid-cols-fluid">
+		<div class="grid grid-cols-fluid gap-2">
 			<div class="form-control w-full">
 				<label class="label" for="">
 					<span class="label-text">Titel</span>
@@ -148,14 +148,14 @@
 					<span class="label-text">Rezept</span>
 				</label>
 				<textarea
-					class="textarea textarea-bordered h-24"
-					placeholder="1. ... 2. ... 3. ..."
+					class="textarea textarea-bordered h-24 whitespace-pre-line"
+					placeholder={'1. ... \n2. ... \n3. ...'}
 					bind:value={recipe.description}
 				/>
 			</div>
 		</div>
 
-		<button class="btn btn-primary max-w-xs mt-6">Hinzufügen</button>
+		<button class="btn btn-primary mt-6">Hinzufügen</button>
 	</div>
 </div>
 <div class={`${editMode ? 'hidden' : 'visible'}`}>
