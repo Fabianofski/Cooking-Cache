@@ -2,7 +2,7 @@
 	import '../app.css';
 </script>
 
-<div class="drawer min-h-screen">
+<div class="drawer min-h-screen bg-base-200">
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content flex flex-col">
 		<!-- Navbar -->

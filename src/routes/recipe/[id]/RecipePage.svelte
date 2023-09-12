@@ -44,7 +44,7 @@
 				</tbody>
 			</table>
 		</div>
-		<p class="whitespace-pre-line">
+		<p class="whitespace-pre-line text-justify">
 			{recipe.description === '' ? '1. ...\n2. ... \n3. ...' : recipe.description}
 		</p>
 	</div>
