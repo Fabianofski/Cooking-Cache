@@ -1,10 +1,20 @@
 <script lang="ts">
 	import type { Recipe } from '../../../models/Recipe';
+	import { recipesStore } from '../../../stores/store';
 	import RecipePage from '../[id]/RecipePage.svelte';
 
 	let editMode = true;
-
 	let files: FileList | null = null;
+	let recipe: Recipe = {
+		image: '',
+		title: '',
+		tagline: '',
+		tags: [],
+		ingredients: [{ amount: '', name: '' }],
+		description: '',
+		id: '',
+		url: ''
+	};
 
 	function ingredientInputChanged(e: Event, i: number) {
 		for (let j = i + 2 - recipe.ingredients.length; j > 0; j--) {
@@ -20,16 +30,9 @@
 		recipe.ingredients = recipe.ingredients.slice(0, recipe.ingredients.length - count);
 	}
 
-	let recipe: Recipe = {
-		image: '',
-		title: '',
-		tagline: '',
-		tags: [],
-		ingredients: [{ amount: '', name: '' }],
-		description: '',
-		id: '',
-		url: ''
-	};
+	function addRecipeHandler() {
+		recipesStore.update((value) => [...value, recipe]);
+	}
 </script>
 
 <div class="join mb-2">
@@ -155,7 +158,7 @@
 			</div>
 		</div>
 
-		<button class="btn btn-primary mt-6">Hinzufügen</button>
+		<button class="btn btn-primary mt-6" on:click={addRecipeHandler}>Hinzufügen</button>
 	</div>
 </div>
 <div class={`${editMode ? 'hidden' : 'visible'}`}>

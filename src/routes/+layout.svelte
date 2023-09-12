@@ -2,7 +2,7 @@
 	import '../app.css';
 </script>
 
-<div class="drawer">
+<div class="drawer min-h-screen">
 	<input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content flex flex-col">
 		<!-- Navbar -->
@@ -23,10 +23,11 @@
 					>
 				</label>
 			</div>
-			<a href="/" class="btn btn-ghost"><div class="flex-1 px-2 mx-2">Recipe Database</div></a>
+			<a href="/" class="btn btn-ghost"><div class="flex-1 px-2 mx-2">Cooking Cache</div></a>
 			<div class="flex-none hidden lg:block">
 				<ul class="menu menu-horizontal">
 					<!-- Navbar menu content here -->
+					<li><a href="/">Home</a></li>
 					<li><a href="/random">Random Picker</a></li>
 					<li><a href="/recipes">All Recipes</a></li>
 				</ul>
@@ -43,8 +44,19 @@
 		<label for="my-drawer-3" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 min-h-full bg-base-200">
 			<!-- Sidebar content here -->
+			<li><a href="/">Home</a></li>
 			<li><a href="/random">Random Picker</a></li>
 			<li><a href="/recipes">All Recipes</a></li>
 		</ul>
 	</div>
+</div>
+<div class="flex justify-center w-full bg-base-300">
+	<footer class="footer max-w-3xl items-center justify-center p-4 text-neutral-content">
+		<aside class="items-center grid-flow-col">
+			<a href="https://www.github.com/fabianofski">
+				<img class="h-8 mr-2" src="/logo_transparent.png" alt="Logo of Fabian Friedrich" />
+			</a>
+			<p>Copyright © 2023 - All right reserved by Fabian Friedrich</p>
+		</aside>
+	</footer>
 </div>
