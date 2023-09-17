@@ -9,6 +9,11 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: '${{ secrets.PRIVATE_KEY }}'
+      PROJECT_ID: cooking-cache
+      CLIENT_EMAIL: '${{ secrets.CLIENT_EMAIL }}'
+      DATABASE_URL: '${{ secrets.DATABASE_URL }}'
     steps:
       - uses: actions/checkout@v3
       - run: npm ci && npm run build

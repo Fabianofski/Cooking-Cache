@@ -7,6 +7,11 @@ jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: '${{ secrets.PRIVATE_KEY }}'
+      PROJECT_ID: cooking-cache
+      CLIENT_EMAIL: '${{ secrets.CLIENT_EMAIL }}'
+      DATABASE_URL: '${{ secrets.DATABASE_URL }}'
     steps:
       - uses: actions/checkout@v3
       - run: npm ci && npm run build
