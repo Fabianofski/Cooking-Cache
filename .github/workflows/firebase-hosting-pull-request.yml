@@ -7,6 +7,7 @@ jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+    environment: Cooking-Cache
     env:
       PRIVATE_KEY: '${{ secrets.PRIVATE_KEY }}'
       PROJECT_ID: cooking-cache
