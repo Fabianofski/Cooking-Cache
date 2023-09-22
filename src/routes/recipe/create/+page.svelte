@@ -94,6 +94,7 @@
 					placeholder="Mittag, Abend, Frühstück.."
 					class="input input-bordered w-full"
 					on:input={(e) => {
+						//@ts-ignore
 						recipe.tags = e.target?.value.split(',');
 					}}
 				/>

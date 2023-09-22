@@ -15,6 +15,7 @@
 			<RecipeCard {recipe} />
 		{/each}
 	</div>
+	<a href="/recipe/create" class="btn btn-neutral w-full mt-2">Create new Recipe</a>
 	<div class="join justify-center">
 		<button class="join-item btn">«</button>
 		<button class="join-item btn">Page 1</button>
