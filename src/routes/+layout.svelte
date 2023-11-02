@@ -1,5 +1,13 @@
 <script lang="ts">
+	import type { User } from 'firebase/auth';
 	import '../app.css';
+	import { currentUser } from '../stores/store';
+
+	let user: User | undefined;
+
+	currentUser.subscribe((value) => {
+		user = value;
+	});
 </script>
 
 <div class="min-h-screen flex flex-col justify-between">
@@ -60,8 +68,11 @@
 						class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
 					>
 						<li><a href="/settings">Settings</a></li>
-						<li><a href="/login">Login</a></li>
-						<li><a href="#logout">Logout</a></li>
+						{#if user === undefined}
+							<li><a href="/login">Login</a></li>
+						{:else}
+							<li><a href="#logout">Logout</a></li>
+						{/if}
 					</ul>
 				</div>
 			</div>
@@ -80,7 +91,7 @@
 				<a href="https://www.github.com/fabianofski">
 					<img class="h-8 mr-2" src="/logo_transparent.png" alt="Logo of Fabian Friedrich" />
 				</a>
-				<p>Copyright © 2023 - All right reserved by Fabian Friedrich</p>
+				<p>Copyright © 2023 - All rights reserved by Fabian Friedrich</p>
 			</aside>
 		</footer>
 	</div>
