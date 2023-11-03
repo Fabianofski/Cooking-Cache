@@ -53,14 +53,16 @@
 				</div>
 			</div>
 			<div class="navbar-center">
-				<a href="/" class="btn btn-ghost normal-case text-xl">Cooking Cache</a>
+				<a href="/" class="btn btn-ghost">
+					<img class="h-8" src="/cooking-cache.png" alt="cooking cache logo" />
+				</a>
 			</div>
 			<div class="navbar-end">
 				{#if user !== null}
 					<div class="dropdown dropdown-end">
 						<label tabindex="-2" for="" class="btn btn-ghost btn-circle avatar">
 							<div class="w-6 rounded-full">
-								{#if user.photoURL !== null}
+								{#if user && user.photoURL}
 									<img src={user.photoURL} alt="Profile" />
 								{:else}
 									<svg
