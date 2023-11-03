@@ -172,7 +172,7 @@
 			{#if !loading}
 				{loggingIn ? 'Anmelden' : 'Registrieren'}
 			{:else}
-				<img class="h-2" src="/loading.svg" alt="loading" />
+				<span class="loading loading-spinner loading-md" />
 			{/if}
 		</button>
 	</form>
