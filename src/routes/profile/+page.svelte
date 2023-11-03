@@ -189,7 +189,15 @@
 						/>
 					</div>
 					<div class="modal-action">
-						<form method="dialog" class="w-full">
+						<form method="dialog" class="w-full flex flex-col gap-4">
+							<button
+								class="btn btn-block"
+								on:click={() => {
+									confirmation = '';
+								}}
+							>
+								Abbrechen
+							</button>
 							<button
 								class="btn btn-error btn-block"
 								disabled={loadingDeletion || confirmation.toLowerCase() !== 'löschen'}
