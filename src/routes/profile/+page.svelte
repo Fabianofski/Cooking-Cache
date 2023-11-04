@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { signOut, type User, deleteUser } from 'firebase/auth';
+	import {
+		signOut,
+		type User,
+		deleteUser,
+		updatePassword,
+		AuthCredential,
+		EmailAuthProvider,
+		reauthenticateWithCredential
+	} from 'firebase/auth';
 	import { currentUser } from '../../stores/store';
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase.client';
@@ -18,8 +26,45 @@
 		return oldPassword === '' || password === '' || repeatPassword === '';
 	}
 
+	function reauthenticate(password: string) {
+		return new Promise<void>((resolve, reject) => {
+			if (!user || !user.email) {
+				reject('User or Email is null');
+				return;
+			}
+			let credential: AuthCredential = EmailAuthProvider.credential(user.email, password);
+
+			reauthenticateWithCredential(user, credential)
+				.then(() => {
+					resolve();
+				})
+				.catch((err) => {
+					reject(err);
+				});
+		});
+	}
+
 	function changePassword() {
 		loadingPasswordChange = true;
+
+		reauthenticate(oldPassword)
+			.then(() => {
+				if (!user) return;
+				updatePassword(user, password)
+					.then(() => {
+						loadingPasswordChange = false;
+						oldPassword = '';
+						password = '';
+						repeatPassword = '';
+					})
+					.catch((err) => {
+						loadingPasswordChange = false;
+						console.error(err);
+					});
+			})
+			.catch((err) => {
+				console.error('Reauthentication Failed: ' + err);
+			});
 	}
 
 	let loadingDeletion = false;
@@ -27,10 +72,20 @@
 	let dialog: HTMLDialogElement;
 	function deleteAccount() {
 		loadingDeletion = true;
-		if (user)
-			deleteUser(user).then(() => {
-				goto('login');
-			});
+		reauthenticate(confirmation)
+			.then(() => {
+				if (!user) return;
+				deleteUser(user)
+					.then(() => {
+						loadingDeletion = false;
+						goto('login');
+					})
+					.catch((err) => {
+						loadingDeletion = false;
+						console.error(err);
+					});
+			})
+			.catch((err) => {});
 	}
 
 	// if (!user) goto('/login');
@@ -178,11 +233,11 @@
 			<dialog bind:this={dialog} class="modal">
 				<div class="modal-box">
 					<h3 class="font-bold text-lg text-center">Willst du deinen Account wirklich löschen?</h3>
-					<p class="py-4 text-center">Tippe zum Bestätigen LÖSCHEN ein</p>
+					<p class="py-4 text-center">Tippe zum Bestätigen dein Passwort ein</p>
 					<div class="form-control w-full max-w-s">
 						<input
-							type="text"
-							placeholder="LÖSCHEN"
+							type="password"
+							placeholder="Passwort"
 							bind:value={confirmation}
 							class="input input-bordered input-error w-full max-w-s"
 							required
@@ -200,7 +255,7 @@
 							</button>
 							<button
 								class="btn btn-error btn-block"
-								disabled={loadingDeletion || confirmation.toLowerCase() !== 'löschen'}
+								disabled={loadingDeletion || confirmation === ''}
 								on:click={deleteAccount}
 							>
 								{#if !loadingDeletion}

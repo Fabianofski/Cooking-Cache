@@ -42,8 +42,6 @@
 			})
 			.catch((error) => {
 				console.log('Failed: ' + error.message);
-			})
-			.finally(() => {
 				loading = false;
 			});
 	}
@@ -60,8 +58,6 @@
 			})
 			.catch((error) => {
 				console.log('Failed: ' + error.message);
-			})
-			.finally(() => {
 				loading = false;
 			});
 	}
@@ -79,8 +75,6 @@
 			})
 			.catch((error) => {
 				console.log('Failed: ' + error.message);
-			})
-			.finally(() => {
 				loading = false;
 			});
 	}
