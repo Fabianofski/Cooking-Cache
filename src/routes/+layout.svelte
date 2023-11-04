@@ -3,6 +3,7 @@
 	import '../app.css';
 	import { currentUser } from '../stores/store';
 	import { auth } from '$lib/firebase.client';
+	import { goto } from '$app/navigation';
 
 	let user: User | null;
 
@@ -17,6 +18,7 @@
 	function logout() {
 		signOut(auth).then(() => {
 			currentUser.set(null);
+			goto('/login');
 		});
 	}
 </script>

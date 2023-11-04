@@ -81,7 +81,9 @@
 </script>
 
 <div class="flex flex-col gap-4">
-	<h1 class="text-2xl font-extrabold text-center mb-2">Werde Mitglied!🥂</h1>
+	<h1 class="text-2xl font-extrabold text-center mb-2">
+		{loggingIn ? 'Willkomen zurück!🙌' : 'Werde Mitglied!🥂'}
+	</h1>
 
 	<div class="join w-full">
 		<input

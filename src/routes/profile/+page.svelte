@@ -6,7 +6,9 @@
 		updatePassword,
 		AuthCredential,
 		EmailAuthProvider,
-		reauthenticateWithCredential
+		reauthenticateWithCredential,
+		reauthenticateWithPopup,
+		OAuthProvider
 	} from 'firebase/auth';
 	import { currentUser } from '../../stores/store';
 	import { goto } from '$app/navigation';
@@ -28,19 +30,35 @@
 
 	function reauthenticate(password: string) {
 		return new Promise<void>((resolve, reject) => {
-			if (!user || !user.email) {
-				reject('User or Email is null');
+			if (!user) {
+				reject('User is null');
 				return;
 			}
-			let credential: AuthCredential = EmailAuthProvider.credential(user.email, password);
+			let providerId = user.providerData[0].providerId;
 
-			reauthenticateWithCredential(user, credential)
-				.then(() => {
-					resolve();
-				})
-				.catch((err) => {
-					reject(err);
-				});
+			if (providerId === 'password') {
+				if (!user.email) {
+					reject('E-Mail is null');
+					return;
+				}
+				let credential: AuthCredential = EmailAuthProvider.credential(user.email, password);
+				reauthenticateWithCredential(user, credential)
+					.then(() => {
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			} else {
+				const provider = new OAuthProvider(providerId);
+				reauthenticateWithPopup(user, provider)
+					.then(() => {
+						resolve();
+					})
+					.catch((err) => {
+						reject(err);
+					});
+			}
 		});
 	}
 
@@ -64,6 +82,7 @@
 			})
 			.catch((err) => {
 				console.error('Reauthentication Failed: ' + err);
+				loadingPasswordChange = false;
 			});
 	}
 
@@ -85,7 +104,10 @@
 						console.error(err);
 					});
 			})
-			.catch((err) => {});
+			.catch((err) => {
+				console.error('Reauthentication Failed: ' + err);
+				loadingDeletion = false;
+			});
 	}
 
 	// if (!user) goto('/login');
