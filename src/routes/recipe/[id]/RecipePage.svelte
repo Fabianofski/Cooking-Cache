@@ -5,12 +5,11 @@
 </script>
 
 <div class="card w-full bg-base-100 shadow-xl">
-	<figure class="w-full max-h-96 flex items-center flex-col">
+	<figure class="w-full max-h-96 flex items-center flex-col mt-4">
 		<img
-			class="w-full max-w-xl"
+			class="w-full h-full max-w-xl rounded object-cover"
 			src={recipe.image === '' ? '/default-cover.jpg' : recipe.image}
 			alt={`${recipe.title} Cover`}
-			style="object-fit: cover;"
 		/>
 	</figure>
 	<div class="card-body">
