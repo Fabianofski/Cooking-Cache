@@ -48,10 +48,11 @@
 						tabindex="-1"
 						class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
 					>
-						<li><a href="/">Home</a></li>
-						<li><a href="/random">Random Picker</a></li>
-						<li><a href="/recipes">All Recipes</a></li>
-						<li><a href="/recipe/create">Create Recipe</a></li>
+						<li><a href="/">Startseite</a></li>
+						<li><a href="/random">Zufallsrezept</a></li>
+						<li><a href="/recipes">Alle Rezepte</a></li>
+						<li><a href="/recipe/create">Rezept erstellen</a></li>
+						<li><a href="/privacy-policy">Datenschutzerklärung</a></li>
 					</ul>
 				</div>
 			</div>

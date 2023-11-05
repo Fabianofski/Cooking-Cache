@@ -16,6 +16,7 @@
 	import { createNewAlert } from '../../components/alerts/alert.handler';
 
 	let loggingIn = true;
+	let optIn = false;
 	let email: string = '';
 	let password: string = '';
 	let repeatPassword: string = '';
@@ -28,10 +29,14 @@
 		password: string,
 		repeatPassword: string,
 		displayName: string,
+		optIn: boolean,
 		loggingIn: boolean
 	): boolean {
 		if (loggingIn) return email === '' || password === '';
-		else return email === '' || password === '' || repeatPassword === '' || displayName === '';
+		else
+			return (
+				email === '' || password === '' || repeatPassword === '' || displayName === '' || !optIn
+			);
 	}
 
 	function errorHandling(error: any) {
@@ -159,12 +164,24 @@
 					required
 				/>
 			</div>
+			<div class="form-control">
+				<label class="label cursor-pointer justify-start">
+					<input type="checkbox" bind:checked={optIn} class="checkbox mr-2" />
+					<span class="label-text">
+						Ich stimme der Datenverarbeitung gemäß der <a
+							class="font-bold underline text-white hover:text-primary"
+							href="/privacy-policy">Datenschutzerklärung</a
+						> zu.</span
+					>
+				</label>
+			</div>
 		{/if}
 
 		<button
 			class="btn btn-primary w-full mt-4"
 			on:click={loggingIn ? login : signUp}
-			disabled={loading || formIsInvalid(email, password, repeatPassword, displayName, loggingIn)}
+			disabled={loading ||
+				formIsInvalid(email, password, repeatPassword, displayName, optIn, loggingIn)}
 		>
 			{#if !loading}
 				{loggingIn ? 'Anmelden' : 'Registrieren'}
