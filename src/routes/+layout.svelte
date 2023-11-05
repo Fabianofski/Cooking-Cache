@@ -4,6 +4,7 @@
 	import { currentUser } from '../stores/store';
 	import { auth } from '$lib/firebase.client';
 	import { goto } from '$app/navigation';
+	import Alerts from '../components/alerts/Alerts.svelte';
 
 	let user: User | null;
 
@@ -99,7 +100,8 @@
 	</div>
 
 	<div class="flex flex-col justify-start items-center px-2 py-2 flex-1">
-		<div class="max-w-3xl w-full">
+		<div class="max-w-3xl w-full relative">
+			<Alerts />
 			<slot />
 		</div>
 	</div>

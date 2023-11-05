@@ -8,10 +8,12 @@
 		OAuthProvider,
 		updateProfile,
 		signInWithPopup,
-		type AuthProvider
+		type AuthProvider,
+		type UserCredential
 	} from 'firebase/auth';
 	import { currentUser } from '../../stores/store';
 	import { goto } from '$app/navigation';
+	import { createNewAlert } from '../../components/alerts/alert.handler';
 
 	let loggingIn = true;
 	let email: string = '';
@@ -32,18 +34,27 @@
 		else return email === '' || password === '' || repeatPassword === '' || displayName === '';
 	}
 
+	function errorHandling(error: any) {
+		createNewAlert({
+			message: error.message,
+			type: 'error'
+		});
+		loading = false;
+	}
+
+	function loggedInHandler(userCredential: UserCredential) {
+		currentUser.set(userCredential.user);
+		createNewAlert({
+			message: 'Du wurdest erfolgreich eingeloggt!',
+			type: 'success'
+		});
+		goto('/');
+	}
+
 	function login() {
 		loading = true;
 
-		signInWithEmailAndPassword(auth, email, password)
-			.then((userCredential) => {
-				currentUser.set(userCredential.user);
-				goto('/');
-			})
-			.catch((error) => {
-				console.log('Failed: ' + error.message);
-				loading = false;
-			});
+		signInWithEmailAndPassword(auth, email, password).then(loggedInHandler).catch(errorHandling);
 	}
 	const googleProvider = new GoogleAuthProvider();
 	const facebookProvider = new FacebookAuthProvider();
@@ -51,32 +62,22 @@
 
 	function loginWithOAuth(provider: AuthProvider) {
 		loading = true;
-		signInWithPopup(auth, provider)
-			.then((userCredential) => {
-				currentUser.set(userCredential.user);
-				goto('/');
-			})
-			.catch((error) => {
-				console.log('Failed: ' + error.message);
-				loading = false;
-			});
+		signInWithPopup(auth, provider).then(loggedInHandler).catch(errorHandling);
 	}
 
 	function signUp() {
 		loading = true;
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(async (userCredential) => {
-				currentUser.set(userCredential.user);
 				await updateProfile(userCredential.user, {
 					displayName: displayName
-				}).then(() => {
-					goto('/');
-				});
+				})
+					.then(() => {
+						loggedInHandler(userCredential);
+					})
+					.catch(errorHandling);
 			})
-			.catch((error) => {
-				console.log('Failed: ' + error.message);
-				loading = false;
-			});
+			.catch(errorHandling);
 	}
 </script>
 

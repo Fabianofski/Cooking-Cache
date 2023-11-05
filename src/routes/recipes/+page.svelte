@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RecipeCard from '$lib/RecipeCard.svelte';
+	import RecipeCard from '../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../models/Recipe';
 	import { recipesStore } from '../../stores/store';
 

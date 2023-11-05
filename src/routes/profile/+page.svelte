@@ -13,6 +13,7 @@
 	import { currentUser } from '../../stores/store';
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase.client';
+	import { createNewAlert } from '../../components/alerts/alert.handler';
 
 	let oldPassword: string = '';
 	let password: string = '';
@@ -65,6 +66,15 @@
 	function changePassword() {
 		loadingPasswordChange = true;
 
+		if (password !== repeatPassword) {
+			createNewAlert({
+				message: 'Das neue Passwort und die Bestätigung stimmen nicht überein!',
+				type: 'error'
+			});
+			loadingPasswordChange = false;
+			return;
+		}
+
 		reauthenticate(oldPassword)
 			.then(() => {
 				if (!user) return;
@@ -74,14 +84,24 @@
 						oldPassword = '';
 						password = '';
 						repeatPassword = '';
+						createNewAlert({
+							message: 'Dein Passwort wurde erfolgreich aktualisiert!',
+							type: 'success'
+						});
 					})
 					.catch((err) => {
 						loadingPasswordChange = false;
-						console.error(err);
+						createNewAlert({
+							message: err.message,
+							type: 'error'
+						});
 					});
 			})
 			.catch((err) => {
-				console.error('Reauthentication Failed: ' + err);
+				createNewAlert({
+					message: err.message,
+					type: 'error'
+				});
 				loadingPasswordChange = false;
 			});
 	}
@@ -97,15 +117,25 @@
 				deleteUser(user)
 					.then(() => {
 						loadingDeletion = false;
+						createNewAlert({
+							message: 'Dein Konto wurde erfolgreich gelöscht!',
+							type: 'success'
+						});
 						goto('login');
 					})
 					.catch((err) => {
 						loadingDeletion = false;
-						console.error(err);
+						createNewAlert({
+							message: err.message,
+							type: 'error'
+						});
 					});
 			})
 			.catch((err) => {
-				console.error('Reauthentication Failed: ' + err);
+				createNewAlert({
+					message: err.message,
+					type: 'error'
+				});
 				loadingDeletion = false;
 			});
 	}
@@ -255,15 +285,29 @@
 			<dialog bind:this={dialog} class="modal">
 				<div class="modal-box">
 					<h3 class="font-bold text-lg text-center">Willst du deinen Account wirklich löschen?</h3>
-					<p class="py-4 text-center">Tippe zum Bestätigen dein Passwort ein</p>
+					{#if user?.providerData[0].providerId === 'password'}
+						<p class="py-4 text-center">Tippe zum Bestätigen dein Passwort ein</p>
+					{:else}
+						<p class="py-4 text-center">Tippe zum Bestätigen LÖSCHEN ein</p>
+					{/if}
 					<div class="form-control w-full max-w-s">
-						<input
-							type="password"
-							placeholder="Passwort"
-							bind:value={confirmation}
-							class="input input-bordered input-error w-full max-w-s"
-							required
-						/>
+						{#if user?.providerData[0].providerId === 'password'}
+							<input
+								type="password"
+								placeholder="Passwort"
+								bind:value={confirmation}
+								class="input input-bordered input-error w-full max-w-s"
+								required
+							/>
+						{:else}
+							<input
+								type="text"
+								placeholder="LÖSCHEN"
+								bind:value={confirmation}
+								class="input input-bordered input-error w-full max-w-s"
+								required
+							/>
+						{/if}
 					</div>
 					<div class="modal-action">
 						<form method="dialog" class="w-full flex flex-col gap-4">
@@ -277,7 +321,9 @@
 							</button>
 							<button
 								class="btn btn-error btn-block"
-								disabled={loadingDeletion || confirmation === ''}
+								disabled={loadingDeletion ||
+									(user?.providerData[0].providerId === 'password' && confirmation === '') ||
+									confirmation.toLowerCase() !== 'löschen'}
 								on:click={deleteAccount}
 							>
 								{#if !loadingDeletion}
