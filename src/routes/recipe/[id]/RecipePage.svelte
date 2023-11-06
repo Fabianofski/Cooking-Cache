@@ -37,14 +37,38 @@
 					{#each recipe.ingredients as ingredient}
 						<tr class="hover">
 							<td>{ingredient.amount}</td>
-							<th>{ingredient.name}</th>
+							<td class="font-bold">{ingredient.name}</td>
 						</tr>
 					{/each}
 				</tbody>
 			</table>
 		</div>
-		<p class="whitespace-pre-line text-justify">
-			{recipe.description === '' ? '1. ...\n2. ... \n3. ...' : recipe.description}
-		</p>
+
+		<div class="divider" />
+
+		<div class="overflow-x-auto rounded-sm">
+			<table class="table rounded-none">
+				<thead>
+					<tr>
+						<th>Schritt</th>
+						<th>Beschreibung</th>
+						<th>Abgehakt</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each recipe.description as step, index}
+						<tr class="hover">
+							<td class="font-bold w-8 text-center">{index + 1}.</td>
+							<td class="text-justify w-full">{step} {step}</td>
+							<td
+								><div class="flex justify-center align-middle">
+									<input type="checkbox" class="checkbox" />
+								</div></td
+							>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>

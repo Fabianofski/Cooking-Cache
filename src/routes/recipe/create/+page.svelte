@@ -11,23 +11,45 @@
 		tagline: '',
 		tags: [],
 		ingredients: [{ amount: '', name: '' }],
-		description: '',
+		description: [''],
 		id: '',
 		url: ''
 	};
 
-	function ingredientInputChanged(e: Event, i: number) {
-		for (let j = i + 2 - recipe.ingredients.length; j > 0; j--) {
-			recipe.ingredients = [...recipe.ingredients, { amount: '', name: '' }];
-		}
+	function formIsInvalid(recipe: Recipe) {
+		return (
+			recipe.title === '' ||
+			recipe.tagline === '' ||
+			recipe.ingredients[0].amount === '' ||
+			recipe.ingredients[0].name === '' ||
+			recipe.description[0] === ''
+		);
+	}
+
+	function ingredientInputChanged(e: Event, index: number) {
+		if (index + 1 === recipe.ingredients.length) recipe.ingredients.push({ amount: '', name: '' });
 
 		let count = -1;
 		for (let j = recipe.ingredients.length - 1; j >= 0; j--) {
 			const ingredient = recipe.ingredients[j];
-			if (ingredient.name !== '' || ingredient.amount != '') break;
+			if (ingredient.name !== '' || ingredient.amount !== '') break;
 			count++;
 		}
 		recipe.ingredients = recipe.ingredients.slice(0, recipe.ingredients.length - count);
+	}
+
+	function stepInputChanged(index: number) {
+		console.log(index, recipe.description);
+		if (index + 1 === recipe.description.length && recipe.description[index] !== '')
+			recipe.description.push('');
+
+		let count = -1;
+		for (let j = recipe.description.length - 1; j >= 0; j--) {
+			const step = recipe.description[j];
+			if (step !== '') break;
+			count++;
+		}
+		recipe.description = recipe.description.slice(0, recipe.description.length - count);
 	}
 
 	function addRecipeHandler() {
@@ -35,20 +57,20 @@
 	}
 </script>
 
-<div class="join mb-2">
+<div class="join w-full">
 	<input
-		class="join-item btn"
+		class="btn flex-1 join-item"
 		type="radio"
 		name="options"
-		aria-label="Edit"
+		aria-label="Bearbeiten"
 		value={true}
 		bind:group={editMode}
 	/>
 	<input
-		class="join-item btn"
+		class="btn flex-1 join-item"
 		type="radio"
 		name="options"
-		aria-label="Preview"
+		aria-label="Vorschau"
 		value={false}
 		bind:group={editMode}
 	/>
@@ -65,13 +87,24 @@
 		<div class="grid grid-cols-fluid gap-2">
 			<div class="form-control w-full">
 				<label class="label" for="">
-					<span class="label-text">Titel</span>
+					<span class="label-text">Titel*</span>
 				</label>
 				<input
 					type="text"
 					placeholder="Cheeseburger.."
 					class="input input-bordered w-full"
 					bind:value={recipe.title}
+				/>
+			</div>
+			<div class="form-control w-full">
+				<label class="label" for="">
+					<span class="label-text">Tagline*</span>
+				</label>
+				<input
+					type="text"
+					placeholder="Da best in da west.."
+					class="input input-bordered w-full"
+					bind:value={recipe.tagline}
 				/>
 			</div>
 			<div class="form-control w-full">
@@ -99,20 +132,9 @@
 					}}
 				/>
 			</div>
-			<div class="form-control w-full">
-				<label class="label" for="">
-					<span class="label-text">Tagline</span>
-				</label>
-				<input
-					type="text"
-					placeholder="Da best in da west.."
-					class="input input-bordered w-full"
-					bind:value={recipe.tagline}
-				/>
-			</div>
 			<div class="form-control w-full col-span-full">
 				<label class="label" for="">
-					<span class="label-text">Zutaten</span>
+					<span class="label-text">Zutaten*</span>
 				</label>
 				<table class="table">
 					<thead>
@@ -149,17 +171,33 @@
 			</div>
 			<div class="form-control col-span-full">
 				<label class="label" for="">
-					<span class="label-text">Rezept</span>
+					<span class="label-text">Rezept Beschreibung*</span>
 				</label>
-				<textarea
-					class="textarea textarea-bordered h-24 whitespace-pre-line"
-					placeholder={'1. ... \n2. ... \n3. ...'}
-					bind:value={recipe.description}
-				/>
+				<div class="flex flex-col gap-2">
+					{#each recipe.description as { }, index}
+						<div class="flex">
+							<p class="p-2 font-bold w-8 text-center">
+								{index + 1}.
+							</p>
+							<textarea
+								class="textarea textarea-bordered h-12 w-full"
+								placeholder={'Schritt 1'}
+								bind:value={recipe.description[index]}
+								on:input={() => {
+									stepInputChanged(index);
+								}}
+							/>
+						</div>
+					{/each}
+				</div>
 			</div>
 		</div>
 
-		<button class="btn btn-primary mt-6" on:click={addRecipeHandler}>Hinzufügen</button>
+		<button
+			class="btn btn-primary mt-6"
+			on:click={addRecipeHandler}
+			disabled={formIsInvalid(recipe)}>Hinzufügen</button
+		>
 	</div>
 </div>
 <div class={`${editMode ? 'hidden' : 'visible'}`}>
