@@ -7,7 +7,7 @@ export interface Recipe {
 	tags: string[];
 
 	ingredients: Ingredient[];
-	description: string;
+	description: string[];
 
 	id: string;
 	url: string;
