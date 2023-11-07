@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { createNewAlert } from '../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../models/Recipe';
 	import { recipesStore } from '../../../stores/store';
 	import RecipePage from '../[id]/RecipePage.svelte';
@@ -39,7 +41,6 @@
 	}
 
 	function stepInputChanged(index: number) {
-		console.log(index, recipe.description);
 		if (index + 1 === recipe.description.length && recipe.description[index] !== '')
 			recipe.description.push('');
 
@@ -52,8 +53,41 @@
 		recipe.description = recipe.description.slice(0, recipe.description.length - count);
 	}
 
+	let loading = false;
 	function addRecipeHandler() {
-		recipesStore.update((value) => [...value, recipe]);
+		loading = true;
+
+		let formData = new FormData();
+		if (files && files.length > 0) formData.append('cover', files[0]);
+		// Remove empty buffer fields at end from array inputs
+		recipe.ingredients.pop();
+		recipe.description.pop();
+		formData.append('recipe', JSON.stringify(recipe));
+
+		fetch('/api/recipe', {
+			method: 'POST',
+			body: formData,
+			headers: {
+				Accept: 'application/json'
+			}
+		})
+			.then(async (response: Response) => {
+				const recipe = (await response.json()) as Recipe;
+				recipesStore.update((value) => [...value, recipe]);
+				loading = false;
+				createNewAlert({
+					message: 'Das Rezept wurde erfolgreich hinzugefügt!',
+					type: 'success'
+				});
+				goto('/recipe/' + recipe.id);
+			})
+			.catch(() => {
+				loading = false;
+				createNewAlert({
+					message: 'Beim Hinzufügen vom Rezept ist ein Fehler aufgetreten!',
+					type: 'error'
+				});
+			});
 	}
 </script>
 
@@ -196,7 +230,12 @@
 		<button
 			class="btn btn-primary mt-6"
 			on:click={addRecipeHandler}
-			disabled={formIsInvalid(recipe)}>Hinzufügen</button
+			disabled={formIsInvalid(recipe) || loading}
+			>{#if !loading}
+				Hinzufügen
+			{:else}
+				<span class="loading loading-spinner loading-md" />
+			{/if}</button
 		>
 	</div>
 </div>
