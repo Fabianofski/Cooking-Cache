@@ -2,8 +2,9 @@
 	import { goto } from '$app/navigation';
 	import { createNewAlert } from '../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../models/Recipe';
-	import { recipesStore } from '../../../stores/store';
+	import { currentUser, recipesStore } from '../../../stores/store';
 	import RecipePage from '../[id]/RecipePage.svelte';
+	import type { User } from 'firebase/auth';
 
 	let editMode = true;
 	let files: FileList | null = null;
@@ -17,6 +18,11 @@
 		id: '',
 		url: ''
 	};
+
+	let user: User;
+	currentUser.subscribe((value) => {
+		if (value) user = value;
+	});
 
 	function formIsInvalid(recipe: Recipe) {
 		return (
@@ -64,30 +70,33 @@
 		recipe.description.pop();
 		formData.append('recipe', JSON.stringify(recipe));
 
-		fetch('/api/recipe', {
-			method: 'POST',
-			body: formData,
-			headers: {
-				Accept: 'application/json'
-			}
-		})
-			.then(async (response: Response) => {
-				const recipe = (await response.json()) as Recipe;
-				recipesStore.update((value) => [...value, recipe]);
-				loading = false;
-				createNewAlert({
-					message: 'Das Rezept wurde erfolgreich hinzugefügt!',
-					type: 'success'
-				});
-				goto('/recipe/' + recipe.id);
+		user.getIdToken().then((token) => {
+			fetch('/api/recipe', {
+				method: 'POST',
+				body: formData,
+				headers: {
+					Accept: 'application/json',
+					Authorization: token
+				}
 			})
-			.catch(() => {
-				loading = false;
-				createNewAlert({
-					message: 'Beim Hinzufügen vom Rezept ist ein Fehler aufgetreten!',
-					type: 'error'
+				.then(async (response: Response) => {
+					const recipe = (await response.json()) as Recipe;
+					recipesStore.update((value) => [...value, recipe]);
+					loading = false;
+					createNewAlert({
+						message: 'Das Rezept wurde erfolgreich hinzugefügt!',
+						type: 'success'
+					});
+					goto('/recipe/' + recipe.id);
+				})
+				.catch(() => {
+					loading = false;
+					createNewAlert({
+						message: 'Beim Hinzufügen vom Rezept ist ein Fehler aufgetreten!',
+						type: 'error'
+					});
 				});
-			});
+		});
 	}
 </script>
 

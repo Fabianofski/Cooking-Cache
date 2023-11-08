@@ -26,7 +26,6 @@
 	});
 
 	onMount(async () => {
-		console.log(user);
 		if (!user) goto('/login');
 	});
 
