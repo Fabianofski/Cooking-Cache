@@ -18,11 +18,13 @@
 			<div class="card-body">
 				<h2 class="card-title">
 					{recipe.title}
-					<div class="w-full card-actions justify-end">
-						{#each recipe.tags as tag}
-							<div class="badge badge-outline">{tag}</div>
-						{/each}
-					</div>
+					{#if recipe.tags}
+						<div class="w-full card-actions justify-end">
+							{#each recipe.tags as tag}
+								<div class="badge badge-outline">{tag}</div>
+							{/each}
+						</div>
+					{/if}
 				</h2>
 				<p>{recipe.tagline}</p>
 			</div>

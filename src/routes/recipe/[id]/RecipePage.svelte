@@ -2,6 +2,7 @@
 	import type { Recipe } from '../../../models/Recipe';
 
 	export let recipe: Recipe;
+	console.log(recipe);
 </script>
 
 <div class="card w-full bg-base-100 shadow-xl">
@@ -15,11 +16,13 @@
 	<div class="card-body">
 		<h2 class="card-title">
 			{recipe.title === '' ? 'Rezept Titel' : recipe.title}
-			<div class="card-actions justify-end">
-				{#each recipe.tags as tag}
-					<div class="badge badge-outline">{tag}</div>
-				{/each}
-			</div>
+			{#if recipe.tags}
+				<div class="card-actions justify-end">
+					{#each recipe.tags as tag}
+						<div class="badge badge-outline">{tag}</div>
+					{/each}
+				</div>
+			{/if}
 		</h2>
 		<p>{recipe.tagline === '' ? 'Rezept Untertitel' : recipe.tagline}</p>
 		<a href={recipe.url} class={`btn btn-primary ${recipe.url === '' ? 'btn-disabled' : ''}`}>

@@ -5,11 +5,10 @@
 
 	export let data;
 
-	let recipes: Recipe[] = [];
-	recipesStore.subscribe((value) => {
-		recipes = value;
+	let recipe: Recipe | undefined;
+	recipesStore.subscribe((recipes) => {
+		recipe = recipes.find((recipe) => recipe.id === data.id);
 	});
-	const recipe = recipes.find((recipe) => recipe.id === data.id);
 </script>
 
 {#if recipe}

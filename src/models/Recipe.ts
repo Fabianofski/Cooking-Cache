@@ -4,7 +4,7 @@ export interface Recipe {
 	image: string;
 	title: string;
 	tagline: string;
-	tags: string[];
+	tags?: string[];
 
 	ingredients: Ingredient[];
 	description: string[];
