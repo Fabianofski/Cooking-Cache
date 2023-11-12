@@ -18,7 +18,7 @@ const firebaseConfig = {
 	storageBucket: STORAGE_URL
 };
 
-if (admin.apps.length === 0) admin.initializeApp(firebaseConfig);
+admin.initializeApp(firebaseConfig);
 const bucket = admin.storage().bucket();
 const database = admin.database();
 const auth = getAuth();
