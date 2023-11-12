@@ -14,6 +14,7 @@
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase.client';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
+	import { onMount } from 'svelte';
 
 	let oldPassword: string = '';
 	let password: string = '';
@@ -22,6 +23,10 @@
 	let user: User | null = null;
 	currentUser.subscribe((value) => {
 		user = value;
+	});
+
+	onMount(async () => {
+		if (!user) goto('/login');
 	});
 
 	let loadingPasswordChange = false;

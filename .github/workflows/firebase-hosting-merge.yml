@@ -15,6 +15,7 @@ jobs:
       PROJECT_ID: cooking-cache
       CLIENT_EMAIL: '${{ secrets.CLIENT_EMAIL }}'
       DATABASE_URL: '${{ secrets.DATABASE_URL }}'
+      STORAGE_URL: '${{ secrets.STORAGE_URL }}'
     steps:
       - uses: actions/checkout@v3
       - run: npm ci && npm run build

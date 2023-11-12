@@ -1,7 +1,18 @@
 <script lang="ts">
+	import type { Recipe } from '../../../models/Recipe';
+	import { recipesStore } from '../../../stores/store';
 	import RecipePage from './RecipePage.svelte';
 
 	export let data;
+
+	let recipe: Recipe | undefined;
+	recipesStore.subscribe((recipes) => {
+		recipe = recipes.find((recipe) => recipe.id === data.id);
+	});
 </script>
 
-<RecipePage recipe={data.recipe} />
+{#if recipe}
+	<RecipePage {recipe} />
+{:else}
+	Error 404
+{/if}

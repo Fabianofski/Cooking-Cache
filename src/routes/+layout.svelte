@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { signOut, type User } from 'firebase/auth';
 	import '../app.css';
-	import { currentUser } from '../stores/store';
+	import { currentUser, recipesStore } from '../stores/store';
 	import { auth } from '$lib/firebase.client';
 	import { goto } from '$app/navigation';
 	import Alerts from '../components/alerts/Alerts.svelte';
+	import type { Recipe } from '../models/Recipe';
 
 	let user: User | null;
 
@@ -14,6 +15,23 @@
 
 	auth.onAuthStateChanged((value) => {
 		currentUser.set(value);
+
+		if (value === null) {
+			recipesStore.set([]);
+			return;
+		}
+		value.getIdToken().then((token) => {
+			fetch('/api/recipes', {
+				headers: {
+					Accept: 'application/json',
+					Authorization: token
+				}
+			}).then(async (response) => {
+				const data: { [key: string]: Recipe } = await response.json();
+				const recipeArray = Object.values(data);
+				recipesStore.set(recipeArray);
+			});
+		});
 	});
 
 	function logout() {
