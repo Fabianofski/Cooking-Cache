@@ -62,7 +62,7 @@
 					{#each recipe.description as step, index}
 						<tr class="hover">
 							<td class="font-bold w-8 text-center">{index + 1}.</td>
-							<td class="text-justify w-full">{step} {step}</td>
+							<td class="text-justify w-full">{step}</td>
 							<td
 								><div class="flex justify-center align-middle">
 									<input type="checkbox" class="checkbox" />
