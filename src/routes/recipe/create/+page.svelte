@@ -189,24 +189,24 @@
 					<tbody>
 						{#each { length: recipe.ingredients.length } as _, i}
 							<tr>
-								<td class="pl-0 pr-1"
-									><input
+								<td class="pl-0 pr-1">
+									<input
 										type="text"
 										placeholder="1"
 										class="input input-bordered w-full"
 										bind:value={recipe.ingredients[i].amount}
 										on:input={(e) => ingredientInputChanged(e, i)}
-									/></td
-								>
-								<td class="pl-1 pr-0"
-									><input
+									/>
+								</td>
+								<td class="pl-1 pr-0">
+									<input
 										type="text"
 										placeholder="Tomate"
 										class="input input-bordered w-full"
 										bind:value={recipe.ingredients[i].name}
 										on:input={(e) => ingredientInputChanged(e, i)}
-									/></td
-								>
+									/>
+								</td>
 							</tr>
 						{/each}
 					</tbody>
@@ -236,16 +236,20 @@
 			</div>
 		</div>
 
-		<button
-			class="btn btn-primary mt-6"
-			on:click={addRecipeHandler}
-			disabled={formIsInvalid(recipe) || loading}
-			>{#if !loading}
-				Hinzufügen
-			{:else}
-				<span class="loading loading-spinner loading-md" />
-			{/if}</button
-		>
+		<div class="flex gap-2 mt-6 w-full">
+			<button
+				class="btn btn-primary flex-1"
+				on:click={addRecipeHandler}
+				disabled={formIsInvalid(recipe) || loading}
+			>
+				{#if !loading}
+					Hinzufügen
+				{:else}
+					<span class="loading loading-spinner loading-md" />
+				{/if}
+			</button>
+			<a class="btn btn-ghost flex-2" href="/recipes">Abbrechen</a>
+		</div>
 	</div>
 </div>
 <div class={`${editMode ? 'hidden' : 'visible'}`}>

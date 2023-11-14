@@ -43,80 +43,16 @@
 	}
 </script>
 
-<div class="min-h-screen flex flex-col justify-between">
+<div class="min-h-screen flex flex-col justify-between" id="top">
 	<div class="w-full flex justify-center bg-base-200 fixed top-0 left-0 z-10">
 		<div class="navbar max-w-3xl w-full">
-			<div class="navbar-start">
-				<div class="dropdown">
-					<label for="" tabindex="-1" class="btn btn-ghost btn-circle">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="h-5 w-5"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M4 6h16M4 12h16M4 18h16"
-							/>
-						</svg>
-					</label>
-					<ul
-						tabindex="-1"
-						class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
-					>
-						<li><a href="/">Startseite</a></li>
-						<li><a href="/random">Zufallsrezept</a></li>
-						<li><a href="/recipes">Alle Rezepte</a></li>
-						<li><a href="/recipe/create">Rezept erstellen</a></li>
-						<li><a href="/privacy-policy">Datenschutzerklärung</a></li>
-					</ul>
-				</div>
-			</div>
+			<div class="navbar-start" />
 			<div class="navbar-center">
 				<a href="/" class="btn btn-ghost">
 					<img class="h-8" src="/cooking-cache.png" alt="cooking cache logo" />
 				</a>
 			</div>
-			<div class="navbar-end">
-				{#if user !== null}
-					<div class="dropdown dropdown-end">
-						<label tabindex="-2" for="" class="btn btn-ghost btn-circle avatar">
-							<div class="w-6 rounded-full">
-								{#if user && user.photoURL}
-									<img src={user.photoURL} alt="Profile" />
-								{:else}
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="currentColor"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-										/>
-									</svg>
-								{/if}
-							</div>
-						</label>
-						<ul
-							tabindex="-2"
-							class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
-						>
-							<li><a href="/profile">Profil</a></li>
-							<li><a href="#logout" on:click={logout}>Abmelden</a></li>
-						</ul>
-					</div>
-				{:else}
-					<a href="/login">Anmelden</a>
-				{/if}
-			</div>
+			<div class="navbar-end" />
 		</div>
 	</div>
 
@@ -142,7 +78,7 @@
 			</svg>
 			<span class="btm-nav-label">Home</span>
 		</a>
-		<a class:active={$page.url.pathname.startsWith('/recipes')} href="/recipes">
+		<a class:active={$page.url.pathname.startsWith('/recipe')} href="/recipes">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				height="24"
