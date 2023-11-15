@@ -1,11 +1,17 @@
 <script lang="ts">
+	import type { User } from 'firebase/auth';
 	import RecipeCard from '../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../models/Recipe';
-	import { recipesStore } from '../../stores/store';
+	import { currentUser, recipesStore } from '../../stores/store';
 
 	let recipes: Recipe[] = [];
 	recipesStore.subscribe((value) => {
 		recipes = [...value];
+	});
+
+	let user: User | null;
+	currentUser.subscribe((value) => {
+		user = value;
 	});
 
 	let page = 0;
@@ -41,7 +47,11 @@
 </div>
 
 <div class="fixed max-w-3xl w-full bottom-0">
-	<a class="btn btn-circle btn-primary absolute bottom-24 right-4" href="/recipe/create">
+	<a
+		class="btn btn-circle btn-primary absolute bottom-20 right-6"
+		href="/recipe/create"
+		class:btn-disabled={user === null}
+	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			height="24"

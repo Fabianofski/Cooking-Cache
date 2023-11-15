@@ -98,7 +98,11 @@
 			</svg>
 			<span class="btm-nav-label">Wochenplaner</span>
 		</a>
-		<a class:active={$page.url.pathname.startsWith('/profile')} href="/profile">
+		<a
+			class:active={$page.url.pathname.startsWith('/profile') ||
+				$page.url.pathname.startsWith('/login')}
+			href="/profile"
+		>
 			<div class="w-6 rounded-full">
 				{#if user && user.photoURL}
 					<img src={user.photoURL} alt="Profile" />
