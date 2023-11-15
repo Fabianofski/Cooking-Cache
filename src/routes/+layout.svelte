@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { signOut, type User } from 'firebase/auth';
+	import type { User } from 'firebase/auth';
 	import '../app.css';
 	import { currentUser, recipesStore } from '../stores/store';
 	import { auth } from '$lib/firebase.client';
-	import { goto } from '$app/navigation';
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import type { Recipe } from '../models/Recipe';
 	import { page } from '$app/stores';
@@ -34,13 +33,6 @@
 			});
 		});
 	});
-
-	function logout() {
-		signOut(auth).then(() => {
-			currentUser.set(null);
-			goto('/login');
-		});
-	}
 </script>
 
 <div class="min-h-screen flex flex-col justify-between" id="top">
