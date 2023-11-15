@@ -1,7 +1,14 @@
 <script lang="ts">
+	import type { User } from 'firebase/auth';
 	import type { Recipe } from '../models/Recipe';
+	import { currentUser } from '../stores/store';
 
 	export let recipe: Recipe | null;
+
+	let user: User | null;
+	currentUser.subscribe((value) => {
+		user = value;
+	});
 </script>
 
 {#if recipe}
@@ -35,6 +42,8 @@
 		class="h-96 w-full bg-base-100 shadow-xl flex flex-col gap-2 justify-center items-center rounded-xl"
 	>
 		<p class="font-bold text-lg">Kein Rezept gefunden!</p>
-		<a class="btn" href="/recipe/create">Erstelle dein erstes Rezept</a>
+		<a class="btn" href="/recipe/create" class:btn-disabled={user === null}>
+			Erstelle dein erstes Rezept
+		</a>
 	</div>
 {/if}
