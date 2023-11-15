@@ -174,7 +174,7 @@
 						>
 							Datenschutzerklärung
 						</a>
-						 zu.
+						zu.
 					</span>
 				</label>
 			</div>
@@ -194,7 +194,7 @@
 		</button>
 	</form>
 
-	<div class="grid grid-cols-fluid gap-2">
+	<div class="grid grid-cols-fluid-narrow gap-2">
 		<button
 			class="px-4 py-2 border flex gap-2 bg-white border-slate-200 rounded-lg text-slate-700 hover:border-slate-400 hover:text-slate-900 hover:shadow transition duration-150"
 			on:click={() => loginWithOAuth(googleProvider)}
