@@ -101,7 +101,7 @@
 		<a
 			class:active={$page.url.pathname.startsWith('/profile') ||
 				$page.url.pathname.startsWith('/login')}
-			href="/profile"
+			href={user ? '/profile' : '/login'}
 		>
 			<div class="w-6 rounded-full">
 				{#if user && user.photoURL}
@@ -122,7 +122,7 @@
 					</svg>
 				{/if}
 			</div>
-			<span class="btm-nav-label">Profil</span>
+			<span class="btm-nav-label">{user ? 'Profil' : 'Login'}</span>
 		</a>
 	</div>
 
