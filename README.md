@@ -56,7 +56,7 @@
 
 ## About The Project
 
-Cooking Cache simplifies recipe management, offering a centralized platform for saving, accessing, and sharing your favorite recipes. Accessible on PC, tablet, or mobile. Import recipes from your preferred databases and effortlessly organize them. Share your culinary creations with friends and family, making cooking a social experience. Sign up now to streamline your recipe collection and elevate your cooking journey!
+Cooking Cache simplifies recipe management, offering a centralized platform for saving, accessing, and sharing your favorite recipes. Accessible on PC, tablet, or mobile. Import recipes from your preferred recipe websites and effortlessly organize them. Share your culinary creations with friends and family, making cooking a social experience. Sign up now to streamline your recipe collection and elevate your cooking journey!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -64,8 +64,8 @@ Cooking Cache simplifies recipe management, offering a centralized platform for 
 
 [![Svelte][Svelte.dev]][Svelte-url]
 [![Firebase][Firebase.com]][Firebase-url]
-[![TailwindCSS][Tailwind.com]](Tailwind-url)
-[![DaisyUI][daisyui.com]](DaisyUI-url)
+[![TailwindCSS][Tailwind.com]][Tailwind-url]
+[![DaisyUI][daisyui.com]][DaisyUI-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -153,6 +153,6 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [Firebase.com]: https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white
 [Firebase-url]: https://firebase.com/
 [Tailwind.com]: https://img.shields.io/badge/tailwind-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
-[Tailwind-url]: https://tailwind.com/
+[Tailwind-url]: https://tailwindcss.com/
 [DaisyUI.com]: https://img.shields.io/badge/daisyui-5A0EF8?style=for-the-badge&logo=daisyui&logoColor=white
-[DaisyUI-url]: https://tailwind.com/
+[DaisyUI-url]: https://daisyui.com/
