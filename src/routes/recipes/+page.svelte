@@ -16,12 +16,33 @@
 	});
 
 	let filterModal: HTMLDialogElement;
-	let filter: string = '';
+	let searchPattern: string = '';
+	let filters: string[] = [];
+	let recipesCount: number;
+
+	function addExtraFilter(checked: boolean, value: string) {
+		if (!checked && filters.includes(value)) filters = filters.filter((x) => x !== value);
+		else if (checked) filters = [...filters, value];
+	}
+
+	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: string[]) {
+		let filteredRecipes: Recipe[] = fullTextFilter(recipes, searchPattern) as Recipe[];
+		filters.forEach((pattern) => {
+			filteredRecipes = fullTextFilter(filteredRecipes, pattern) as Recipe[];
+		});
+		recipesCount = filteredRecipes.length;
+		return filteredRecipes;
+	}
 
 	let page = 0;
 	let pageSize = 6;
-	function getRecipesFromPage(recipes: Recipe[], page: number, filter: string): Recipe[] {
-		const filteredRecipes: Recipe[] = fullTextFilter(recipes, filter) as Recipe[];
+	function getRecipesFromPage(
+		recipes: Recipe[],
+		page: number,
+		searchPattern: string,
+		filters: string[]
+	): Recipe[] {
+		const filteredRecipes = filterRecipes(recipes, searchPattern, filters);
 
 		const startIndex = page * pageSize;
 		const endIndex = Math.min(startIndex + pageSize, filteredRecipes.length);
@@ -37,7 +58,7 @@
 				<input
 					class="w-full input input-bordered join-item pl-8"
 					placeholder="Search"
-					bind:value={filter}
+					bind:value={searchPattern}
 				/>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -69,14 +90,14 @@
 						d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
 					/>
 				</svg>
-				Filter
+				Filter {filters.length > 0 ? `(${filters.length})` : ''}
 			</button>
 		</div>
 		<div class="divider -mb-2" />
 	</div>
 
 	<div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
-		{#each getRecipesFromPage(recipes, page, filter) as recipe}
+		{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
 			<RecipeCard {recipe} />
 		{/each}
 	</div>
@@ -123,9 +144,15 @@
 				<h4 class="text-md">Tags</h4>
 				<div class="divider my-0" />
 				<div>
-					{#each ['Text', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text'] as filterItem}
+					{#each ['Burger', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text'] as filterItem}
 						<label class="swap mx-1">
-							<input type="checkbox" />
+							<input
+								type="checkbox"
+								on:input={(e) => {
+									// @ts-ignore
+									addExtraFilter(e.target?.checked, filterItem);
+								}}
+							/>
 							<div class="swap-on"><div class="badge badge-neutral">{filterItem}</div></div>
 							<div class="swap-off"><div class="badge badge-outline">{filterItem}</div></div>
 						</label>
@@ -136,7 +163,7 @@
 
 		<div class="modal-action">
 			<form class="w-full" method="dialog">
-				<button class="btn btn-primary btn-block">Anwenden</button>
+				<button class="btn btn-primary btn-block">Anwenden ({recipesCount})</button>
 			</form>
 		</div>
 	</div>
