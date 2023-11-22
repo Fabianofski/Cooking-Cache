@@ -19,6 +19,7 @@ const firebaseConfig = {
 };
 
 admin.initializeApp(firebaseConfig);
+admin.database.enableLogging(true);
 const bucket = admin.storage().bucket();
 const database = admin.database();
 const auth = getAuth();
