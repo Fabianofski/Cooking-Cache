@@ -144,7 +144,7 @@
 				<h4 class="text-md">Tags</h4>
 				<div class="divider my-0" />
 				<div>
-					{#each ['Burger', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text'] as filterItem}
+					{#each new Set(recipes.flatMap((recipe) => recipe.tags || [])) as filterItem}
 						<label class="swap mx-1">
 							<input
 								type="checkbox"
@@ -163,7 +163,7 @@
 
 		<div class="modal-action">
 			<form class="w-full" method="dialog">
-				<button class="btn btn-primary btn-block">Anwenden ({recipesCount})</button>
+				<button class="btn btn-block">Anwenden ({recipesCount})</button>
 			</form>
 		</div>
 	</div>
