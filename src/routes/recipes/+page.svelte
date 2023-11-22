@@ -14,6 +14,8 @@
 		user = value;
 	});
 
+	let filterModal: HTMLDialogElement;
+
 	let page = 0;
 	let pageSize = 6;
 	function getRecipesFromPage(recipes: Recipe[], page: number): Recipe[] {
@@ -25,6 +27,46 @@
 </script>
 
 <div class="flex gap-4 flex-col items-center">
+	<div class="w-full">
+		<div class="join flex">
+			<div class="w-3/5 relative bg-red-700">
+				<input class="w-full input input-bordered join-item pl-8" placeholder="Search" />
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="absolute left-2 top-4 h-5 w-5"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="gray"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+					/>
+				</svg>
+			</div>
+			<button class="w-2/5 btn join-item" on:click={() => filterModal.showModal()}>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-6 h-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"
+					/>
+				</svg>
+				Filter
+			</button>
+		</div>
+		<div class="divider -mb-2" />
+	</div>
+
 	<div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
 		{#each getRecipesFromPage(recipes, page) as recipe}
 			<RecipeCard {recipe} />
@@ -63,3 +105,31 @@
 		</svg>
 	</a>
 </div>
+
+<dialog bind:this={filterModal} class="modal">
+	<div class="modal-box">
+		<h3 class="font-bold text-lg">Filter</h3>
+
+		<div class="flex flex-col gap-2">
+			<div>
+				<h4 class="text-md">Tags</h4>
+				<div class="divider my-0" />
+				<div>
+					{#each ['Text', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text', 'Text'] as filterItem}
+						<label class="swap mx-1">
+							<input type="checkbox" />
+							<div class="swap-on"><div class="badge badge-neutral">{filterItem}</div></div>
+							<div class="swap-off"><div class="badge badge-outline">{filterItem}</div></div>
+						</label>
+					{/each}
+				</div>
+			</div>
+		</div>
+
+		<div class="modal-action">
+			<form class="w-full" method="dialog">
+				<button class="btn btn-primary btn-block">Anwenden</button>
+			</form>
+		</div>
+	</div>
+</dialog>
