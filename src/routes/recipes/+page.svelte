@@ -20,7 +20,7 @@
 	let filters: string[] = [];
 	let recipesCount: number;
 
-	function addExtraFilter(checked: boolean, value: string) {
+	function onFilterChange(checked: boolean, value: string) {
 		if (!checked && filters.includes(value)) filters = filters.filter((x) => x !== value);
 		else if (checked) filters = [...filters, value];
 	}
@@ -53,6 +53,29 @@
 
 <div class="flex gap-4 flex-col items-center">
 	<div class="w-full">
+		<div class="w-full relative">
+			<a href="recipes" class="absolute top-1 l-0">
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="w-5 h-5"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+					/>
+				</svg>
+			</a>
+			<h2 class="text-lg font-bold text-center">Hauptsammlung</h2>
+		</div>
+		<div class="divider my-0" />
+	</div>
+
+	<div class="w-full flex flex-col gap-2">
 		<div class="join flex">
 			<div class="w-3/5 relative bg-red-700">
 				<input
@@ -93,7 +116,14 @@
 				Filter {filters.length > 0 ? `(${filters.length})` : ''}
 			</button>
 		</div>
-		<div class="divider -mb-2" />
+		<div>
+			{#each filters as filter}
+				<button class="badge badge-neutral mx-1" on:click={() => onFilterChange(false, filter)}>
+					{filter} x
+				</button>
+			{/each}
+		</div>
+		<div class="divider -my-2" />
 	</div>
 
 	<div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
@@ -148,12 +178,13 @@
 						<label class="swap mx-1">
 							<input
 								type="checkbox"
+								checked={filters.includes(filterItem)}
 								on:input={(e) => {
 									// @ts-ignore
-									addExtraFilter(e.target?.checked, filterItem);
+									onFilterChange(e.target?.checked, filterItem);
 								}}
 							/>
-							<div class="swap-on"><div class="badge badge-neutral">{filterItem}</div></div>
+							<div class="swap-on"><div class="badge badge-neutral">{filterItem} x</div></div>
 							<div class="swap-off"><div class="badge badge-outline">{filterItem}</div></div>
 						</label>
 					{/each}
