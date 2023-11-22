@@ -3,6 +3,7 @@
 	import RecipeCard from '../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../models/Recipe';
 	import { currentUser, recipesStore } from '../../stores/store';
+	import { fullTextFilter } from './filter';
 
 	let recipes: Recipe[] = [];
 	recipesStore.subscribe((value) => {
@@ -15,14 +16,17 @@
 	});
 
 	let filterModal: HTMLDialogElement;
+	let filter: string = '';
 
 	let page = 0;
 	let pageSize = 6;
-	function getRecipesFromPage(recipes: Recipe[], page: number): Recipe[] {
-		const startIndex = page * pageSize;
-		const endIndex = Math.min(startIndex + pageSize, recipes.length);
+	function getRecipesFromPage(recipes: Recipe[], page: number, filter: string): Recipe[] {
+		const filteredRecipes: Recipe[] = fullTextFilter(recipes, filter) as Recipe[];
 
-		return recipes.slice(startIndex, endIndex);
+		const startIndex = page * pageSize;
+		const endIndex = Math.min(startIndex + pageSize, filteredRecipes.length);
+
+		return filteredRecipes.slice(startIndex, endIndex);
 	}
 </script>
 
@@ -30,7 +34,11 @@
 	<div class="w-full">
 		<div class="join flex">
 			<div class="w-3/5 relative bg-red-700">
-				<input class="w-full input input-bordered join-item pl-8" placeholder="Search" />
+				<input
+					class="w-full input input-bordered join-item pl-8"
+					placeholder="Search"
+					bind:value={filter}
+				/>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="absolute left-2 top-4 h-5 w-5"
@@ -68,7 +76,7 @@
 	</div>
 
 	<div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
-		{#each getRecipesFromPage(recipes, page) as recipe}
+		{#each getRecipesFromPage(recipes, page, filter) as recipe}
 			<RecipeCard {recipe} />
 		{/each}
 	</div>
