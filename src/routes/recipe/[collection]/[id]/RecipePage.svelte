@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Recipe } from '../../../models/Recipe';
+	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
 	console.log(recipe);
@@ -26,7 +26,8 @@
 		</h2>
 		<p>{recipe.tagline === '' ? 'Rezept Untertitel' : recipe.tagline}</p>
 		<a href={recipe.url} class={`btn btn-primary ${recipe.url === '' ? 'btn-disabled' : ''}`}>
-			<img class="h-6" src="/link.svg" alt="link" /> Zum Originalrezept
+			<img class="h-6" src="/link.svg" alt="link" />
+			 Zum Originalrezept
 		</a>
 		<div class="overflow-x-auto">
 			<table class="table">
@@ -63,11 +64,11 @@
 						<tr class="hover">
 							<td class="font-bold w-8 text-center">{index + 1}.</td>
 							<td class="text-justify w-full">{step}</td>
-							<td
-								><div class="flex justify-center align-middle">
+							<td>
+								<div class="flex justify-center align-middle">
 									<input type="checkbox" class="checkbox" />
-								</div></td
-							>
+								</div>
+							</td>
 						</tr>
 					{/each}
 				</tbody>

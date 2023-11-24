@@ -6,6 +6,7 @@
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import type { Recipe } from '../models/Recipe';
 	import { page } from '$app/stores';
+	import type { RecipeCollections } from '../models/RecipeCollections';
 
 	let user: User | null;
 
@@ -17,7 +18,7 @@
 		currentUser.set(value);
 
 		if (value === null) {
-			recipesStore.set([]);
+			recipesStore.set({});
 			return;
 		}
 		value.getIdToken().then((token) => {
@@ -27,9 +28,8 @@
 					Authorization: token
 				}
 			}).then(async (response) => {
-				const data: { [key: string]: Recipe } = await response.json();
-				const recipeArray = Object.values(data);
-				recipesStore.set(recipeArray);
+				const data: RecipeCollections = await response.json();
+				recipesStore.set(data);
 			});
 		});
 	});

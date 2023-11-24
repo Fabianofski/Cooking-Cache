@@ -1,10 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { createNewAlert } from '../../../components/alerts/alert.handler';
-	import type { Recipe } from '../../../models/Recipe';
-	import { currentUser, recipesStore } from '../../../stores/store';
-	import RecipePage from '../[id]/RecipePage.svelte';
+	import { createNewAlert } from '../../../../components/alerts/alert.handler';
+	import type { Recipe } from '../../../../models/Recipe';
+	import { currentUser, recipesStore } from '../../../../stores/store';
 	import type { User } from 'firebase/auth';
+	import RecipePage from '../../[collection]/[id]/RecipePage.svelte';
+
+	export let data;
 
 	let editMode = true;
 	let files: FileList | null = null;
@@ -16,7 +18,8 @@
 		ingredients: [{ amount: '', name: '' }],
 		description: [''],
 		id: '',
-		url: ''
+		url: '',
+		collection: data.collection
 	};
 
 	let user: User;
@@ -81,13 +84,16 @@
 			})
 				.then(async (response: Response) => {
 					const recipe = (await response.json()) as Recipe;
-					recipesStore.update((value) => [...value, recipe]);
+					recipesStore.update((value) => {
+						value[data.collection].push(recipe);
+						return value;
+					});
 					loading = false;
 					createNewAlert({
 						message: 'Das Rezept wurde erfolgreich hinzugefügt!',
 						type: 'success'
 					});
-					goto('/recipe/' + recipe.id);
+					goto(`recipe/${recipe.collection}/${recipe.id}`);
 				})
 				.catch(() => {
 					loading = false;

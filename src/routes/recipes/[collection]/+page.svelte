@@ -9,7 +9,7 @@
 
 	let recipes: Recipe[] = [];
 	recipesStore.subscribe((value) => {
-		recipes = [...value];
+		if (data.collection in value) recipes = value[data.collection];
 	});
 
 	let user: User | null;
@@ -54,7 +54,7 @@
 </script>
 
 <div class="flex gap-4 flex-col items-center">
-	<div class="w-full">
+	<div class="w-full sticky top-16 bg-base-100 z-10">
 		<div class="w-full relative">
 			<a href="/recipes" class="absolute top-1 l-0">
 				<svg
@@ -130,7 +130,7 @@
 
 	<div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
 		{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
-			<RecipeCard {recipe} />
+			<RecipeCard {recipe} collection={data.collection} />
 		{/each}
 	</div>
 	<div class="join justify-center">
@@ -152,7 +152,7 @@
 <div class="fixed max-w-3xl w-full bottom-0">
 	<a
 		class="btn btn-circle btn-primary absolute bottom-20 right-6"
-		href="/recipe/create"
+		href={`/recipe/create/${data.collection}`}
 		class:btn-disabled={user === null}
 	>
 		<svg

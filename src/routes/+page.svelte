@@ -4,9 +4,9 @@
 	import { recipesStore } from '../stores/store';
 	import RandomRecipe from './random/RandomRecipe.svelte';
 
-	let recipes: Recipe[];
+	let recipes: Recipe[] = [];
 	recipesStore.subscribe((value) => {
-		recipes = value;
+		if ('Hauptsammlung' in value) recipes = value['Hauptsammlung'];
 	});
 </script>
 
@@ -18,13 +18,13 @@
 				<div class="rounded-box flex gap-2 absolute top-0 left-0 pl-2 pr-2">
 					{#each recipes as recipe}
 						<div class="w-96">
-							<RecipeCard {recipe} />
+							<RecipeCard {recipe} collection={'Hauptsammlung'} />
 						</div>
 					{/each}
 				</div>
 			</div>
 		{:else}
-			<RecipeCard recipe={null} />
+			<RecipeCard recipe={null} collection={'Hauptsammlung'} />
 		{/if}
 	</div>
 

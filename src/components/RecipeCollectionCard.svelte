@@ -1,5 +1,8 @@
 <script lang="ts">
+	import type { Recipe } from '../models/Recipe';
+
 	export let collectionName: string | null;
+	export let recipes: Recipe[] | null = [];
 </script>
 
 <a class="w-full" href={`/recipes/${collectionName}`}>
@@ -33,7 +36,7 @@
 					</svg>
 				</div>
 			</h2>
-			<p>22 Rezepte</p>
+			<p>{recipes?.length} Rezepte</p>
 		</div>
 	</div>
 </a>
