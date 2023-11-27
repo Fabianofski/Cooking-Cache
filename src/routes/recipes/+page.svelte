@@ -1,12 +1,54 @@
 <script lang="ts">
 	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
-	import { recipesStore } from '../../stores/store';
+	import { currentUser, recipesStore } from '../../stores/store';
 	import type { RecipeCollections } from '../../models/RecipeCollections';
+	import type { User } from 'firebase/auth';
+	import { createNewAlert } from '../../components/alerts/alert.handler';
+
+	let user: User | null;
+	currentUser.subscribe((value) => {
+		user = value;
+	});
 
 	let recipeCollections: RecipeCollections;
 	recipesStore.subscribe((value) => {
 		recipeCollections = value;
 	});
+
+	let createCollectionModal: HTMLDialogElement;
+	let collectionName: string = '';
+	let loading: boolean = false;
+	function createNewCollection() {
+		loading = true;
+		user?.getIdToken().then((token) => {
+			fetch('/api/collections', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					Authorization: token
+				}
+			})
+				.then(() => {
+					recipesStore.update((value) => {
+						value[collectionName] = [];
+						return value;
+					});
+					loading = false;
+					createCollectionModal.close();
+					createNewAlert({
+						message: 'Die Rezeptsammlung wurde erfolgreich hinzugefügt!',
+						type: 'success'
+					});
+				})
+				.catch(() => {
+					loading = false;
+					createNewAlert({
+						message: 'Beim Hinzufügen der Rezeptsammlung ist ein Fehler aufgetreten!',
+						type: 'error'
+					});
+				});
+		});
+	}
 </script>
 
 <div class="flex gap-4 flex-col items-center">
@@ -23,3 +65,54 @@
 		<RecipeCollectionCard {collectionName} recipes={recipeCollections[collectionName]} />
 	{/each}
 </div>
+
+<div class="fixed max-w-3xl w-full bottom-0">
+	<button
+		class="btn btn-circle btn-primary absolute bottom-20 right-6"
+		class:btn-disabled={user === null}
+		on:click={() => {
+			createCollectionModal.showModal();
+		}}
+	>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			height="24"
+			viewBox="0 -960 960 960"
+			width="24"
+			fill="currentColor"
+		>
+			<path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+		</svg>
+	</button>
+</div>
+
+<dialog bind:this={createCollectionModal} class="modal">
+	<div class="modal-box flex flex-col gap-4">
+		<h3 class="font-bold text-lg">Rezeptsammlung erstellen</h3>
+		<div class="form-control w-full">
+			<input
+				type="text"
+				placeholder="Name der Rezeptsammlung"
+				class="input input-bordered w-full"
+				bind:value={collectionName}
+			/>
+		</div>
+		<button
+			class="btn btn-block"
+			disabled={loading || Object.keys(recipeCollections).includes(collectionName)}
+			on:click={createNewCollection}
+		>
+			{#if !loading}
+				Erstellen
+			{:else}
+				<span class="loading loading-spinner loading-md" />
+			{/if}
+		</button>
+
+		<form class="absolute top-0 right-0" method="dialog">
+			<button disabled={loading} class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+				✕
+			</button>
+		</form>
+	</div>
+</dialog>

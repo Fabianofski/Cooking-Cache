@@ -8,13 +8,19 @@ export async function GET({ request }) {
 		const uid = await verifyIdToken(token);
 
 		try {
+			const collectionsRef = await database.ref(`users/${uid}/collections`).get();
+			const collections = (collectionsRef.val() as Set<string>) || new Set<string>();
+
 			const data = await database.ref(`users/${uid}/recipes`).get();
 			let val = data.val() || {};
 			Object.keys(val).forEach((collection: string) => {
 				val[collection] = Object.values(val[collection]);
 			});
 
-			if (!('Hauptsammlung' in val)) val['Hauptsammlung'] = [];
+			collections.add('Hauptsammlung');
+			collections.forEach((collection) => {
+				if (!(collection in val)) val[collection] = [];
+			});
 			return json(val);
 		} catch (err) {
 			console.error(err);
