@@ -9,7 +9,7 @@ export async function GET({ request }) {
 
 		try {
 			const collectionsRef = await database.ref(`users/${uid}/collections`).get();
-			const collections = (collectionsRef.val() as Set<string>) || new Set<string>();
+			const collections: Set<string> = new Set<string>(collectionsRef.val() as string[]);
 
 			const data = await database.ref(`users/${uid}/recipes`).get();
 			let val = data.val() || {};

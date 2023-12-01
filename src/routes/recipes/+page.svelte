@@ -21,7 +21,7 @@
 	function createNewCollection() {
 		loading = true;
 		user?.getIdToken().then((token) => {
-			fetch('/api/collections', {
+			fetch(`/api/collection?collectionName=${collectionName}`, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
