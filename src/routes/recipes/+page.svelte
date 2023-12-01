@@ -16,9 +16,23 @@
 	});
 
 	let createCollectionModal: HTMLDialogElement;
+	let illegalCharacters = ['.', '#', '$', '[', ']'];
 	let collectionName: string = '';
 	let loading: boolean = false;
 	function createNewCollection() {
+		for (let char in illegalCharacters) {
+			if (collectionName.includes(char)) {
+				createNewAlert({
+					message:
+						'Der Name der Sammlung darf die folgenden Buchstaben nicht enthalten: "' +
+						illegalCharacters.join('", "') +
+						'"',
+					type: 'error'
+				});
+				return;
+			}
+		}
+
 		loading = true;
 		user?.getIdToken().then((token) => {
 			fetch(`/api/collection?collectionName=${collectionName}`, {
@@ -96,6 +110,11 @@
 				class="input input-bordered w-full"
 				bind:value={collectionName}
 			/>
+			<div class="label">
+				<span class="label-text-alt">
+					Name der Rezeptsammlung (Ohne: "{illegalCharacters.join('", "')}")
+				</span>
+			</div>
 		</div>
 		<button
 			class="btn btn-block"

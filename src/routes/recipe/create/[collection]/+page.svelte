@@ -10,6 +10,9 @@
 
 	let editMode = true;
 	let files: FileList | null = null;
+	$: if (files) {
+		recipe.image = URL.createObjectURL(files[0]);
+	}
 	let recipe: Recipe = {
 		image: '',
 		title: '',
@@ -93,7 +96,7 @@
 						message: 'Das Rezept wurde erfolgreich hinzugefügt!',
 						type: 'success'
 					});
-					goto(`recipe/${recipe.collection}/${recipe.id}`);
+					goto(`/recipe/${recipe.collection}/${recipe.id}`);
 				})
 				.catch(() => {
 					loading = false;
