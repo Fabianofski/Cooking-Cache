@@ -4,6 +4,7 @@
 	import { currentUser } from '../stores/store';
 
 	export let recipe: Recipe | null;
+	export let collection: string;
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
@@ -12,7 +13,7 @@
 </script>
 
 {#if recipe}
-	<a class="w-full" href={`/recipe/${recipe.id}`}>
+	<a class="w-full" href={`/recipe/${collection}/${recipe.id}`}>
 		<div class="card w-full h-96 bg-base-100 shadow-xl">
 			<figure class="h-64 overflow-x-hidden">
 				<img
@@ -42,7 +43,7 @@
 		class="h-96 w-full bg-base-100 shadow-xl flex flex-col gap-2 justify-center items-center rounded-xl"
 	>
 		<p class="font-bold text-lg">Kein Rezept gefunden!</p>
-		<a class="btn" href="/recipe/create" class:btn-disabled={user === null}>
+		<a class="btn" href="/recipe/create/Hauptsammlung" class:btn-disabled={user === null}>
 			Erstelle dein erstes Rezept
 		</a>
 	</div>

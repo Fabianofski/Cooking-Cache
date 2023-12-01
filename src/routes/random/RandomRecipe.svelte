@@ -6,7 +6,7 @@
 	let recipes: Recipe[] = [];
 	let index = 0;
 	recipesStore.subscribe((value) => {
-		recipes = value;
+		if ('Hauptsammlung' in value) recipes = value['Hauptsammlung'];
 	});
 
 	function setRandomRecipeIndex() {
@@ -16,7 +16,7 @@
 	setRandomRecipeIndex();
 </script>
 
-<RecipeCard recipe={recipes[index]} />
-<button class="btn btn-primary w-full mt-2" on:click={setRandomRecipeIndex}
-	>Neues zufälliges Rezept</button
->
+<RecipeCard recipe={recipes[index]} collection={'Hauptsammlung'} />
+<button class="btn btn-primary w-full mt-2" on:click={setRandomRecipeIndex}>
+	Neues zufälliges Rezept
+</button>
