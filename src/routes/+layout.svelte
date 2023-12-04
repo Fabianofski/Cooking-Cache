@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
 	import '../app.css';
-	import { currentUser, recipesStore } from '../stores/store';
+	import { currentUser, loadingStateStore, recipesStore } from '../stores/store';
 	import { auth } from '$lib/firebase.client';
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import type { Recipe } from '../models/Recipe';
@@ -30,6 +30,7 @@
 			}).then(async (response) => {
 				const data: RecipeCollections = await response.json();
 				recipesStore.set(data);
+				loadingStateStore.set('FINISHED');
 			});
 		});
 	});

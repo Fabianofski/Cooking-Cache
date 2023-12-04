@@ -1,9 +1,15 @@
 <script lang="ts">
 	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
-	import { currentUser, recipesStore } from '../../stores/store';
+	import {
+		currentUser,
+		recipesStore,
+		type LoadingState,
+		loadingStateStore
+	} from '../../stores/store';
 	import type { RecipeCollections } from '../../models/RecipeCollections';
 	import type { User } from 'firebase/auth';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
+	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
@@ -13,6 +19,11 @@
 	let recipeCollections: RecipeCollections;
 	recipesStore.subscribe((value) => {
 		recipeCollections = value;
+	});
+
+	let loadingState: LoadingState;
+	loadingStateStore.subscribe((value) => {
+		loadingState = value;
 	});
 
 	let createCollectionModal: HTMLDialogElement;
@@ -75,9 +86,14 @@
 </div>
 
 <div class="grid grid-cols-fluid gap-4">
-	{#each Object.keys(recipeCollections) as collectionName}
-		<RecipeCollectionCard {collectionName} recipes={recipeCollections[collectionName]} />
-	{/each}
+	{#if loadingState === 'LOADING'}
+		<RecipeCollectionSkeleton />
+		<RecipeCollectionSkeleton />
+	{:else}
+		{#each Object.keys(recipeCollections) as collectionName}
+			<RecipeCollectionCard {collectionName} recipes={recipeCollections[collectionName]} />
+		{/each}
+	{/if}
 </div>
 
 <div class="fixed max-w-3xl w-full bottom-0">

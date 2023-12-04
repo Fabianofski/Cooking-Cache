@@ -2,8 +2,14 @@
 	import type { User } from 'firebase/auth';
 	import RecipeCard from '../../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../../models/Recipe';
-	import { currentUser, recipesStore } from '../../../stores/store';
+	import {
+		currentUser,
+		loadingStateStore,
+		recipesStore,
+		type LoadingState
+	} from '../../../stores/store';
 	import { fullTextFilter } from './filter';
+	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
 
 	export let data;
 
@@ -15,6 +21,11 @@
 	let user: User | null;
 	currentUser.subscribe((value) => {
 		user = value;
+	});
+
+	let loadingState: LoadingState;
+	loadingStateStore.subscribe((value) => {
+		loadingState = value;
 	});
 
 	let filterModal: HTMLDialogElement;
@@ -129,9 +140,14 @@
 	</div>
 
 	<div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
-		{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
-			<RecipeCard {recipe} collection={data.collection} />
-		{/each}
+		{#if loadingState === 'LOADING'}
+			<RecipeSkeleton />
+			<RecipeSkeleton />
+		{:else}
+			{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
+				<RecipeCard {recipe} collection={data.collection} />
+			{/each}
+		{/if}
 	</div>
 	<div class="join justify-center">
 		<a href="#top" class="join-item btn" on:click={() => page--} class:btn-disabled={page <= 0}>
