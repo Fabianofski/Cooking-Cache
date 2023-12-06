@@ -6,5 +6,5 @@ export const currentUser = writable<User | null>();
 
 export const recipesStore = writable<RecipeCollections>({});
 
-export type LoadingState = 'LOADING' | 'FINISHED';
+export type LoadingState = 'LOADING' | 'NOUSER' | 'FINISHED';
 export const loadingStateStore = writable<LoadingState>('LOADING');
