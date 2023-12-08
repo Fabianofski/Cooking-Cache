@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
 	import '../app.css';
-	import { currentUser, recipesStore } from '../stores/store';
+	import { currentUser, loadingStateStore, recipesStore } from '../stores/store';
 	import { auth } from '$lib/firebase.client';
 	import Alerts from '../components/alerts/Alerts.svelte';
-	import type { Recipe } from '../models/Recipe';
 	import { page } from '$app/stores';
 	import type { RecipeCollections } from '../models/RecipeCollections';
 
@@ -15,9 +14,11 @@
 	});
 
 	auth.onAuthStateChanged((value) => {
+		loadingStateStore.set('LOADING');
 		currentUser.set(value);
 
 		if (value === null) {
+			loadingStateStore.set('NOUSER');
 			recipesStore.set({});
 			return;
 		}
@@ -30,6 +31,7 @@
 			}).then(async (response) => {
 				const data: RecipeCollections = await response.json();
 				recipesStore.set(data);
+				loadingStateStore.set('FINISHED');
 			});
 		});
 	});

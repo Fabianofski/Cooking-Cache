@@ -10,7 +10,7 @@
 		reauthenticateWithPopup,
 		OAuthProvider
 	} from 'firebase/auth';
-	import { currentUser } from '../../stores/store';
+	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase.client';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
@@ -25,8 +25,12 @@
 		user = value;
 	});
 
+	let loadingState: LoadingState;
 	onMount(async () => {
-		if (!user) goto('/login');
+		loadingStateStore.subscribe((value) => {
+			loadingState = value;
+			if (loadingState === 'NOUSER') goto('/login');
+		});
 	});
 
 	let loadingPasswordChange = false;
@@ -144,15 +148,15 @@
 				loadingDeletion = false;
 			});
 	}
-
-	// if (!user) goto('/login');
 </script>
 
 <div class="flex flex-col gap-8">
 	<div class="flex px-4 justify-evenly gap-4 items-center">
 		<div class="avatar">
 			<div class="w-36 rounded-full">
-				{#if user && user.photoURL}
+				{#if loadingState !== 'FINISHED'}
+					<div class="skeleton w-full h-full" />
+				{:else if user && user.photoURL}
 					<img src={user.photoURL} alt="Profile" />
 				{:else}
 					<img src={'/default-cover.jpg'} alt="Default Profile" />
@@ -161,7 +165,11 @@
 		</div>
 
 		<h1 class="align-middle text-center text-2xl font-bold">
-			{user?.displayName}
+			{#if loadingState !== 'FINISHED'}
+				<div class="skeleton w-48 h-6" />
+			{:else}
+				{user?.displayName}
+			{/if}
 		</h1>
 	</div>
 
@@ -174,15 +182,33 @@
 			<tbody>
 				<tr>
 					<th>E-Mail</th>
-					<td>{user?.email}</td>
+					{#if loadingState !== 'FINISHED'}
+						<td>
+							<div class="skeleton w-48 h-4" />
+						</td>
+					{:else}
+						<td>{user?.email}</td>
+					{/if}
 				</tr>
 				<tr>
 					<th>Anzeigename</th>
-					<td>{user?.displayName}</td>
+					{#if loadingState !== 'FINISHED'}
+						<td>
+							<div class="skeleton w-48 h-4" />
+						</td>
+					{:else}
+						<td>{user?.displayName}</td>
+					{/if}
 				</tr>
 				<tr>
 					<th>Telefonnummer</th>
-					<td>{user?.phoneNumber}</td>
+					{#if loadingState !== 'FINISHED'}
+						<td>
+							<div class="skeleton w-48 h-4" />
+						</td>
+					{:else}
+						<td>{user?.phoneNumber ? user?.phoneNumber : '-'}</td>
+					{/if}
 				</tr>
 			</tbody>
 		</table>
@@ -196,6 +222,7 @@
 			<div class="form-control w-full max-w-s">
 				<input
 					type="password"
+					disabled={loadingState !== 'FINISHED'}
 					placeholder="Altes Passwort"
 					bind:value={oldPassword}
 					class="input input-bordered w-full max-w-s"
@@ -206,6 +233,7 @@
 			<div class="form-control w-full max-w-s">
 				<input
 					type="password"
+					disabled={loadingState !== 'FINISHED'}
 					placeholder="Neues Passwort"
 					bind:value={password}
 					class="input input-bordered w-full max-w-s"
@@ -216,6 +244,7 @@
 			<div class="form-control w-full max-w-s">
 				<input
 					type="password"
+					disabled={loadingState !== 'FINISHED'}
 					placeholder="Neues Passwort bestätigen"
 					bind:value={repeatPassword}
 					class="input input-bordered w-full max-w-s"
@@ -225,7 +254,9 @@
 			<button
 				class="btn btn-primary w-full"
 				on:click={changePassword}
-				disabled={loadingPasswordChange || formIsInvalid(oldPassword, password, repeatPassword)}
+				disabled={loadingPasswordChange ||
+					loadingState !== 'FINISHED' ||
+					formIsInvalid(oldPassword, password, repeatPassword)}
 			>
 				{#if !loadingPasswordChange}
 					Passwort ändern
@@ -239,6 +270,7 @@
 
 			<button
 				class="btn"
+				disabled={loadingState !== 'FINISHED'}
 				on:click={() => {
 					signOut(auth);
 					goto('/login');
@@ -263,7 +295,7 @@
 
 			<button
 				class="btn btn-outline btn-error"
-				disabled={loadingDeletion}
+				disabled={loadingDeletion || loadingState !== 'FINISHED'}
 				on:click={() => {
 					dialog.showModal();
 				}}
