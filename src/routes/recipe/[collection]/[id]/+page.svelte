@@ -7,7 +7,7 @@
 
 	let recipe: Recipe | undefined;
 	recipesStore.subscribe((recipes) => {
-		recipe = recipes[data.collection].find((recipe) => recipe.id === data.id);
+		recipe = recipes[data.collection].recipes.find((recipe) => recipe.id === data.id);
 	});
 </script>
 

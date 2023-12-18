@@ -45,6 +45,7 @@
 		}
 
 		loading = true;
+
 		user?.getIdToken().then((token) => {
 			fetch(`/api/collection?collectionName=${collectionName}`, {
 				method: 'POST',
@@ -55,7 +56,12 @@
 			})
 				.then(() => {
 					recipesStore.update((value) => {
-						value[collectionName] = [];
+						value[collectionName] = {
+							participants: [],
+							// @ts-ignore
+							ownerId: user.uid,
+							recipes: []
+						};
 						return value;
 					});
 					loading = false;
@@ -91,7 +97,7 @@
 		<RecipeCollectionSkeleton />
 	{:else}
 		{#each Object.keys(recipeCollections) as collectionName}
-			<RecipeCollectionCard {collectionName} recipes={recipeCollections[collectionName]} />
+			<RecipeCollectionCard {collectionName} recipes={recipeCollections[collectionName].recipes} />
 		{/each}
 	{/if}
 </div>

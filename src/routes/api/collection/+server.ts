@@ -1,4 +1,5 @@
 import { database, verifyIdToken } from '$lib/firebase.admin';
+import type { RecipeCollection } from '../../../models/RecipeCollections';
 
 export async function POST({ request, url }) {
 	const token = request.headers.get('Authorization');
@@ -18,14 +19,13 @@ export async function POST({ request, url }) {
 		}
 
 		try {
-			const ref = database.ref(`users/${uid}/collections`);
-			const snapshot = await ref.get();
-			const collections = (snapshot.val() as string[]) || [];
-
-			if (collections.includes(collectionName)) return new Response('');
-			collections.push(collectionName);
-
-			await ref.set(collections);
+			const ref = database.ref(`users/${uid}/collections/${collectionName}`);
+			const defaultCollection: RecipeCollection = {
+				participants: [],
+				ownerId: uid,
+				recipes: []
+			};
+			await ref.set(defaultCollection);
 			return new Response('200 Ok', { status: 200 });
 		} catch (err) {
 			console.error(err);

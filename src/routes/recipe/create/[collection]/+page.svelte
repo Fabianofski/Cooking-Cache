@@ -88,7 +88,7 @@
 				.then(async (response: Response) => {
 					const recipe = (await response.json()) as Recipe;
 					recipesStore.update((value) => {
-						value[data.collection].push(recipe);
+						value[data.collection].recipes.push(recipe);
 						return value;
 					});
 					loading = false;

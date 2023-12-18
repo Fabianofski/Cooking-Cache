@@ -6,7 +6,7 @@
 	let recipes: Recipe[] = [];
 	let index = 0;
 	recipesStore.subscribe((value) => {
-		if ('Hauptsammlung' in value) recipes = value['Hauptsammlung'];
+		if (Object.keys(value).includes('Hauptsammlung')) recipes = value['Hauptsammlung'].recipes;
 	});
 
 	function setRandomRecipeIndex() {

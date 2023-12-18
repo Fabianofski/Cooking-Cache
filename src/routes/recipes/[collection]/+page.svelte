@@ -15,7 +15,7 @@
 
 	let recipes: Recipe[] = [];
 	recipesStore.subscribe((value) => {
-		if (data.collection in value) recipes = value[data.collection];
+		if (data.collection in value) recipes = value[data.collection].recipes;
 	});
 
 	let user: User | null;

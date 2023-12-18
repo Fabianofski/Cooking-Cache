@@ -1,5 +1,6 @@
 import { database, verifyIdToken } from '$lib/firebase.admin';
 import { json } from '@sveltejs/kit';
+import type { RecipeCollections } from '../../../models/RecipeCollections.js';
 
 export async function GET({ request }) {
 	const token = request.headers.get('Authorization');
@@ -8,19 +9,18 @@ export async function GET({ request }) {
 		const uid = await verifyIdToken(token);
 
 		try {
-			const collectionsRef = await database.ref(`users/${uid}/collections`).get();
-			const collections: Set<string> = new Set<string>(collectionsRef.val() as string[]);
-
-			const data = await database.ref(`users/${uid}/recipes`).get();
-			let val = data.val() || {};
+			const data = await database.ref(`users/${uid}/collections`).get();
+			let val: RecipeCollections = data.val() || {};
 			Object.keys(val).forEach((collection: string) => {
-				val[collection] = Object.values(val[collection]);
+				val[collection].recipes = Object.values(val[collection].recipes);
 			});
+			if (!Object.keys(val).includes('Hauptsammlung'))
+				val['Hauptsammlung'] = {
+					participants: [],
+					ownerId: uid,
+					recipes: []
+				};
 
-			collections.add('Hauptsammlung');
-			collections.forEach((collection) => {
-				if (!(collection in val)) val[collection] = [];
-			});
 			return json(val);
 		} catch (err) {
 			console.error(err);
