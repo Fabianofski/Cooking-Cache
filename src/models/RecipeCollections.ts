@@ -5,7 +5,7 @@ export interface RecipeCollections {
 }
 
 export interface RecipeCollection {
-	participants: { name: string; email: string; profile: string }[];
+	participants?: { displayName: string; email: string; photoURL: string }[];
 	ownerId: string;
 	recipes: Recipe[];
 }

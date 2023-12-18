@@ -72,7 +72,11 @@
 			</svg>
 			<span class="btm-nav-label">Home</span>
 		</a>
-		<a class:active={$page.url.pathname.startsWith('/recipe')} href="/recipes">
+		<a
+			class:active={$page.url.pathname.startsWith('/recipe') ||
+				$page.url.pathname.startsWith('/collection')}
+			href="/recipes"
+		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				height="24"

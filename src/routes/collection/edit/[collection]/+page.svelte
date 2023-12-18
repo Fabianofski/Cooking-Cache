@@ -1,18 +1,36 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
-	import { currentUser, loadingStateStore, type LoadingState } from '../../../../stores/store.js';
+	import {
+		currentUser,
+		loadingStateStore,
+		type LoadingState,
+		recipesStore
+	} from '../../../../stores/store.js';
+	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	export let data;
 	let collectionName = data.collection;
+
+	let loadingState: LoadingState;
+	loadingStateStore.subscribe((value) => {
+		loadingState = value;
+	});
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
 		user = value;
 	});
 
-	let loadingState: LoadingState;
-	loadingStateStore.subscribe((value) => {
-		loadingState = value;
+	let recipeCollection: RecipeCollection;
+	onMount(() => {
+		recipesStore.subscribe((value) => {
+			if (Object.keys(value).includes(collectionName)) recipeCollection = value[collectionName];
+			if (recipeCollection.ownerId !== user?.uid) {
+				goto('/recipes');
+			}
+		});
 	});
 
 	let editingName: boolean;
@@ -138,6 +156,22 @@
 						</td>
 						<td class="text-sm italic">Ersteller</td>
 					</tr>
+					{#each recipeCollection?.participants || [] as user}
+						<tr>
+							<td>
+								<img
+									class="w-10 h-10 rounded-full"
+									src={user.photoURL || '/default-profile.jpg'}
+									alt={user.displayName || 'User Profile Picture'}
+								/>
+							</td>
+							<td>
+								<p class="font-bold">{user.displayName || '-'}</p>
+								<p class="text-sm">{user.email || '-'}</p>
+							</td>
+							<td class="text-sm italic">Teilnehmer</td>
+						</tr>
+					{/each}
 				</tbody>
 			</table>
 			<button class="btn" disabled={loadingState !== 'FINISHED'}>
@@ -188,29 +222,15 @@
 				<h3 class="font-bold text-lg text-center">
 					Willst du diese Rezeptsammlung wirklich löschen?
 				</h3>
-				{#if user?.providerData[0].providerId === 'password'}
-					<p class="py-4 text-center">Tippe zum Bestätigen dein Passwort ein</p>
-				{:else}
-					<p class="py-4 text-center">Tippe zum Bestätigen LÖSCHEN ein</p>
-				{/if}
+				<p class="py-4 text-center">Tippe zum Bestätigen LÖSCHEN ein</p>
 				<div class="form-control w-full max-w-s">
-					{#if user?.providerData[0].providerId === 'password'}
-						<input
-							type="password"
-							placeholder="Passwort"
-							bind:value={confirmation}
-							class="input input-bordered input-error w-full max-w-s"
-							required
-						/>
-					{:else}
-						<input
-							type="text"
-							placeholder="LÖSCHEN"
-							bind:value={confirmation}
-							class="input input-bordered input-error w-full max-w-s"
-							required
-						/>
-					{/if}
+					<input
+						type="text"
+						placeholder="LÖSCHEN"
+						bind:value={confirmation}
+						class="input input-bordered input-error w-full max-w-s"
+						required
+					/>
 				</div>
 				<div class="modal-action">
 					<form method="dialog" class="w-full flex flex-col gap-4">

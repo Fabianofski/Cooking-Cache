@@ -97,7 +97,7 @@
 		<RecipeCollectionSkeleton />
 	{:else}
 		{#each Object.keys(recipeCollections) as collectionName}
-			<RecipeCollectionCard {collectionName} recipes={recipeCollections[collectionName].recipes} />
+			<RecipeCollectionCard {collectionName} recipeCollection={recipeCollections[collectionName]} />
 		{/each}
 	{/if}
 </div>

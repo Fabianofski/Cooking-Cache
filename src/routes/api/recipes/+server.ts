@@ -12,7 +12,7 @@ export async function GET({ request }) {
 			const data = await database.ref(`users/${uid}/collections`).get();
 			let val: RecipeCollections = data.val() || {};
 			Object.keys(val).forEach((collection: string) => {
-				val[collection].recipes = Object.values(val[collection].recipes);
+				val[collection].recipes = Object.values(val[collection].recipes || {});
 			});
 			if (!Object.keys(val).includes('Hauptsammlung'))
 				val['Hauptsammlung'] = {
