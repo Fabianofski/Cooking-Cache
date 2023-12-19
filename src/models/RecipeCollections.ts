@@ -7,6 +7,8 @@ export interface RecipeCollections {
 export interface RecipeCollection {
 	participants?: Participant[];
 	ownerId: string;
+	name: string;
+	id: string;
 
 	recipes: Recipe[];
 }

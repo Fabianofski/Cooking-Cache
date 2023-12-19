@@ -1,23 +1,22 @@
 <script lang="ts">
 	import type { RecipeCollection } from '../models/RecipeCollections';
 
-	export let collectionName: string | null;
 	export let recipeCollection: RecipeCollection | null;
 </script>
 
-<a class="w-full" href={`/recipes/${collectionName}`}>
+<a class="w-full" href={`/recipes/${recipeCollection?.id}`}>
 	<div class="card w-full h-64 bg-base-100 shadow-xl">
 		<figure class="h-48 overflow-x-hidden">
 			<img
 				class="h-full w-full"
 				src={'/default-cover.jpg'}
-				alt={`${collectionName} Cover`}
+				alt={`${recipeCollection?.name} Cover`}
 				style="object-fit: cover;"
 			/>
 		</figure>
 		<div class="card-body">
 			<h2 class="card-title flex justify-between">
-				{collectionName}
+				{recipeCollection?.name}
 				<div class="flex gap-2 text-sm">
 					<div
 						class="flex gap-1 tooltip"
@@ -39,7 +38,7 @@
 							/>
 						</svg>
 					</div>
-					<a class="btn-ghost rounded" href={`/collection/edit/${collectionName}`}>
+					<a class="btn-ghost rounded" href={`/collection/edit/${recipeCollection?.id}`}>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"

@@ -6,7 +6,7 @@
 		type LoadingState,
 		loadingStateStore
 	} from '../../stores/store';
-	import type { RecipeCollections } from '../../models/RecipeCollections';
+	import type { RecipeCollection, RecipeCollections } from '../../models/RecipeCollections';
 	import type { User } from 'firebase/auth';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
 	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
@@ -54,14 +54,10 @@
 					Authorization: token
 				}
 			})
-				.then(() => {
+				.then(async (response: Response) => {
+					const collection: RecipeCollection = await response.json();
 					recipesStore.update((value) => {
-						value[collectionName] = {
-							participants: [],
-							// @ts-ignore
-							ownerId: user.uid,
-							recipes: []
-						};
+						value[collection.id] = collection;
 						return value;
 					});
 					loading = false;
@@ -96,8 +92,8 @@
 		<RecipeCollectionSkeleton />
 		<RecipeCollectionSkeleton />
 	{:else}
-		{#each Object.keys(recipeCollections) as collectionName}
-			<RecipeCollectionCard {collectionName} recipeCollection={recipeCollections[collectionName]} />
+		{#each Object.values(recipeCollections) as collection}
+			<RecipeCollectionCard recipeCollection={collection} />
 		{/each}
 	{/if}
 </div>

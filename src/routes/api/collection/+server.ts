@@ -2,6 +2,7 @@ import { database, verifyIdToken } from '$lib/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollections } from '../../../models/RecipeCollections';
 import { addCollectionToDatabase, getDefaultCollection } from './collection.handler';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function GET({ request }) {
 	const token = request.headers.get('Authorization');
@@ -17,9 +18,10 @@ export async function GET({ request }) {
 				val[collection].participants = Object.values(val[collection].participants ?? {});
 			});
 
-			if (!('Hauptsammlung' in val)) {
-				await addCollectionToDatabase('Hauptsammlung', uid);
-				val['Hauptsammlung'] = await getDefaultCollection(uid);
+			if (Object.values(val).length < 1) {
+				const collectionId = uuidv4();
+				await addCollectionToDatabase('Hauptsammlung', uid, collectionId);
+				val[collectionId] = await getDefaultCollection(uid, 'Hauptsammlung', collectionId);
 			}
 
 			return json(val);

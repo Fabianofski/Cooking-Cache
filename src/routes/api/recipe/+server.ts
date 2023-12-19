@@ -27,12 +27,14 @@ export async function POST({ request }) {
 		if (cover)
 			recipe.image = await uploadFileToStorage(
 				cover,
-				`users/${uid}/collections/${recipe.collection}/${recipe.id}.${cover.name.split('.').pop()}`
+				`users/${uid}/collections/${recipe.collectionId}/${recipe.id}.${cover.name
+					.split('.')
+					.pop()}`
 			);
 
 		try {
 			await database
-				.ref(`users/${uid}/collections/${recipe.collection}/recipes/${recipe.id}`)
+				.ref(`users/${uid}/collections/${recipe.collectionId}/recipes/${recipe.id}`)
 				.set(recipe);
 			return json(recipe);
 		} catch (err) {

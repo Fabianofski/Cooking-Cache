@@ -4,7 +4,7 @@
 	import type { Recipe } from '../../../../models/Recipe';
 	import { currentUser, recipesStore } from '../../../../stores/store';
 	import type { User } from 'firebase/auth';
-	import RecipePage from '../../[collection]/[id]/RecipePage.svelte';
+	import RecipePage from '../../[collectionId]/[id]/RecipePage.svelte';
 
 	export let data;
 
@@ -22,7 +22,7 @@
 		description: [''],
 		id: '',
 		url: '',
-		collection: data.collection
+		collectionId: data.collectionId
 	};
 
 	let user: User;
@@ -88,7 +88,7 @@
 				.then(async (response: Response) => {
 					const recipe = (await response.json()) as Recipe;
 					recipesStore.update((value) => {
-						value[data.collection].recipes.push(recipe);
+						value[data.collectionId].recipes.push(recipe);
 						return value;
 					});
 					loading = false;
@@ -96,7 +96,7 @@
 						message: 'Das Rezept wurde erfolgreich hinzugefügt!',
 						type: 'success'
 					});
-					goto(`/recipe/${recipe.collection}/${recipe.id}`);
+					goto(`/recipe/${recipe.collectionId}/${recipe.id}`);
 				})
 				.catch(() => {
 					loading = false;

@@ -10,6 +10,6 @@ export interface Recipe {
 	description: string[];
 
 	id: string;
-	collection: string;
+	collectionId: string;
 	url: string;
 }

@@ -9,7 +9,8 @@
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
 
 	export let data;
-	let collectionName = data.collection;
+	const collectionId = data.collectionId;
+	let collectionName: string;
 
 	let loadingState: LoadingState;
 	loadingStateStore.subscribe((value) => {
@@ -24,18 +25,20 @@
 	let recipeCollection: RecipeCollection;
 	let isOwner: boolean;
 	recipesStore.subscribe((value) => {
-		if (Object.keys(value).includes(collectionName)) {
-			recipeCollection = value[collectionName];
+		if (collectionId in value) {
+			recipeCollection = value[collectionId];
+			collectionName = recipeCollection.name;
 			isOwner = recipeCollection.ownerId !== user?.uid;
 		}
 	});
 
 	let editingName: boolean;
-	let newName: string = collectionName;
+	let newName: string;
 	function editName() {
 		if (editingName) {
 			collectionName = newName;
 		}
+		newName = collectionName;
 		editingName = !editingName;
 	}
 
