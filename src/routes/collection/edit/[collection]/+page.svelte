@@ -7,8 +7,6 @@
 		recipesStore
 	} from '../../../../stores/store.js';
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
 
 	export let data;
 	let collectionName = data.collection;
@@ -24,13 +22,12 @@
 	});
 
 	let recipeCollection: RecipeCollection;
-	onMount(() => {
-		recipesStore.subscribe((value) => {
-			if (Object.keys(value).includes(collectionName)) recipeCollection = value[collectionName];
-			if (recipeCollection.ownerId !== user?.uid) {
-				goto('/recipes');
-			}
-		});
+	let isOwner: boolean;
+	recipesStore.subscribe((value) => {
+		if (Object.keys(value).includes(collectionName)) {
+			recipeCollection = value[collectionName];
+			isOwner = recipeCollection.ownerId !== user?.uid;
+		}
 	});
 
 	let editingName: boolean;
@@ -142,39 +139,28 @@
 
 			<table>
 				<tbody>
-					<tr>
-						<td>
-							<img
-								class="w-10 h-10 rounded-full"
-								src={user?.photoURL || '/default-profile.jpg'}
-								alt={user?.displayName || 'User Profile Picture'}
-							/>
-						</td>
-						<td>
-							<p class="font-bold">{user?.displayName || '-'}</p>
-							<p class="text-sm">{user?.email || '-'}</p>
-						</td>
-						<td class="text-sm italic">Ersteller</td>
-					</tr>
-					{#each recipeCollection?.participants || [] as user}
+					{#each recipeCollection?.participants || [] as participant}
 						<tr>
 							<td>
 								<img
 									class="w-10 h-10 rounded-full"
-									src={user.photoURL || '/default-profile.jpg'}
-									alt={user.displayName || 'User Profile Picture'}
+									src={participant.photoURL || '/default-profile.jpg'}
+									alt={participant.displayName || 'User Profile Picture'}
 								/>
 							</td>
 							<td>
-								<p class="font-bold">{user.displayName || '-'}</p>
-								<p class="text-sm">{user.email || '-'}</p>
+								<p class="font-bold">{participant.displayName || '-'}</p>
+								<p class="text-sm">{participant.email || '-'}</p>
 							</td>
-							<td class="text-sm italic">Teilnehmer</td>
+							<td class="text-sm italic">
+								{isOwner ? 'Ersteller' : 'Teilnehmer'}
+								{participant.uid === user?.uid ? '(Du)' : ''}
+							</td>
 						</tr>
 					{/each}
 				</tbody>
 			</table>
-			<button class="btn" disabled={loadingState !== 'FINISHED'}>
+			<button class="btn" disabled={loadingState !== 'FINISHED' || isOwner}>
 				{#if loadingState === 'FINISHED'}
 					Teilnehmer einladen
 				{:else}
@@ -191,7 +177,7 @@
 
 		<button
 			class="btn btn-outline btn-error"
-			disabled={loadingDeletion || loadingState !== 'FINISHED'}
+			disabled={loadingDeletion || loadingState !== 'FINISHED' || isOwner}
 			on:click={() => {
 				dialog.showModal();
 			}}
@@ -244,9 +230,7 @@
 						</button>
 						<button
 							class="btn btn-error btn-block"
-							disabled={loadingDeletion ||
-								(user?.providerData[0].providerId === 'password' && confirmation === '') ||
-								confirmation.toLowerCase() !== 'löschen'}
+							disabled={loadingDeletion || confirmation.toLowerCase() !== 'löschen'}
 							on:click={deleteList}
 						>
 							{#if !loadingDeletion}

@@ -23,7 +23,7 @@
 			return;
 		}
 		value.getIdToken().then((token) => {
-			fetch('/api/recipes', {
+			fetch('/api/collection', {
 				headers: {
 					Accept: 'application/json',
 					Authorization: token

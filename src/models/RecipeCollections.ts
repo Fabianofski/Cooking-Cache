@@ -5,7 +5,15 @@ export interface RecipeCollections {
 }
 
 export interface RecipeCollection {
-	participants?: { displayName: string; email: string; photoURL: string }[];
+	participants?: Participant[];
 	ownerId: string;
+
 	recipes: Recipe[];
+}
+
+export interface Participant {
+	displayName: string | undefined;
+	uid: string;
+	email: string | undefined;
+	photoURL: string | undefined;
 }

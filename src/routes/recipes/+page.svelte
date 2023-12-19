@@ -31,7 +31,7 @@
 	let collectionName: string = '';
 	let loading: boolean = false;
 	function createNewCollection() {
-		for (let char in illegalCharacters) {
+		for (let char of illegalCharacters) {
 			if (collectionName.includes(char)) {
 				createNewAlert({
 					message:
