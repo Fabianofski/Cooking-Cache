@@ -7,6 +7,7 @@
 		recipesStore
 	} from '../../../../stores/store.js';
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
+	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
 
 	export let data;
 	const collectionId = data.collectionId;
@@ -28,18 +29,54 @@
 		if (collectionId in value) {
 			recipeCollection = value[collectionId];
 			collectionName = recipeCollection.name;
-			isOwner = recipeCollection.ownerId !== user?.uid;
+			isOwner = recipeCollection.ownerId === user?.uid;
 		}
 	});
 
 	let editingName: boolean;
+	let loadingRename: boolean;
 	let newName: string;
 	function editName() {
 		if (editingName) {
+			if (collectionName === newName) {
+				editingName = false;
+				return;
+			}
+
+			loadingRename = true;
 			collectionName = newName;
+			user?.getIdToken().then((token) => {
+				fetch(`/api/collection?newCollectionName=${collectionName}&collectionId=${collectionId}`, {
+					method: 'PATCH',
+					headers: {
+						Authorization: token
+					}
+				})
+					.then(async () => {
+						recipesStore.update((value) => {
+							value[collectionId].name = collectionName;
+							return value;
+						});
+						createNewAlert({
+							message: 'Der Name der Rezeptsammlung wurde erfolgreich geändert!',
+							type: 'success'
+						});
+						loadingRename = false;
+						editingName = false;
+					})
+					.catch(() => {
+						createNewAlert({
+							message: 'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!',
+							type: 'error'
+						});
+						loadingRename = false;
+						editingName = false;
+					});
+			});
+		} else {
+			newName = collectionName;
+			editingName = true;
 		}
-		newName = collectionName;
-		editingName = !editingName;
 	}
 
 	let dialog: HTMLDialogElement;
@@ -84,7 +121,7 @@
 			<tbody>
 				<td class="w-24">Name:</td>
 				<td class="font-bold w-40">
-					{#if editingName}
+					{#if editingName && isOwner}
 						<input
 							type="text"
 							class="input input-bordered"
@@ -100,35 +137,39 @@
 					{/if}
 				</td>
 				<td>
-					<button class="btn btn-ghost" on:click={editName}>
-						{#if editingName}
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-								class="w-5 h-5"
-							>
-								<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-							</svg>
-						{:else}
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-								class="w-5 h-5"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-								/>
-							</svg>
-						{/if}
-					</button>
+					{#if isOwner}
+						<button class="btn btn-ghost" on:click={editName}>
+							{#if loadingRename}
+								<span class="loading loading-spinner loading-md" />
+							{:else if editingName}
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									class="w-5 h-5"
+								>
+									<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+								</svg>
+							{:else}
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									class="w-5 h-5"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+									/>
+								</svg>
+							{/if}
+						</button>
+					{/if}
 				</td>
 			</tbody>
 		</table>
@@ -163,7 +204,7 @@
 					{/each}
 				</tbody>
 			</table>
-			<button class="btn" disabled={loadingState !== 'FINISHED' || isOwner}>
+			<button class="btn" disabled={loadingState !== 'FINISHED' || !isOwner}>
 				{#if loadingState === 'FINISHED'}
 					Teilnehmer einladen
 				{:else}
@@ -180,7 +221,7 @@
 
 		<button
 			class="btn btn-outline btn-error"
-			disabled={loadingDeletion || loadingState !== 'FINISHED' || isOwner}
+			disabled={loadingDeletion || loadingState !== 'FINISHED' || !isOwner}
 			on:click={() => {
 				dialog.showModal();
 			}}

@@ -1,6 +1,6 @@
 import { database, verifyIdToken } from '$lib/firebase.admin';
 import { json } from '@sveltejs/kit';
-import type { RecipeCollections } from '../../../models/RecipeCollections';
+import type { RecipeCollections, RecipeCollection } from '../../../models/RecipeCollections';
 import { addCollectionToDatabase, getDefaultCollection } from './collection.handler';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -53,6 +53,31 @@ export async function POST({ request, url }) {
 		}
 
 		return addCollectionToDatabase(collectionName, uid);
+	} catch {
+		return new Response('401 Unauthorized', { status: 401 });
+	}
+}
+
+export async function PATCH({ request, url }) {
+	const token = request.headers.get('Authorization');
+
+	try {
+		const uid = await verifyIdToken(token);
+		const newCollectionName = url.searchParams.get('newCollectionName');
+		const collectionId = url.searchParams.get('collectionId');
+
+		if (!newCollectionName || !collectionId)
+			return new Response('400 Bad Request', { status: 400 });
+
+		const data = await database.ref(`users/${uid}/collections/${collectionId}`).get();
+		let val: RecipeCollection = data.val();
+
+		if (!collectionId) return new Response('404 Not Found', { status: 404 });
+		val.name = newCollectionName;
+
+		await database.ref(`users/${uid}/collections/${collectionId}`).set(val);
+
+		return new Response('200 OK', { status: 200 });
 	} catch {
 		return new Response('401 Unauthorized', { status: 401 });
 	}
