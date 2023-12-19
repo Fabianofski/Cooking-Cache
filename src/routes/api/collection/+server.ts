@@ -82,3 +82,25 @@ export async function PATCH({ request, url }) {
 		return new Response('401 Unauthorized', { status: 401 });
 	}
 }
+
+export async function DELETE({ request, url }) {
+	const token = request.headers.get('Authorization');
+
+	try {
+		const uid = await verifyIdToken(token);
+		const collectionId = url.searchParams.get('collectionId');
+
+		const ref = database.ref(`users/${uid}/collections/${collectionId}`);
+		ref
+			.remove()
+			.then(() => {
+				return new Response('200 OK', { status: 200 });
+			})
+			.catch((err) => {
+				console.error(err);
+				return new Response('500 Internal Server Error', { status: 500 });
+			});
+	} catch {
+		return new Response('401 Unauthorized', { status: 401 });
+	}
+}

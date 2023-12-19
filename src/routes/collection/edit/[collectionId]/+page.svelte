@@ -8,6 +8,7 @@
 	} from '../../../../stores/store.js';
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
+	import { goto } from '$app/navigation';
 
 	export let data;
 	const collectionId = data.collectionId;
@@ -82,7 +83,36 @@
 	let dialog: HTMLDialogElement;
 	let confirmation: string = '';
 	let loadingDeletion: boolean = false;
-	function deleteList() {}
+	function deleteList() {
+		loadingDeletion = true;
+		user?.getIdToken().then((token) => {
+			fetch(`/api/collection?collectionId=${collectionId}`, {
+				method: 'DELETE',
+				headers: {
+					Authorization: token
+				}
+			})
+				.then(async () => {
+					recipesStore.update((value) => {
+						delete value[collectionId];
+						return value;
+					});
+					createNewAlert({
+						message: 'Die Rezeptsammlung wurde erfolgreich gelöscht!',
+						type: 'success'
+					});
+					loadingDeletion = false;
+					goto('/recipes');
+				})
+				.catch(() => {
+					createNewAlert({
+						message: 'Beim Löschen der Rezeptsammlung ist ein Fehler aufgetreten!',
+						type: 'error'
+					});
+					loadingDeletion = false;
+				});
+		});
+	}
 </script>
 
 <div class="flex flex-col gap-6">
