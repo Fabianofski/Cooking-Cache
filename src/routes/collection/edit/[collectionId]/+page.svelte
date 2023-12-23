@@ -228,20 +228,24 @@
 								<p class="text-sm">{participant.email || '-'}</p>
 							</td>
 							<td class="text-sm italic">
-								{isOwner ? 'Ersteller' : 'Teilnehmer'}
+								{participant.uid === recipeCollection.ownerId ? 'Ersteller' : 'Teilnehmer'}
 								{participant.uid === user?.uid ? '(Du)' : ''}
 							</td>
 						</tr>
 					{/each}
 				</tbody>
 			</table>
-			<button class="btn" disabled={loadingState !== 'FINISHED' || !isOwner}>
+			<a
+				class="btn"
+				href={`/collection/join/${collectionId}?i=${recipeCollection.inviteCode}&uid=${recipeCollection.ownerId}`}
+				class:btn-disabled={loadingState !== 'FINISHED' || !isOwner}
+			>
 				{#if loadingState === 'FINISHED'}
 					Teilnehmer einladen
 				{:else}
 					<span class="skeleton w-full h-12" />
 				{/if}
-			</button>
+			</a>
 		</div>
 	</div>
 

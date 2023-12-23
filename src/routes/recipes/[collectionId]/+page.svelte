@@ -17,8 +17,9 @@
 	let collectionName: string;
 	recipesStore.subscribe((value) => {
 		if (!(data.collectionId in value)) return;
-		recipes = value[data.collectionId].recipes;
+		recipes = value[data.collectionId].recipes || [];
 		collectionName = value[data.collectionId].name;
+		console.log(value);
 	});
 
 	let user: User | null;

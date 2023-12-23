@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
-	import { currentUser } from '../../../../stores/store.js';
+	import { currentUser, recipesStore } from '../../../../stores/store.js';
 	import type { Participant, RecipeCollection } from '../../../../models/RecipeCollections.js';
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
 
 	export let data;
 
@@ -34,6 +36,48 @@
 				loading = false;
 			});
 	});
+
+	let loadingJoin = false;
+	function joinCollection() {
+		user?.getIdToken().then((token) => {
+			loadingJoin = true;
+			fetch(`/api/collection/join/${data.collectionId}?i=${data.inviteCode}&uid=${data.ownerId}`, {
+				method: 'POST',
+				headers: {
+					Authorization: token
+				}
+			})
+				.then((res) => {
+					if (res.status === 200) {
+						res.json().then((data) => {
+							const collection: RecipeCollection = data;
+							console.log(collection);
+							recipesStore.update((recipes) => {
+								recipes[collection.id] = collection;
+								return recipes;
+							});
+							goto(`/recipes/${collection.id}`);
+							createNewAlert({
+								type: 'success',
+								message: `Du bist der Rezeptsammlung erfolgreich beigetreten!`
+							});
+						});
+					} else {
+						res.json().then((data) => {
+							console.log(data);
+						});
+					}
+					loadingJoin = false;
+				})
+				.catch(() => {
+					createNewAlert({
+						type: 'error',
+						message: 'Beitreten der Rezeptsammlung fehlgeschlagen!'
+					});
+					loadingJoin = false;
+				});
+		});
+	}
 </script>
 
 {#if loading}
@@ -83,7 +127,13 @@
 					</div>
 				{/each}
 			</div>
-			<button class="btn btn-block btn-primary">Beitreten</button>
+			<button class="btn btn-block btn-primary" disabled={loadingJoin} on:click={joinCollection}>
+				{#if loadingJoin}
+					<span class="loading-spinner" />
+				{:else}
+					Beitreten
+				{/if}
+			</button>
 		</div>
 	</div>
 {:else}
