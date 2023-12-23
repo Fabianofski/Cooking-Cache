@@ -3,6 +3,15 @@ import { json } from '@sveltejs/kit';
 import type { RecipeCollection } from '../../../models/RecipeCollections';
 import { v4 as uuidv4 } from 'uuid';
 
+export function generateRandomInviteCode() {
+	let code = '';
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	for (let i = 0; i < 10; i++) {
+		code += characters.charAt(Math.floor(Math.random() * characters.length));
+	}
+	return code;
+}
+
 export async function getDefaultCollection(
 	userId: string,
 	collectionName: string,
@@ -21,7 +30,9 @@ export async function getDefaultCollection(
 		ownerId: userId,
 		recipes: [],
 		name: collectionName,
-		id: collectionId
+		id: collectionId,
+		inviteCode: generateRandomInviteCode(),
+		private: false
 	};
 	return defaultCollection;
 }

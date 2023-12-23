@@ -9,6 +9,8 @@ export interface RecipeCollection {
 	ownerId: string;
 	name: string;
 	id: string;
+	inviteCode: string;
+	private: boolean;
 
 	recipes: Recipe[];
 }

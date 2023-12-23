@@ -38,46 +38,47 @@
 	let loadingRename: boolean;
 	let newName: string;
 	function editName() {
-		if (editingName) {
-			if (collectionName === newName) {
-				editingName = false;
-				return;
-			}
-
-			loadingRename = true;
-			collectionName = newName;
-			user?.getIdToken().then((token) => {
-				fetch(`/api/collection?newCollectionName=${collectionName}&collectionId=${collectionId}`, {
-					method: 'PATCH',
-					headers: {
-						Authorization: token
-					}
-				})
-					.then(async () => {
-						recipesStore.update((value) => {
-							value[collectionId].name = collectionName;
-							return value;
-						});
-						createNewAlert({
-							message: 'Der Name der Rezeptsammlung wurde erfolgreich geändert!',
-							type: 'success'
-						});
-						loadingRename = false;
-						editingName = false;
-					})
-					.catch(() => {
-						createNewAlert({
-							message: 'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!',
-							type: 'error'
-						});
-						loadingRename = false;
-						editingName = false;
-					});
-			});
-		} else {
+		if (!editingName) {
 			newName = collectionName;
 			editingName = true;
+			return;
 		}
+
+		if (collectionName === newName) {
+			editingName = false;
+			return;
+		}
+
+		loadingRename = true;
+		collectionName = newName;
+		user?.getIdToken().then((token) => {
+			fetch(`/api/collection?newCollectionName=${collectionName}&collectionId=${collectionId}`, {
+				method: 'PATCH',
+				headers: {
+					Authorization: token
+				}
+			})
+				.then(async () => {
+					recipesStore.update((value) => {
+						value[collectionId].name = collectionName;
+						return value;
+					});
+					createNewAlert({
+						message: 'Der Name der Rezeptsammlung wurde erfolgreich geändert!',
+						type: 'success'
+					});
+					loadingRename = false;
+					editingName = false;
+				})
+				.catch(() => {
+					createNewAlert({
+						message: 'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!',
+						type: 'error'
+					});
+					loadingRename = false;
+					editingName = false;
+				});
+		});
 	}
 
 	let dialog: HTMLDialogElement;
