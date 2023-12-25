@@ -17,7 +17,7 @@
 	let loading: boolean = true;
 	let owner: Participant | undefined;
 	onMount(() => {
-		fetch(`/api/collection/join/${data.collectionId}?i=${data.inviteCode}&uid=${data.ownerId}`)
+		fetch(`/api/collection/join/${data.collectionId}?i=${data.inviteCode}`)
 			.then((res) => {
 				if (res.status === 200) {
 					res.json().then((data) => {
@@ -41,7 +41,7 @@
 	function joinCollection() {
 		user?.getIdToken().then((token) => {
 			loadingJoin = true;
-			fetch(`/api/collection/join/${data.collectionId}?i=${data.inviteCode}&uid=${data.ownerId}`, {
+			fetch(`/api/collection/join/${data.collectionId}?i=${data.inviteCode}`, {
 				method: 'POST',
 				headers: {
 					Authorization: token

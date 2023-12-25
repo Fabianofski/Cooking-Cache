@@ -11,7 +11,7 @@ export async function GET({ request }) {
 		const uid = await verifyIdToken(token);
 
 		try {
-			const data = await database.ref(`users/${uid}/collections`).get();
+			const data = await database.ref(`collections`).orderByChild('ownerId').equalTo(uid).get();
 			let val: RecipeCollections = data.val() || {};
 			Object.keys(val).forEach((collection: string) => {
 				val[collection].recipes = Object.values(val[collection].recipes || {});
@@ -69,13 +69,13 @@ export async function PATCH({ request, url }) {
 		if (!newCollectionName || !collectionId)
 			return new Response('400 Bad Request', { status: 400 });
 
-		const data = await database.ref(`users/${uid}/collections/${collectionId}`).get();
+		const data = await database.ref(`collections/${collectionId}`).get();
 		let val: RecipeCollection = data.val();
 
 		if (!collectionId) return new Response('404 Not Found', { status: 404 });
 		val.name = newCollectionName;
 
-		await database.ref(`users/${uid}/collections/${collectionId}`).set(val);
+		await database.ref(`collections/${collectionId}`).set(val);
 
 		return new Response('200 OK', { status: 200 });
 	} catch {
@@ -90,7 +90,7 @@ export async function DELETE({ request, url }) {
 		const uid = await verifyIdToken(token);
 		const collectionId = url.searchParams.get('collectionId');
 
-		const ref = database.ref(`users/${uid}/collections/${collectionId}`);
+		const ref = database.ref(`collections/${collectionId}`);
 		ref
 			.remove()
 			.then(() => {

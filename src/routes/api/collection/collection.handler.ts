@@ -40,7 +40,7 @@ export async function getDefaultCollection(
 export async function addCollectionToDatabase(collectionName: string, uid: string, uuid?: string) {
 	try {
 		if (!uuid) uuid = uuidv4();
-		const ref = database.ref(`users/${uid}/collections/${uuid}`);
+		const ref = database.ref(`collections/${uuid}`);
 		const collection = await getDefaultCollection(uid, collectionName, uuid);
 		await ref.set(collection);
 		return json(collection);

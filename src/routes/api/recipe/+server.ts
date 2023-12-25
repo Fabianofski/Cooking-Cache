@@ -3,16 +3,6 @@ import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
 import type { Recipe } from '../../../models/Recipe.js';
 
-export async function GET({ url }) {
-	const id = url.searchParams.get('recipeId') || '';
-	if (id === '') return new Response('Bad Request', { status: 400 });
-
-	let ref = database.ref('recipes/' + id);
-	const snapshot = await ref.get();
-	const data = snapshot.val();
-	return json(data);
-}
-
 export async function POST({ request }) {
 	const token = request.headers.get('Authorization');
 
@@ -27,15 +17,11 @@ export async function POST({ request }) {
 		if (cover)
 			recipe.image = await uploadFileToStorage(
 				cover,
-				`users/${uid}/collections/${recipe.collectionId}/${recipe.id}.${cover.name
-					.split('.')
-					.pop()}`
+				`collections/${recipe.collectionId}/${recipe.id}.${cover.name.split('.').pop()}`
 			);
 
 		try {
-			await database
-				.ref(`users/${uid}/collections/${recipe.collectionId}/recipes/${recipe.id}`)
-				.set(recipe);
+			await database.ref(`collections/${recipe.collectionId}/recipes/${recipe.id}`).set(recipe);
 			return json(recipe);
 		} catch (err) {
 			console.error(err);

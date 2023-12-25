@@ -4,13 +4,11 @@ import type { RecipeCollection } from '../../../../../models/RecipeCollections.j
 
 export async function GET({ url, params }) {
 	let inviteCode = url.searchParams.get('i');
-	let ownerId = url.searchParams.get('uid');
 	let collectionId = params.collectionId;
 
-	if (!inviteCode || !collectionId || !ownerId)
-		return new Response('400 Bad Request', { status: 400 });
+	if (!inviteCode || !collectionId) return new Response('400 Bad Request', { status: 400 });
 
-	const data = await database.ref(`users/${ownerId}/collections/${collectionId}`).get();
+	const data = await database.ref(`collections/${collectionId}`).get();
 	let collection: RecipeCollection = data.val();
 	collection.recipes = Object.values(collection.recipes || {});
 
@@ -22,7 +20,6 @@ export async function GET({ url, params }) {
 
 export async function POST({ url, params, request }) {
 	let inviteCode = url.searchParams.get('i');
-	let ownerId = url.searchParams.get('uid');
 	let collectionId = params.collectionId;
 
 	const token = request.headers.get('Authorization');
@@ -30,11 +27,10 @@ export async function POST({ url, params, request }) {
 	try {
 		const userId = await verifyIdToken(token);
 
-		if (!inviteCode || !collectionId || !ownerId)
-			return new Response('400 Bad Request', { status: 400 });
+		if (!inviteCode || !collectionId) return new Response('400 Bad Request', { status: 400 });
 
 		try {
-			const data = await database.ref(`users/${ownerId}/collections/${collectionId}`).get();
+			const data = await database.ref(`collections/${collectionId}`).get();
 			let collection: RecipeCollection = data.val();
 			collection.recipes = Object.values(collection.recipes || {});
 
@@ -53,9 +49,7 @@ export async function POST({ url, params, request }) {
 				photoURL: user.photoURL
 			});
 
-			await database
-				.ref(`users/${ownerId}/collections/${collectionId}/participants`)
-				.set(participants);
+			await database.ref(`collections/${collectionId}/participants`).set(participants);
 			collection.participants = participants;
 
 			return json(collection);
