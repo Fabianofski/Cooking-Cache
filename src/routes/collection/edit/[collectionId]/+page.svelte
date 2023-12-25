@@ -237,7 +237,7 @@
 			</table>
 			<a
 				class="btn"
-				href={`/collection/join/${collectionId}?i=${recipeCollection.inviteCode}&uid=${recipeCollection.ownerId}`}
+				href={`/collection/join/${collectionId}?i=${recipeCollection.inviteCode}`}
 				class:btn-disabled={loadingState !== 'FINISHED' || !isOwner}
 			>
 				{#if loadingState === 'FINISHED'}

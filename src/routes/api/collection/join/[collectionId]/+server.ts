@@ -50,6 +50,7 @@ export async function POST({ url, params, request }) {
 			});
 
 			await database.ref(`collections/${collectionId}/participants`).set(participants);
+			await database.ref(`users/${userId}/joinedCollectionsIds/${collectionId}`).set(true);
 			collection.participants = participants;
 
 			return json(collection);

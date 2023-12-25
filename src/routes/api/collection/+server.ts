@@ -4,6 +4,21 @@ import type { RecipeCollections, RecipeCollection } from '../../../models/Recipe
 import { addCollectionToDatabase, getDefaultCollection } from './collection.handler';
 import { v4 as uuidv4 } from 'uuid';
 
+async function getJoinedCollections(uid: string): Promise<RecipeCollections> {
+	let collections: RecipeCollections = {};
+
+	const joinedData = await database.ref(`users/${uid}/joinedCollectionsIds`).get();
+	const joinedCollectionsIds = Object.keys(joinedData.val() || {});
+	for (let id of joinedCollectionsIds) {
+		const joinedCollectionData = await database.ref(`collections/${id}`).get();
+		const joinedCollection: RecipeCollection = joinedCollectionData.val() || {};
+		if (Object.values(joinedCollection.participants || {}).find((p) => p.uid === uid))
+			collections = { ...collections, id: joinedCollection };
+	}
+
+	return collections;
+}
+
 export async function GET({ request }) {
 	const token = request.headers.get('Authorization');
 
@@ -12,19 +27,24 @@ export async function GET({ request }) {
 
 		try {
 			const data = await database.ref(`collections`).orderByChild('ownerId').equalTo(uid).get();
-			let val: RecipeCollections = data.val() || {};
-			Object.keys(val).forEach((collection: string) => {
-				val[collection].recipes = Object.values(val[collection].recipes || {});
-				val[collection].participants = Object.values(val[collection].participants ?? {});
+			let collections: RecipeCollections = data.val() || {};
+			let joinedCollections: RecipeCollections = await getJoinedCollections(uid);
+			collections = { ...collections, ...joinedCollections };
+
+			Object.keys(collections).forEach((collection: string) => {
+				collections[collection].recipes = Object.values(collections[collection].recipes || {});
+				collections[collection].participants = Object.values(
+					collections[collection].participants ?? {}
+				);
 			});
 
-			if (Object.values(val).length < 1) {
+			if (Object.values(collections).length < 1) {
 				const collectionId = uuidv4();
 				await addCollectionToDatabase('Hauptsammlung', uid, collectionId);
-				val[collectionId] = await getDefaultCollection(uid, 'Hauptsammlung', collectionId);
+				collections[collectionId] = await getDefaultCollection(uid, 'Hauptsammlung', collectionId);
 			}
 
-			return json(val);
+			return json(collections);
 		} catch (err) {
 			console.error(err);
 			return new Response('500 Internal Server Error', { status: 500 });
