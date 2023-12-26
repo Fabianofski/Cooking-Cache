@@ -1,4 +1,4 @@
-<div class="w-full h-96">
+<div class="w-full h-96 bg-base-200 rounded-lg">
 	<figure class="h-64 overflow-x-hidden">
 		<div class="skeleton h-full w-full" />
 	</figure>

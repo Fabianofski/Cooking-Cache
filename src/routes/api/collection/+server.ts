@@ -13,7 +13,7 @@ async function getJoinedCollections(uid: string): Promise<RecipeCollections> {
 		const joinedCollectionData = await database.ref(`collections/${id}`).get();
 		const joinedCollection: RecipeCollection = joinedCollectionData.val() || {};
 		if (Object.values(joinedCollection.participants || {}).find((p) => p.uid === uid))
-			collections = { ...collections, id: joinedCollection };
+			collections = { ...collections, [id]: joinedCollection };
 	}
 
 	return collections;
@@ -37,6 +37,7 @@ export async function GET({ request }) {
 					collections[collection].participants ?? {}
 				);
 			});
+			console.log(collections);
 
 			if (Object.values(collections).length < 1) {
 				const collectionId = uuidv4();

@@ -1,12 +1,23 @@
 <script lang="ts">
-	import type { RecipeCollection } from '../models/RecipeCollections';
+	import type { User } from 'firebase/auth';
+	import type { Participant, RecipeCollection } from '../models/RecipeCollections';
+	import { currentUser } from '../stores/store';
 
 	export let recipeCollection: RecipeCollection | null;
+
+	let user: User | null = null;
+	let owner: Participant | undefined = undefined;
+	currentUser.subscribe((value) => {
+		user = value;
+		owner = recipeCollection?.participants?.find(
+			(participant) => participant.uid === recipeCollection?.ownerId
+		);
+	});
 </script>
 
 <a class="w-full" href={`/recipes/${recipeCollection?.id}`}>
 	<div class="card w-full h-64 bg-base-100 shadow-xl">
-		<figure class="h-48 overflow-x-hidden">
+		<figure class="h-32 overflow-x-hidden">
 			<img
 				class="h-full w-full"
 				src={'/default-cover.jpg'}
@@ -61,6 +72,10 @@
 					</a>
 				</div>
 			</h2>
+			<div class="flex gap-2">
+				<img class="rounded-full w-6" src={owner?.photoURL} alt={owner?.displayName} />
+				<p>{owner?.displayName} {owner?.uid === user?.uid ? '(Du)' : ''}</p>
+			</div>
 			<p>{recipeCollection?.recipes.length} Rezepte</p>
 		</div>
 	</div>
