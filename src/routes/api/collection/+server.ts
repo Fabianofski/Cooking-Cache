@@ -37,7 +37,6 @@ export async function GET({ request }) {
 					collections[collection].participants ?? {}
 				);
 			});
-			console.log(collections);
 
 			if (Object.values(collections).length < 1) {
 				const collectionId = uuidv4();

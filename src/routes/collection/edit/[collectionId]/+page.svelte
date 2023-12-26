@@ -26,13 +26,25 @@
 
 	let recipeCollection: RecipeCollection;
 	let isOwner: boolean;
+	let inviteLink: string = '';
 	recipesStore.subscribe((value) => {
 		if (collectionId in value) {
 			recipeCollection = value[collectionId];
 			collectionName = recipeCollection.name;
 			isOwner = recipeCollection.ownerId === user?.uid;
+			const hostname = window.location.hostname;
+			const port = hostname == 'localhost' ? ':' + window.location.port : '';
+			inviteLink = `${hostname}${port}/collection/join/${collectionId}?i=${recipeCollection.inviteCode}`;
 		}
 	});
+
+	function copyInviteLink() {
+		navigator.clipboard.writeText(inviteLink);
+		createNewAlert({
+			message: 'Der Einladungslink wurde erfolgreich in die Zwischenablage kopiert!',
+			type: 'success'
+		});
+	}
 
 	let editingName: boolean;
 	let loadingRename: boolean;
@@ -235,17 +247,39 @@
 					{/each}
 				</tbody>
 			</table>
-			<a
-				class="btn"
-				href={`/collection/join/${collectionId}?i=${recipeCollection.inviteCode}`}
-				class:btn-disabled={loadingState !== 'FINISHED' || !isOwner}
-			>
-				{#if loadingState === 'FINISHED'}
-					Teilnehmer einladen
-				{:else}
-					<span class="skeleton w-full h-12" />
-				{/if}
-			</a>
+
+			<div>
+				<label for="link" class="form-control w-full max-w-xs">
+					<div class="label">
+						<span class="label-text">Teilnehmer einladen</span>
+					</div>
+				</label>
+				<div class="join w-full flex">
+					<input
+						name="link"
+						type="text"
+						placeholder=""
+						class="input input-bordered max-w-xs join-item w-5/6 flex-2"
+						value={inviteLink}
+					/>
+					<button class="btn join-item w-1/6 flex-1" on:click={copyInviteLink}>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="w-6 h-6"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+							/>
+						</svg>
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 
