@@ -14,8 +14,11 @@
 	export let data;
 
 	let recipes: Recipe[] = [];
+	let collectionName: string;
 	recipesStore.subscribe((value) => {
-		if (data.collection in value) recipes = value[data.collection];
+		if (!(data.collectionId in value)) return;
+		recipes = value[data.collectionId].recipes || [];
+		collectionName = value[data.collectionId].name;
 	});
 
 	let user: User | null;
@@ -83,7 +86,7 @@
 					/>
 				</svg>
 			</a>
-			<h2 class="text-lg font-bold text-center">{data.collection}</h2>
+			<h2 class="text-lg font-bold text-center">{collectionName}</h2>
 		</div>
 		<div class="divider my-0" />
 	</div>
@@ -145,7 +148,7 @@
 			<RecipeSkeleton />
 		{:else}
 			{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
-				<RecipeCard {recipe} collection={data.collection} />
+				<RecipeCard {recipe} collectionId={data.collectionId} />
 			{/each}
 		{/if}
 	</div>
@@ -168,7 +171,7 @@
 <div class="fixed max-w-3xl w-full bottom-0">
 	<a
 		class="btn btn-circle btn-primary absolute bottom-20 right-6"
-		href={`/recipe/create/${data.collection}`}
+		href={`/recipe/create/${data.collectionId}`}
 		class:btn-disabled={user === null}
 	>
 		<svg

@@ -1,6 +1,6 @@
 export function load({ params }) {
 	return {
 		id: params.id,
-		collection: params.collection
+		collectionId: params.collectionId
 	};
 }

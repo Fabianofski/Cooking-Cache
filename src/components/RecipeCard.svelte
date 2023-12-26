@@ -4,7 +4,7 @@
 	import { currentUser } from '../stores/store';
 
 	export let recipe: Recipe | null;
-	export let collection: string;
+	export let collectionId: string;
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
@@ -13,7 +13,7 @@
 </script>
 
 {#if recipe}
-	<a class="w-full" href={`/recipe/${collection}/${recipe.id}`}>
+	<a class="w-full" href={`/recipe/${collectionId}/${recipe.id}`}>
 		<div class="card w-full h-96 bg-base-100 shadow-xl">
 			<figure class="h-64 overflow-x-hidden">
 				<img

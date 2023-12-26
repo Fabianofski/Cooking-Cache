@@ -6,7 +6,7 @@
 		type LoadingState,
 		loadingStateStore
 	} from '../../stores/store';
-	import type { RecipeCollections } from '../../models/RecipeCollections';
+	import type { RecipeCollection, RecipeCollections } from '../../models/RecipeCollections';
 	import type { User } from 'firebase/auth';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
 	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
@@ -31,7 +31,7 @@
 	let collectionName: string = '';
 	let loading: boolean = false;
 	function createNewCollection() {
-		for (let char in illegalCharacters) {
+		for (let char of illegalCharacters) {
 			if (collectionName.includes(char)) {
 				createNewAlert({
 					message:
@@ -45,6 +45,7 @@
 		}
 
 		loading = true;
+
 		user?.getIdToken().then((token) => {
 			fetch(`/api/collection?collectionName=${collectionName}`, {
 				method: 'POST',
@@ -53,9 +54,10 @@
 					Authorization: token
 				}
 			})
-				.then(() => {
+				.then(async (response: Response) => {
+					const collection: RecipeCollection = await response.json();
 					recipesStore.update((value) => {
-						value[collectionName] = [];
+						value[collection.id] = collection;
 						return value;
 					});
 					loading = false;
@@ -90,8 +92,8 @@
 		<RecipeCollectionSkeleton />
 		<RecipeCollectionSkeleton />
 	{:else}
-		{#each Object.keys(recipeCollections) as collectionName}
-			<RecipeCollectionCard {collectionName} recipes={recipeCollections[collectionName]} />
+		{#each Object.values(recipeCollections) as collection}
+			<RecipeCollectionCard recipeCollection={collection} />
 		{/each}
 	{/if}
 </div>

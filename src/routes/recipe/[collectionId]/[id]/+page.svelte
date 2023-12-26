@@ -6,8 +6,9 @@
 	export let data;
 
 	let recipe: Recipe | undefined;
-	recipesStore.subscribe((recipes) => {
-		recipe = recipes[data.collection].find((recipe) => recipe.id === data.id);
+	recipesStore.subscribe((collections) => {
+		if (!collections || !(data.collectionId in collections)) return;
+		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
 	});
 </script>
 
@@ -15,7 +16,7 @@
 	<div>
 		<div class="w-full bg-base-100">
 			<div class="w-full relative">
-				<a href={`/recipes/${data.collection}`} class="absolute top-1 l-0">
+				<a href={`/recipes/${data.collectionId}`} class="absolute top-1 l-0">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"

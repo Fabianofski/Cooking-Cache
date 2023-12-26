@@ -56,11 +56,11 @@
 		goto('/');
 	}
 
-	function login() {
+	function loginWithEmailAndPassword() {
 		loading = true;
-
 		signInWithEmailAndPassword(auth, email, password).then(loggedInHandler).catch(errorHandling);
 	}
+
 	const googleProvider = new GoogleAuthProvider();
 	const facebookProvider = new FacebookAuthProvider();
 	const appleProvider = new OAuthProvider('apple.com');
@@ -70,7 +70,7 @@
 		signInWithPopup(auth, provider).then(loggedInHandler).catch(errorHandling);
 	}
 
-	function signUp() {
+	function signUpWithEmailAndPassword() {
 		loading = true;
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(async (userCredential) => {
@@ -182,7 +182,7 @@
 
 		<button
 			class="btn btn-primary w-full mt-4"
-			on:click={loggingIn ? login : signUp}
+			on:click={loggingIn ? loginWithEmailAndPassword : signUpWithEmailAndPassword}
 			disabled={loading ||
 				formIsInvalid(email, password, repeatPassword, displayName, optIn, loggingIn)}
 		>

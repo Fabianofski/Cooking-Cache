@@ -2,7 +2,6 @@
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
-	console.log(recipe);
 </script>
 
 <div class="card w-full bg-base-100 shadow-xl">
@@ -27,7 +26,7 @@
 		<p>{recipe.tagline === '' ? 'Rezept Untertitel' : recipe.tagline}</p>
 		<a href={recipe.url} class={`btn btn-primary ${recipe.url === '' ? 'btn-disabled' : ''}`}>
 			<img class="h-6" src="/link.svg" alt="link" />
-			 Zum Originalrezept
+			Zum Originalrezept
 		</a>
 		<div class="overflow-x-auto">
 			<table class="table">
