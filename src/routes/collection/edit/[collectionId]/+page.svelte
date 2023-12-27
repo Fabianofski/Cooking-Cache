@@ -254,15 +254,15 @@
 						<span class="label-text">Teilnehmer einladen</span>
 					</div>
 				</label>
-				<div class="join w-full flex">
+				<div class="w-full flex">
 					<input
 						name="link"
 						type="text"
 						placeholder=""
-						class="input input-bordered max-w-xs join-item w-5/6 flex-2"
+						class="input input-bordered w-full rounded-r-none"
 						value={inviteLink}
 					/>
-					<button class="btn join-item w-1/6 flex-1" on:click={copyInviteLink}>
+					<button class="btn w-24 rounded-l-none" on:click={copyInviteLink}>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
