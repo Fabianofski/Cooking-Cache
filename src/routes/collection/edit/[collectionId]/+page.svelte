@@ -134,9 +134,19 @@
 
 	let loadingCoverReplacement: boolean = false;
 	function replaceCoverImage(event: Event) {
-		loadingCoverReplacement = true;
 		const file = (event.target as HTMLInputElement).files?.[0];
 		if (!file) return;
+
+		const extension = file.name.split('.').pop() || '';
+		const fileTypes = ['jpg', 'jpeg', 'png'];
+		if (!fileTypes.includes(extension)) {
+			createNewAlert({
+				message: `Das Cover der Rezeptsammlung muss eine Bilddatei (${fileTypes.join(', ')}) sein!`,
+				type: 'error'
+			});
+			return;
+		}
+		loadingCoverReplacement = true;
 
 		const formData = new FormData();
 		formData.append('cover', file);

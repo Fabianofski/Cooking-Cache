@@ -10,8 +10,18 @@
 
 	let editMode = true;
 	let files: FileList | null = null;
+	let fileInput: HTMLInputElement;
 	$: if (files) {
-		recipe.image = URL.createObjectURL(files[0]);
+		const extension = files[0].name.split('.').pop() || '';
+		const fileTypes = ['jpg', 'jpeg', 'png'];
+		if (!fileTypes.includes(extension)) {
+			createNewAlert({
+				message: `Das Cover vom Rezept muss eine Bilddatei (${fileTypes.join(', ')}) sein!`,
+				type: 'error'
+			});
+			files = null;
+			fileInput.value = '';
+		} else recipe.image = URL.createObjectURL(files[0]);
 	}
 	let recipe: Recipe = {
 		image: '',
@@ -71,6 +81,7 @@
 
 		let formData = new FormData();
 		if (files && files.length > 0) formData.append('cover', files[0]);
+
 		// Remove empty buffer fields at end from array inputs
 		recipe.ingredients.pop();
 		recipe.description.pop();
@@ -134,7 +145,13 @@
 			<label class="label" for="">
 				<span class="label-text">Cover</span>
 			</label>
-			<input accept="image/png, image/jpeg" bind:files type="file" class="file-input w-full" />
+			<input
+				accept="image/png, image/jpeg"
+				bind:this={fileInput}
+				bind:files
+				type="file"
+				class="file-input w-full"
+			/>
 		</div>
 		<div class="grid grid-cols-fluid gap-2">
 			<div class="form-control w-full">
