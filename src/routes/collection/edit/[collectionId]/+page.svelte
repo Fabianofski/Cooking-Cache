@@ -137,11 +137,9 @@
 		const file = (event.target as HTMLInputElement).files?.[0];
 		if (!file) return;
 
-		const extension = file.name.split('.').pop() || '';
-		const fileTypes = ['jpg', 'jpeg', 'png'];
-		if (!fileTypes.includes(extension)) {
+		if (!(file['type'].split('/')[0] === 'image')) {
 			createNewAlert({
-				message: `Das Cover der Rezeptsammlung muss eine Bilddatei (${fileTypes.join(', ')}) sein!`,
+				message: `Das Cover der Rezeptsammlung muss eine Bilddatei sein!`,
 				type: 'error'
 			});
 			return;

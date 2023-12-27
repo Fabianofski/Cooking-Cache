@@ -12,11 +12,9 @@
 	let files: FileList | null = null;
 	let fileInput: HTMLInputElement;
 	$: if (files) {
-		const extension = files[0].name.split('.').pop() || '';
-		const fileTypes = ['jpg', 'jpeg', 'png'];
-		if (!fileTypes.includes(extension)) {
+		if (!(files[0]['type'].split('/')[0] === 'image')) {
 			createNewAlert({
-				message: `Das Cover vom Rezept muss eine Bilddatei (${fileTypes.join(', ')}) sein!`,
+				message: `Das Cover vom Rezept muss eine Bilddatei sein!`,
 				type: 'error'
 			});
 			files = null;
