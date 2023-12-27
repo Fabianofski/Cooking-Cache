@@ -1,10 +1,10 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
-	import { currentUser, recipesStore } from '../../../../stores/store.js';
-	import type { Participant, RecipeCollection } from '../../../../models/RecipeCollections.js';
+	import { currentUser, recipesStore } from '../../../stores/store.js';
+	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
+	import { createNewAlert } from '../../../components/alerts/alert.handler.js';
 
 	export let data;
 
@@ -17,7 +17,7 @@
 	let loading: boolean = true;
 	let owner: Participant | undefined;
 	onMount(() => {
-		fetch(`/api/collection/join/${data.collectionId}?i=${data.inviteCode}`)
+		fetch(`/api/collection/join?i=${data.inviteCode}`)
 			.then((res) => {
 				if (res.status === 200) {
 					res.json().then((data) => {
@@ -41,7 +41,7 @@
 	function joinCollection() {
 		user?.getIdToken().then((token) => {
 			loadingJoin = true;
-			fetch(`/api/collection/join/${data.collectionId}?i=${data.inviteCode}`, {
+			fetch(`/api/collection/join?i=${data.inviteCode}`, {
 				method: 'POST',
 				headers: {
 					Authorization: token
