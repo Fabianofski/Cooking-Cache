@@ -27,7 +27,7 @@ export async function POST({ request }) {
 		if (cover)
 			recipe.image = await uploadFileToStorage(
 				cover,
-				`collections/${recipe.collectionId}/${recipe.id}.${cover.name.split('.').pop()}`
+				`collections/${recipe.collectionId}/recipes/${recipe.id}.${cover.name.split('.').pop()}`
 			);
 
 		try {

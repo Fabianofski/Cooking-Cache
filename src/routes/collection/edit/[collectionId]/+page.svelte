@@ -126,6 +126,49 @@
 				});
 		});
 	}
+
+	let coverFileInput: HTMLInputElement;
+	function openFileSelection() {
+		coverFileInput.click();
+	}
+
+	let loadingCoverReplacement: boolean = false;
+	function replaceCoverImage(event: Event) {
+		loadingCoverReplacement = true;
+		const file = (event.target as HTMLInputElement).files?.[0];
+		if (!file) return;
+
+		const formData = new FormData();
+		formData.append('cover', file);
+		user?.getIdToken().then((token) => {
+			fetch(`/api/collection/${collectionId}/cover`, {
+				method: 'PATCH',
+				headers: {
+					Authorization: token
+				},
+				body: formData
+			})
+				.then(async (response) => {
+					const photoURL = await response.json();
+					recipesStore.update((value) => {
+						value[collectionId].cover = photoURL;
+						return value;
+					});
+					createNewAlert({
+						message: 'Das Cover der Rezeptsammlung wurde erfolgreich geändert!',
+						type: 'success'
+					});
+					loadingCoverReplacement = false;
+				})
+				.catch(() => {
+					createNewAlert({
+						message: 'Beim Ändern des Covers ist ein Fehler aufgetreten!',
+						type: 'error'
+					});
+					loadingCoverReplacement = false;
+				});
+		});
+	}
 </script>
 
 <div class="flex flex-col gap-6">
@@ -155,11 +198,57 @@
 	</div>
 
 	<div class="flex flex-col gap-2">
-		<img
-			class="w-full h-36 rounded object-cover"
-			src={'/default-cover.jpg'}
-			alt={`${collectionName} Cover`}
-		/>
+		<div class="relative">
+			{#if loadingCoverReplacement}
+				<div class="skeleton w-full h-36 rounded" />
+			{:else}
+				<img
+					class="w-full h-36 rounded object-cover"
+					src={recipeCollection?.cover || '/default-cover.jpg'}
+					alt={`${collectionName} Cover`}
+				/>
+			{/if}
+			{#if isOwner}
+				<div class="absolute bottom-0 translate-y-1/2 right-0 -translate-x-1/2">
+					<input
+						bind:this={coverFileInput}
+						class="hidden"
+						type="file"
+						accept="image/*"
+						on:change={replaceCoverImage}
+					/>
+					<button
+						class="btn btn-primary btn-circle"
+						disabled={loadingCoverReplacement}
+						on:click={openFileSelection}
+					>
+						{#if loadingCoverReplacement}
+							<span class="loading loading-spinner loading-md" />
+						{:else}
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								class="w-6 h-6"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
+								/>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+								/>
+							</svg>
+						{/if}
+					</button>
+				</div>
+			{/if}
+		</div>
 		<table class="text-lg">
 			<tbody>
 				<td class="w-24">Name:</td>
