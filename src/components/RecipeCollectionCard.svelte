@@ -20,7 +20,7 @@
 		<figure class="h-32 overflow-x-hidden">
 			<img
 				class="h-full w-full"
-				src={'/default-cover.jpg'}
+				src={recipeCollection?.cover || '/default-cover.jpg'}
 				alt={`${recipeCollection?.name} Cover`}
 				style="object-fit: cover;"
 			/>

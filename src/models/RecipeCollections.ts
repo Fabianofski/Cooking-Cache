@@ -11,6 +11,7 @@ export interface RecipeCollection {
 	id: string;
 	inviteCode: string;
 	private: boolean;
+	cover: string | undefined;
 
 	recipes: Recipe[];
 }
