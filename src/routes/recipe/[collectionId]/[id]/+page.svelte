@@ -6,13 +6,15 @@
 	export let data;
 
 	let recipe: Recipe | undefined;
+	let loading = true;
 	recipesStore.subscribe((collections) => {
 		if (!collections || !(data.collectionId in collections)) return;
+		loading = false;
 		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
 	});
 </script>
 
-{#if recipe}
+{#if recipe || loading}
 	<div>
 		<div class="w-full bg-base-100">
 			<div class="w-full relative">
@@ -32,7 +34,13 @@
 						/>
 					</svg>
 				</a>
-				<h2 class="text-lg font-bold text-center">{recipe.title}</h2>
+				{#if loading}
+					<div class="w-full flex justify-center">
+						<div class="skeleton h-6 w-32" />
+					</div>
+				{:else}
+					<h2 class="text-lg font-bold text-center">{recipe?.title}</h2>
+				{/if}
 			</div>
 			<div class="divider my-0" />
 		</div>
