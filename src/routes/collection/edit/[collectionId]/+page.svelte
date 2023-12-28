@@ -207,7 +207,7 @@
 
 	<div class="flex flex-col gap-2">
 		<div class="relative">
-			{#if loadingCoverReplacement}
+			{#if loadingCoverReplacement || loadingState !== 'FINISHED'}
 				<div class="skeleton w-full h-36 rounded" />
 			{:else}
 				<img
@@ -257,62 +257,70 @@
 				</div>
 			{/if}
 		</div>
-		<table class="text-lg">
-			<tbody>
-				<td class="w-24">Name:</td>
-				<td class="font-bold w-40">
-					{#if editingName && isOwner}
-						<input
-							type="text"
-							class="input input-bordered"
-							bind:value={newName}
-							on:keydown={(e) => {
-								if (e.key === 'Enter') {
-									editName();
-								}
-							}}
-						/>
-					{:else}
-						{collectionName}
-					{/if}
-				</td>
-				<td>
-					{#if isOwner}
-						<button class="btn btn-ghost" on:click={editName}>
-							{#if loadingRename}
-								<span class="loading loading-spinner loading-md" />
-							{:else if editingName}
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke-width="1.5"
-									stroke="currentColor"
-									class="w-5 h-5"
-								>
-									<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-								</svg>
-							{:else}
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke-width="1.5"
-									stroke="currentColor"
-									class="w-5 h-5"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-									/>
-								</svg>
-							{/if}
-						</button>
-					{/if}
-				</td>
-			</tbody>
-		</table>
+		{#if loadingState !== 'FINISHED'}
+			<div class="skeleton w-3/4 h-10 rounded" />
+		{:else}
+			<table class="text-lg">
+				<tbody>
+					<td class="w-24">Name:</td>
+					<td class="font-bold w-40">
+						{#if editingName && isOwner}
+							<input
+								type="text"
+								class="input input-bordered"
+								bind:value={newName}
+								on:keydown={(e) => {
+									if (e.key === 'Enter') {
+										editName();
+									}
+								}}
+							/>
+						{:else}
+							{collectionName}
+						{/if}
+					</td>
+					<td>
+						{#if isOwner}
+							<button class="btn btn-ghost" on:click={editName}>
+								{#if loadingRename}
+									<span class="loading loading-spinner loading-md" />
+								{:else if editingName}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M4.5 12.75l6 6 9-13.5"
+										/>
+									</svg>
+								{:else}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+										/>
+									</svg>
+								{/if}
+							</button>
+						{/if}
+					</td>
+				</tbody>
+			</table>
+		{/if}
 	</div>
 
 	<hr class="rounded border-neutral" />
@@ -321,29 +329,42 @@
 		<div class="flex flex-col gap-2">
 			<h3 class="font-bold text-md text-center">Teilnehmer</h3>
 
-			<table>
-				<tbody>
-					{#each recipeCollection?.participants || [] as participant}
-						<tr>
-							<td>
-								<img
-									class="w-10 h-10 rounded-full"
-									src={participant.photoURL || '/default-profile.jpg'}
-									alt={participant.displayName || 'User Profile Picture'}
-								/>
-							</td>
-							<td>
-								<p class="font-bold">{participant.displayName || '-'}</p>
-								<p class="text-sm">{participant.email || '-'}</p>
-							</td>
-							<td class="text-sm italic">
-								{participant.uid === recipeCollection.ownerId ? 'Ersteller' : 'Teilnehmer'}
-								{participant.uid === user?.uid ? '(Du)' : ''}
-							</td>
-						</tr>
-					{/each}
-				</tbody>
-			</table>
+			{#if loadingState !== 'FINISHED'}
+				{#each [1, 2] as _}
+					<div class="flex gap-2 items-center">
+						<div class="skeleton w-20 h-12 rounded-full" />
+						<div class="flex flex-col gap-1 justify-between w-full">
+							<div class="skeleton w-48 h-6 rounded" />
+							<div class="skeleton w-56 h-4 rounded" />
+						</div>
+						<div class="skeleton w-32 h-4 rounded mr-4" />
+					</div>
+				{/each}
+			{:else}
+				<table>
+					<tbody>
+						{#each recipeCollection?.participants || [] as participant}
+							<tr>
+								<td>
+									<img
+										class="w-10 h-10 rounded-full"
+										src={participant.photoURL || '/default-profile.jpg'}
+										alt={participant.displayName || 'User Profile Picture'}
+									/>
+								</td>
+								<td>
+									<p class="font-bold">{participant.displayName || '-'}</p>
+									<p class="text-sm">{participant.email || '-'}</p>
+								</td>
+								<td class="text-sm italic">
+									{participant.uid === recipeCollection.ownerId ? 'Ersteller' : 'Teilnehmer'}
+									{participant.uid === user?.uid ? '(Du)' : ''}
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			{/if}
 
 			<div>
 				<label for="link" class="form-control w-full max-w-xs">
@@ -351,31 +372,38 @@
 						<span class="label-text">Teilnehmer einladen</span>
 					</div>
 				</label>
-				<div class="w-full flex">
-					<input
-						name="link"
-						type="text"
-						placeholder=""
-						class="input input-bordered w-full rounded-r-none"
-						value={inviteLink}
-					/>
-					<button class="btn w-24 rounded-l-none" on:click={copyInviteLink}>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke-width="1.5"
-							stroke="currentColor"
-							class="w-6 h-6"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
-							/>
-						</svg>
-					</button>
-				</div>
+				{#if loadingState !== 'FINISHED'}
+					<div class="w-full flex gap-1">
+						<div class="skeleton w-full h-12 rounded" />
+						<div class="skeleton w-24 h-12 rounded" />
+					</div>
+				{:else}
+					<div class="w-full flex">
+						<input
+							name="link"
+							type="text"
+							placeholder=""
+							class="input input-bordered w-full rounded-r-none"
+							value={inviteLink}
+						/>
+						<button class="btn w-24 rounded-l-none" on:click={copyInviteLink}>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+								class="w-6 h-6"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+								/>
+							</svg>
+						</button>
+					</div>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -392,7 +420,7 @@
 				dialog.showModal();
 			}}
 		>
-			{#if !loadingDeletion}
+			{#if !loadingDeletion && loadingState === 'FINISHED'}
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
