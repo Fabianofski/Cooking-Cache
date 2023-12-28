@@ -9,6 +9,7 @@
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
 	import { goto } from '$app/navigation';
+	import Header from '../../../../components/Header.svelte';
 
 	export let data;
 	const collectionId = data.collectionId;
@@ -180,30 +181,11 @@
 </script>
 
 <div class="flex flex-col gap-6">
-	<div class="w-full bg-base-100">
-		<div class="w-full relative">
-			<a href="/recipes" class="absolute top-1 l-0">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					stroke="currentColor"
-					class="w-5 h-5"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-					/>
-				</svg>
-			</a>
-			<h2 class="text-lg font-bold text-center">
-				Einstellungen: {collectionName}
-			</h2>
-		</div>
-		<div class="divider my-0" />
-	</div>
+	<Header
+		title={`Einstellungen: ${collectionName}`}
+		loading={loadingState !== 'FINISHED'}
+		backLink="/recipes"
+	/>
 
 	<div class="flex flex-col gap-2">
 		<div class="relative">
