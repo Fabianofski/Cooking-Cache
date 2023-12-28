@@ -10,6 +10,7 @@
 	} from '../../../stores/store';
 	import { fullTextFilter } from './filter';
 	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
+	import Header from '../../../components/Header.svelte';
 
 	export let data;
 
@@ -68,28 +69,12 @@
 </script>
 
 <div class="flex gap-4 flex-col items-center">
-	<div class="w-full sticky top-16 bg-base-100 z-10">
-		<div class="w-full relative">
-			<a href="/recipes" class="absolute top-1 l-0">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					stroke="currentColor"
-					class="w-5 h-5"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-					/>
-				</svg>
-			</a>
-			<h2 class="text-lg font-bold text-center">{collectionName}</h2>
-		</div>
-		<div class="divider my-0" />
-	</div>
+	<Header
+		backLink="/recipes"
+		title={collectionName}
+		loading={loadingState !== 'FINISHED'}
+		sticky={true}
+	/>
 
 	<div class="w-full flex flex-col gap-2">
 		<div class="join flex">
