@@ -14,7 +14,7 @@
 			/>
 		</figure>
 	{:else}
-		<div class="skeleton h-72 w-full max-w-xl rounded mt-4" />
+		<div class="skeleton h-72 w-full max-w-xl rounded mt-4 self-center" />
 	{/if}
 	<div class="card-body">
 		<h2 class="card-title">
