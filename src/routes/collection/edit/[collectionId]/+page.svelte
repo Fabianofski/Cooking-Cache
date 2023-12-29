@@ -383,7 +383,7 @@
 					<div class="skeleton w-16 h-8 rounded-3xl" />
 					<div class="skeleton w-52 h-8 rounded" />
 				</div>
-			{:else if isOwner}
+			{:else}
 				<div class="form-control">
 					<label for="" class="label cursor-pointer justify-start gap-4">
 						{#if loadingVisibilityChange}
@@ -394,7 +394,7 @@
 							class="toggle"
 							bind:checked={recipeCollection.private}
 							on:input={changeCollectionVisibility}
-							disabled={loadingVisibilityChange}
+							disabled={loadingVisibilityChange || !isOwner}
 							class:hidden={loadingVisibilityChange}
 						/>
 						<span class="label-text">Neue Beitrittsanfragen blockieren</span>
