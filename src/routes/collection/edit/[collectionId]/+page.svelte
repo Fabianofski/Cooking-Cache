@@ -178,6 +178,36 @@
 				});
 		});
 	}
+
+	let loadingVisibilityChange: boolean = false;
+	function changeCollectionVisibility() {
+		user?.getIdToken().then((token) => {
+			loadingVisibilityChange = true;
+			fetch(`/api/collection/${collectionId}/visibility?private=${recipeCollection.private}`, {
+				method: 'PATCH',
+				headers: {
+					Authorization: token
+				}
+			})
+				.then(() => {
+					loadingVisibilityChange = false;
+					createNewAlert({
+						message: `Die Rezeptsammlung ist nun ${
+							recipeCollection.private ? 'privat' : 'öffentlich'
+						}!`,
+						type: 'success'
+					});
+				})
+				.catch(() => {
+					loadingVisibilityChange = false;
+					recipeCollection.private = !recipeCollection.private;
+					createNewAlert({
+						message: 'Beim Ändern der Sichtbarkeit ist ein Fehler aufgetreten!',
+						type: 'error'
+					});
+				});
+		});
+	}
 </script>
 
 <div class="flex flex-col gap-6">
@@ -348,6 +378,30 @@
 				</table>
 			{/if}
 
+			{#if loadingState !== 'FINISHED'}
+				<div class="w-full flex gap-1">
+					<div class="skeleton w-16 h-8 rounded-3xl" />
+					<div class="skeleton w-52 h-8 rounded" />
+				</div>
+			{:else if isOwner}
+				<div class="form-control">
+					<label for="" class="label cursor-pointer justify-start gap-4">
+						{#if loadingVisibilityChange}
+							<span class="loading loading-spinner loading-md" />
+						{/if}
+						<input
+							type="checkbox"
+							class="toggle"
+							bind:checked={recipeCollection.private}
+							on:input={changeCollectionVisibility}
+							disabled={loadingVisibilityChange}
+							class:hidden={loadingVisibilityChange}
+						/>
+						<span class="label-text">Neue Beitrittsanfragen blockieren</span>
+					</label>
+				</div>
+			{/if}
+
 			<div>
 				<label for="link" class="form-control w-full max-w-xs">
 					<div class="label">
@@ -367,8 +421,13 @@
 							placeholder=""
 							class="input input-bordered w-full rounded-r-none"
 							value={inviteLink}
+							disabled={recipeCollection.private}
 						/>
-						<button class="btn w-24 rounded-l-none" on:click={copyInviteLink}>
+						<button
+							class="btn w-24 rounded-l-none"
+							on:click={copyInviteLink}
+							disabled={recipeCollection.private}
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								fill="none"
