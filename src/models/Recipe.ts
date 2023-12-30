@@ -11,5 +11,6 @@ export interface Recipe {
 
 	id: string;
 	collectionId: string;
+	creatorId: string;
 	url: string;
 }

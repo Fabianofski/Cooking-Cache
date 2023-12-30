@@ -30,7 +30,8 @@
 		description: [''],
 		id: '',
 		url: '',
-		collectionId: data.collectionId
+		collectionId: data.collectionId,
+		creatorId: ''
 	};
 
 	let user: User;
@@ -83,10 +84,13 @@
 		// Remove empty buffer fields at end from array inputs
 		recipe.ingredients.pop();
 		recipe.description.pop();
+
+		recipe.creatorId = user.uid;
+
 		formData.append('recipe', JSON.stringify(recipe));
 
 		user.getIdToken().then((token) => {
-			fetch('/api/recipe', {
+			fetch(`/api/collection/${data.collectionId}/recipe`, {
 				method: 'POST',
 				body: formData,
 				headers: {

@@ -24,7 +24,7 @@ export async function PATCH({ params, request }) {
 
 			const photoURL = await uploadFileToStorage(
 				cover,
-				`collections/${collectionId}/${collectionId}.${cover.name.split('.').pop()}`
+				`collections/${collectionId}/${collectionId}`
 			);
 			await database.ref(`collections/${collectionId}/cover`).set(photoURL);
 
