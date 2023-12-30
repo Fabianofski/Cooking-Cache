@@ -1,8 +1,8 @@
 import { database, verifyIdToken, uploadFileToStorage } from '$lib/firebase.admin';
 import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
-import type { Recipe } from '../../../models/Recipe.js';
-import type { RecipeCollection } from '../../../models/RecipeCollections.js';
+import type { Recipe } from '../../../../../models/Recipe.js';
+import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
 
 export async function POST({ request }) {
 	const token = request.headers.get('Authorization');
@@ -33,6 +33,38 @@ export async function POST({ request }) {
 		try {
 			await database.ref(`collections/${recipe.collectionId}/recipes/${recipe.id}`).set(recipe);
 			return json(recipe);
+		} catch (err) {
+			console.error(err);
+			return new Response('500 Internal Server Error', { status: 500 });
+		}
+	} catch {
+		return new Response('401 Unauthorized', { status: 401 });
+	}
+}
+
+export async function DELETE({ request, params, url }) {
+	const token = request.headers.get('Authorization');
+	const collectionId = params.collectionId;
+	const recipeId = url.searchParams.get('id');
+
+	if (!collectionId || !token || !recipeId) return new Response('400 Bad Request', { status: 400 });
+
+	try {
+		const uid = await verifyIdToken(token);
+
+		const data = await database.ref(`collections/${collectionId}`).get();
+		const collection: RecipeCollection = data.val() || {};
+		if (!collection) return new Response('404 Not Found', { status: 404 });
+
+		const recipe = collection.recipes.find((x) => x.id === recipeId);
+		if (!recipe) return new Response('404 Not Found', { status: 404 });
+
+		if (collection.ownerId !== uid || recipe?.creatorId !== uid)
+			return new Response('403 Forbidden', { status: 403 });
+
+		try {
+			await database.ref(`collections/${collectionId}/recipes/${recipeId}`).remove();
+			return new Response('200 OK', { status: 200 });
 		} catch (err) {
 			console.error(err);
 			return new Response('500 Internal Server Error', { status: 500 });
