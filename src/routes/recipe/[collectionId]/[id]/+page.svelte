@@ -17,7 +17,23 @@
 
 {#if recipe || loading}
 	<div>
-		<Header backLink={`/recipes/${data.collectionId}`} title={recipe?.title || ''} {loading} />
+		<Header
+			backLink={`/recipes/${data.collectionId}`}
+			title={recipe?.title || ''}
+			{loading}
+			options={[
+				{
+					title: 'Rezept bearbeiten',
+					callback: () => console.log('edit'),
+					icon: '/edit.svg'
+				},
+				{
+					title: 'Rezept Löschen',
+					callback: () => console.log('delete'),
+					icon: '/delete.svg'
+				}
+			]}
+		/>
 		<RecipePage {recipe} />
 	</div>
 {:else}

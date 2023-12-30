@@ -3,12 +3,13 @@
 	export let loading: boolean;
 	export let backLink: string | undefined = undefined;
 	export let sticky: boolean = false;
+	export let options: { callback: () => void; title: string; icon: string | undefined }[] = [];
 </script>
 
 <div class={`w-full bg-base-100 ${sticky ? 'sticky top-16 z-10' : ''}`}>
 	<div class="w-full relative">
 		{#if backLink}
-			<a href={backLink} class="absolute top-1 l-0">
+			<a href={backLink} class="absolute top-1">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
@@ -25,6 +26,7 @@
 				</svg>
 			</a>
 		{/if}
+
 		{#if loading}
 			<div class="w-full flex justify-center">
 				<div class="skeleton h-6 w-32" />
@@ -32,6 +34,39 @@
 		{:else}
 			<h2 class="text-lg font-bold text-center">{title}</h2>
 		{/if}
+
+		<div class="absolute top-1 right-0">
+			<details class="dropdown dropdown-end">
+				<summary class="btn btn-ghost btn-xs">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-6 h-6"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+						/>
+					</svg>
+				</summary>
+				<ul class="py-2 shadow menu dropdown-content z-[1] bg-base-200 rounded w-52">
+					{#each options as option}
+						<button class="btn btn-ghost min-h-0 h-8 flex justify-start" on:click={option.callback}>
+							{#if option.icon}<img
+									class="h-5"
+									src={option.icon}
+									alt={option.title + 'Icon'}
+								/>{/if}
+							{option.title}
+						</button>
+					{/each}
+				</ul>
+			</details>
+		</div>
 	</div>
 	<div class="divider my-0" />
 </div>
