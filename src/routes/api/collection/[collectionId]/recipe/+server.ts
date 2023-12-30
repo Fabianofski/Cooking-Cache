@@ -1,4 +1,4 @@
-import { database, verifyIdToken, uploadFileToStorage } from '$lib/firebase.admin';
+import { database, verifyIdToken, uploadFileToStorage, bucket } from '$lib/firebase.admin';
 import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
 import type { Recipe } from '../../../../../models/Recipe.js';
@@ -27,7 +27,7 @@ export async function POST({ request }) {
 		if (cover)
 			recipe.image = await uploadFileToStorage(
 				cover,
-				`collections/${recipe.collectionId}/recipes/${recipe.id}.${cover.name.split('.').pop()}`
+				`collections/${recipe.collectionId}/recipes/${recipe.id}`
 			);
 
 		try {
@@ -64,6 +64,10 @@ export async function DELETE({ request, params, url }) {
 
 		try {
 			await database.ref(`collections/${collectionId}/recipes/${recipeId}`).remove();
+
+			const reference = bucket.file(`collections/${recipe.collectionId}/recipes/${recipe.id}`);
+			await reference.delete();
+
 			return new Response('200 OK', { status: 200 });
 		} catch (err) {
 			console.error(err);
