@@ -10,12 +10,15 @@ export async function DELETE({ request, params }) {
 			const collectionId = params.collectionId;
 
 			const data = await database.ref(`collections/${collectionId}`).get();
-			let val: RecipeCollection = data.val();
+			let collection: RecipeCollection = data.val();
 
-			if (!val) return new Response('404 Not Found', { status: 404 });
+			if (!collection) return new Response('404 Not Found', { status: 404 });
+
+			let participants = collection.participants ?? [];
+			participants = participants.filter((p) => p.uid !== uid);
 
 			await database.ref(`users/${uid}/joinedCollectionsIds/${collectionId}`).remove();
-			await database.ref(`collections/${collectionId}/participants/${uid}`).remove();
+			await database.ref(`collections/${collectionId}/participants`).set(participants);
 			return new Response('200 OK', { status: 200 });
 		} catch (err) {
 			console.error(err);
