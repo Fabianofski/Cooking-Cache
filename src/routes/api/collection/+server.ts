@@ -59,20 +59,25 @@ export async function POST({ request, url }) {
 
 	try {
 		const uid = await verifyIdToken(token);
-		const collectionName = url.searchParams.get('collectionName');
+		try {
+			const collectionName = url.searchParams.get('collectionName');
 
-		if (!collectionName) return new Response('400 Bad Request', { status: 400 });
-		let illegalCharacters = ['.', '#', '$', '[', ']'];
-		for (let char of illegalCharacters) {
-			if (collectionName.includes(char)) {
-				return new Response(
-					'400 Bad Request. ' + illegalCharacters.join(' ,' + ' are not allowed.'),
-					{ status: 400 }
-				);
+			if (!collectionName) return new Response('400 Bad Request', { status: 400 });
+			let illegalCharacters = ['.', '#', '$', '[', ']'];
+			for (let char of illegalCharacters) {
+				if (collectionName.includes(char)) {
+					return new Response(
+						'400 Bad Request. ' + illegalCharacters.join(' ,' + ' are not allowed.'),
+						{ status: 400 }
+					);
+				}
 			}
-		}
 
-		return addCollectionToDatabase(collectionName, uid);
+			return addCollectionToDatabase(collectionName, uid);
+		} catch (err) {
+			console.error(err);
+			return new Response('500 Internal Server Error', { status: 500 });
+		}
 	} catch {
 		return new Response('401 Unauthorized', { status: 401 });
 	}
@@ -83,21 +88,27 @@ export async function PATCH({ request, url }) {
 
 	try {
 		const uid = await verifyIdToken(token);
-		const newCollectionName = url.searchParams.get('newCollectionName');
-		const collectionId = url.searchParams.get('collectionId');
+		try {
+			const newCollectionName = url.searchParams.get('newCollectionName');
+			const collectionId = url.searchParams.get('collectionId');
 
-		if (!newCollectionName || !collectionId)
-			return new Response('400 Bad Request', { status: 400 });
+			if (!newCollectionName || !collectionId)
+				return new Response('400 Bad Request', { status: 400 });
 
-		const data = await database.ref(`collections/${collectionId}`).get();
-		let val: RecipeCollection = data.val();
+			const data = await database.ref(`collections/${collectionId}`).get();
+			let val: RecipeCollection = data.val();
 
-		if (!collectionId) return new Response('404 Not Found', { status: 404 });
-		val.name = newCollectionName;
+			if (!val) return new Response('404 Not Found', { status: 404 });
+			if (val.ownerId !== uid) return new Response('403 Forbidden', { status: 403 });
+			val.name = newCollectionName;
 
-		await database.ref(`collections/${collectionId}`).set(val);
+			await database.ref(`collections/${collectionId}`).set(val);
 
-		return new Response('200 OK', { status: 200 });
+			return new Response('200 OK', { status: 200 });
+		} catch (err) {
+			console.error(err);
+			return new Response('500 Internal Server Error', { status: 500 });
+		}
 	} catch {
 		return new Response('401 Unauthorized', { status: 401 });
 	}
@@ -108,18 +119,21 @@ export async function DELETE({ request, url }) {
 
 	try {
 		const uid = await verifyIdToken(token);
-		const collectionId = url.searchParams.get('collectionId');
+		try {
+			const collectionId = url.searchParams.get('collectionId');
 
-		const ref = database.ref(`collections/${collectionId}`);
-		ref
-			.remove()
-			.then(() => {
-				return new Response('200 OK', { status: 200 });
-			})
-			.catch((err) => {
-				console.error(err);
-				return new Response('500 Internal Server Error', { status: 500 });
-			});
+			const data = await database.ref(`collections/${collectionId}`).get();
+			let val: RecipeCollection = data.val();
+
+			if (!val) return new Response('404 Not Found', { status: 404 });
+			if (val.ownerId !== uid) return new Response('403 Forbidden', { status: 403 });
+
+			await database.ref(`collections/${collectionId}`).remove();
+			return new Response('200 OK', { status: 200 });
+		} catch (err) {
+			console.error(err);
+			return new Response('500 Internal Server Error', { status: 500 });
+		}
 	} catch {
 		return new Response('401 Unauthorized', { status: 401 });
 	}
