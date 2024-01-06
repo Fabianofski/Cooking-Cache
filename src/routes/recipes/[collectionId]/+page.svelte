@@ -1,22 +1,18 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
-	import RecipeCard from '../../../components/RecipeCard.svelte';
-	import type { Recipe } from '../../../models/Recipe';
-	import {
-		currentUser,
-		loadingStateStore,
-		recipesStore,
-		type LoadingState
-	} from '../../../stores/store';
-	import { fullTextFilter } from './filter';
-	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
 	import Header from '../../../components/Header.svelte';
+	import RecipeCard from '../../../components/RecipeCard.svelte';
+	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
+	import type { Recipe } from '../../../models/Recipe';
+	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
+	import { currentUser, loadingStateStore, type LoadingState } from '../../../stores/store';
+	import { fullTextFilter } from './filter';
 
 	export let data;
 
 	let recipes: Recipe[] = [];
 	let collectionName: string;
-	recipesStore.subscribe((value) => {
+	recipeCollectionsStore.subscribe((value) => {
 		if (!(data.collectionId in value)) return;
 		recipes = value[data.collectionId].recipes || [];
 		collectionName = value[data.collectionId].name;

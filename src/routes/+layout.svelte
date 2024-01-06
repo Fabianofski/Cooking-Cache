@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { auth } from '$lib/firebase.client';
+	import { getUserRecipeCollections } from '$lib/recipeCollection.handler';
 	import type { User } from 'firebase/auth';
 	import '../app.css';
-	import { currentUser, loadingStateStore, recipesStore } from '../stores/store';
-	import { auth } from '$lib/firebase.client';
 	import Alerts from '../components/alerts/Alerts.svelte';
-	import { page } from '$app/stores';
-	import type { RecipeCollections } from '../models/RecipeCollections';
+	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
+	import { currentUser, loadingStateStore } from '../stores/store';
 
 	let user: User | null;
 
@@ -13,27 +14,18 @@
 		user = value;
 	});
 
-	auth.onAuthStateChanged((value) => {
+	auth.onAuthStateChanged(async (value) => {
 		loadingStateStore.set('LOADING');
 		currentUser.set(value);
 
 		if (value === null) {
 			loadingStateStore.set('NOUSER');
-			recipesStore.set({});
+			recipeCollectionsStore.set({});
 			return;
 		}
-		value.getIdToken().then((token) => {
-			fetch('/api/collection', {
-				headers: {
-					Accept: 'application/json',
-					Authorization: token
-				}
-			}).then(async (response) => {
-				const data: RecipeCollections = await response.json();
-				recipesStore.set(data);
-				loadingStateStore.set('FINISHED');
-			});
-		});
+
+		await getUserRecipeCollections(value);
+		loadingStateStore.set('FINISHED');
 	});
 </script>
 

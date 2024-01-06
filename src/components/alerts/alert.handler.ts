@@ -24,4 +24,4 @@ function createNewAlert(alert: AlertOptions) {
 	}, (alert.lifetime ?? 5) * 1000);
 }
 
-export { createNewAlert, alertStore };
+export { alertStore, createNewAlert };

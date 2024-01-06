@@ -1,4 +1,4 @@
-import { verifyIdToken, database } from '$lib/firebase.admin';
+import { database, verifyIdToken } from '$lib/firebase.admin';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections';
 
 export async function PATCH({ request, url, params }) {

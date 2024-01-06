@@ -1,16 +1,13 @@
 <script lang="ts">
-	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
-	import {
-		currentUser,
-		recipesStore,
-		type LoadingState,
-		loadingStateStore
-	} from '../../stores/store';
-	import type { RecipeCollection, RecipeCollections } from '../../models/RecipeCollections';
+	import { createNewRecipeCollection } from '$lib/recipeCollection.handler';
 	import type { User } from 'firebase/auth';
-	import { createNewAlert } from '../../components/alerts/alert.handler';
-	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
 	import Header from '../../components/Header.svelte';
+	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
+	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
+	import { createNewAlert } from '../../components/alerts/alert.handler';
+	import type { RecipeCollections } from '../../models/RecipeCollections';
+	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
+	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
@@ -18,7 +15,7 @@
 	});
 
 	let recipeCollections: RecipeCollections;
-	recipesStore.subscribe((value) => {
+	recipeCollectionsStore.subscribe((value) => {
 		recipeCollections = value;
 	});
 
@@ -31,7 +28,7 @@
 	let illegalCharacters = ['.', '#', '$', '[', ']'];
 	let collectionName: string = '';
 	let loading: boolean = false;
-	function createNewCollection() {
+	async function createNewCollection() {
 		for (let char of illegalCharacters) {
 			if (collectionName.includes(char)) {
 				createNewAlert({
@@ -45,37 +42,12 @@
 			}
 		}
 
-		loading = true;
+		if (!user) return;
 
-		user?.getIdToken().then((token) => {
-			fetch(`/api/collection?collectionName=${collectionName}`, {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					Authorization: token
-				}
-			})
-				.then(async (response: Response) => {
-					const collection: RecipeCollection = await response.json();
-					recipesStore.update((value) => {
-						value[collection.id] = collection;
-						return value;
-					});
-					loading = false;
-					createCollectionModal.close();
-					createNewAlert({
-						message: 'Die Rezeptsammlung wurde erfolgreich hinzugefügt!',
-						type: 'success'
-					});
-				})
-				.catch(() => {
-					loading = false;
-					createNewAlert({
-						message: 'Beim Hinzufügen der Rezeptsammlung ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-				});
-		});
+		loading = true;
+		await createNewRecipeCollection(user, collectionName);
+		loading = false;
+		createCollectionModal.close();
 	}
 </script>
 

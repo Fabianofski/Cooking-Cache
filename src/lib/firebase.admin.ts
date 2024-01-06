@@ -1,11 +1,11 @@
-import admin from 'firebase-admin';
 import {
-	PRIVATE_KEY,
-	PROJECT_ID,
 	CLIENT_EMAIL,
 	DATABASE_URL,
+	PRIVATE_KEY,
+	PROJECT_ID,
 	STORAGE_URL
 } from '$env/static/private';
+import admin from 'firebase-admin';
 import { getAuth } from 'firebase-admin/auth';
 import { Magic } from 'mmmagic';
 
@@ -78,4 +78,4 @@ function verifyIdToken(token: string | null): Promise<string> {
 	});
 }
 
-export { admin, bucket, database, auth, verifyIdToken, uploadFileToStorage };
+export { admin, auth, bucket, database, uploadFileToStorage, verifyIdToken };

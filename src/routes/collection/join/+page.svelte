@@ -1,10 +1,9 @@
 <script lang="ts">
+	import { joinRecipeCollectionWithInviteCode } from '$lib/recipeCollection.handler.js';
 	import type { User } from 'firebase/auth';
-	import { currentUser, recipesStore } from '../../../stores/store.js';
-	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { createNewAlert } from '../../../components/alerts/alert.handler.js';
+	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
+	import { currentUser } from '../../../stores/store.js';
 
 	export let data;
 
@@ -24,10 +23,6 @@
 						recipeCollection = data;
 						owner = recipeCollection?.participants?.find((p) => p.uid === data.ownerId);
 					});
-				} else {
-					res.json().then((data) => {
-						console.log(data);
-					});
 				}
 				loading = false;
 			})
@@ -38,45 +33,12 @@
 	});
 
 	let loadingJoin = false;
-	function joinCollection() {
-		user?.getIdToken().then((token) => {
-			loadingJoin = true;
-			fetch(`/api/collection/join?i=${data.inviteCode}`, {
-				method: 'POST',
-				headers: {
-					Authorization: token
-				}
-			})
-				.then((res) => {
-					if (res.status === 200) {
-						res.json().then((data) => {
-							const collection: RecipeCollection = data;
-							console.log(collection);
-							recipesStore.update((recipes) => {
-								recipes[collection.id] = collection;
-								return recipes;
-							});
-							goto(`/recipes/${collection.id}`);
-							createNewAlert({
-								type: 'success',
-								message: `Du bist der Rezeptsammlung erfolgreich beigetreten!`
-							});
-						});
-					} else {
-						res.json().then((data) => {
-							console.log(data);
-						});
-					}
-					loadingJoin = false;
-				})
-				.catch(() => {
-					createNewAlert({
-						type: 'error',
-						message: 'Beitreten der Rezeptsammlung fehlgeschlagen!'
-					});
-					loadingJoin = false;
-				});
-		});
+	async function joinCollection() {
+		if (!user || !data.inviteCode) return;
+
+		loadingJoin = true;
+		await joinRecipeCollectionWithInviteCode(user, data.inviteCode);
+		loadingJoin = false;
 	}
 </script>
 

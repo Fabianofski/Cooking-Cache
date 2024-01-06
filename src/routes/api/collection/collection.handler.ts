@@ -1,7 +1,7 @@
 import { auth, database } from '$lib/firebase.admin';
 import { json } from '@sveltejs/kit';
-import type { RecipeCollection } from '../../../models/RecipeCollections';
 import { v4 as uuidv4 } from 'uuid';
+import type { RecipeCollection } from '../../../models/RecipeCollections';
 
 export function generateRandomInviteCode() {
 	let code = '';

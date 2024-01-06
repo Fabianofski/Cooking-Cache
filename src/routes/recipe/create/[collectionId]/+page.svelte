@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { addRecipeToCollection } from '$lib/recipe.handler';
+	import type { User } from 'firebase/auth';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../../models/Recipe';
-	import { currentUser, recipesStore } from '../../../../stores/store';
-	import type { User } from 'firebase/auth';
+	import { currentUser } from '../../../../stores/store';
 	import RecipePage from '../../[collectionId]/[id]/RecipePage.svelte';
 
 	export let data;
@@ -75,7 +75,7 @@
 	}
 
 	let loading = false;
-	function addRecipeHandler() {
+	async function addRecipeHandler() {
 		loading = true;
 
 		let formData = new FormData();
@@ -88,37 +88,8 @@
 		recipe.creatorId = user.uid;
 
 		formData.append('recipe', JSON.stringify(recipe));
-
-		user.getIdToken().then((token) => {
-			fetch(`/api/collection/${data.collectionId}/recipe`, {
-				method: 'POST',
-				body: formData,
-				headers: {
-					Accept: 'application/json',
-					Authorization: token
-				}
-			})
-				.then(async (response: Response) => {
-					const recipe = (await response.json()) as Recipe;
-					recipesStore.update((value) => {
-						value[data.collectionId].recipes.push(recipe);
-						return value;
-					});
-					loading = false;
-					createNewAlert({
-						message: 'Das Rezept wurde erfolgreich hinzugefügt!',
-						type: 'success'
-					});
-					goto(`/recipe/${recipe.collectionId}/${recipe.id}`);
-				})
-				.catch(() => {
-					loading = false;
-					createNewAlert({
-						message: 'Beim Hinzufügen vom Rezept ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-				});
-		});
+		await addRecipeToCollection(user, formData, data.collectionId);
+		loading = false;
 	}
 </script>
 

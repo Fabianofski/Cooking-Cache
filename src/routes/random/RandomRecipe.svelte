@@ -1,11 +1,11 @@
 <script lang="ts">
 	import RecipeCard from '../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../models/Recipe';
-	import { recipesStore } from '../../stores/store';
+	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 
 	let recipes: Recipe[] = [];
 	let index = 0;
-	recipesStore.subscribe((value) => {
+	recipeCollectionsStore.subscribe((value) => {
 		if (Object.values(value).length > 0) recipes = Object.values(value)[0].recipes;
 	});
 
