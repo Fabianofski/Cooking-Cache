@@ -1,12 +1,10 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { addRecipeToCollection } from '$lib/recipe.handler';
+	import type { User } from 'firebase/auth';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../../models/Recipe';
 	import { currentUser } from '../../../../stores/store';
-	import type { User } from 'firebase/auth';
 	import RecipePage from '../../[collectionId]/[id]/RecipePage.svelte';
-	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
-	import { addRecipeToCollection } from '$lib/recipe.handler';
 
 	export let data;
 

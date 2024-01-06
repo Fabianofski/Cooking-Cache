@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
+	import Header from '../../../components/Header.svelte';
 	import RecipeCard from '../../../components/RecipeCard.svelte';
+	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
 	import type { Recipe } from '../../../models/Recipe';
+	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../../stores/store';
 	import { fullTextFilter } from './filter';
-	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
-	import Header from '../../../components/Header.svelte';
-	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 
 	export let data;
 

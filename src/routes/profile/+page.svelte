@@ -1,20 +1,20 @@
 <script lang="ts">
-	import {
-		signOut,
-		type User,
-		deleteUser,
-		updatePassword,
-		AuthCredential,
-		EmailAuthProvider,
-		reauthenticateWithCredential,
-		reauthenticateWithPopup,
-		OAuthProvider
-	} from 'firebase/auth';
-	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase.client';
-	import { createNewAlert } from '../../components/alerts/alert.handler';
+	import {
+		AuthCredential,
+		EmailAuthProvider,
+		OAuthProvider,
+		deleteUser,
+		reauthenticateWithCredential,
+		reauthenticateWithPopup,
+		signOut,
+		updatePassword,
+		type User
+	} from 'firebase/auth';
 	import { onMount } from 'svelte';
+	import { createNewAlert } from '../../components/alerts/alert.handler';
+	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 
 	let oldPassword: string = '';
 	let password: string = '';

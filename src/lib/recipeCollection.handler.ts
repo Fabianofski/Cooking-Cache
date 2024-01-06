@@ -1,9 +1,8 @@
-import { createNewAlert } from '../components/alerts/alert.handler';
-import type { User } from 'firebase/auth';
 import { goto } from '$app/navigation';
-import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
+import type { User } from 'firebase/auth';
+import { createNewAlert } from '../components/alerts/alert.handler';
 import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
-import { loadingStateStore } from '../stores/store';
+import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 
 async function createNewRecipeCollection(user: User, collectionName: string) {
 	const token = await user.getIdToken();
@@ -238,11 +237,11 @@ async function deleteRecipeCollection(user: User, collectionId: string) {
 }
 export {
 	createNewRecipeCollection,
+	deleteRecipeCollection,
+	editRecipeCollectionCoverImage,
+	editRecipeCollectionName,
 	getUserRecipeCollections,
 	joinRecipeCollectionWithInviteCode,
-	editRecipeCollectionName,
-	editRecipeCollectionCoverImage,
-	toggleRecipeCollectionVisibility,
 	leaveRecipeCollection,
-	deleteRecipeCollection
+	toggleRecipeCollectionVisibility
 };

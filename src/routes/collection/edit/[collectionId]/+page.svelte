@@ -1,17 +1,17 @@
 <script lang="ts">
-	import type { User } from 'firebase/auth';
-	import { currentUser, loadingStateStore, type LoadingState } from '../../../../stores/store.js';
-	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
-	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
-	import Header from '../../../../components/Header.svelte';
-	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore.js';
 	import {
-		editRecipeCollectionName,
+		deleteRecipeCollection,
 		editRecipeCollectionCoverImage,
-		toggleRecipeCollectionVisibility,
+		editRecipeCollectionName,
 		leaveRecipeCollection,
-		deleteRecipeCollection
+		toggleRecipeCollectionVisibility
 	} from '$lib/recipeCollection.handler.js';
+	import type { User } from 'firebase/auth';
+	import Header from '../../../../components/Header.svelte';
+	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
+	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
+	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore.js';
+	import { currentUser, loadingStateStore, type LoadingState } from '../../../../stores/store.js';
 
 	export let data;
 	const collectionId = data.collectionId;

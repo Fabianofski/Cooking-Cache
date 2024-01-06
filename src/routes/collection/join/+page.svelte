@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { User } from 'firebase/auth';
-	import { currentUser } from '../../../stores/store.js';
-	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
-	import { onMount } from 'svelte';
 	import { joinRecipeCollectionWithInviteCode } from '$lib/recipeCollection.handler.js';
+	import type { User } from 'firebase/auth';
+	import { onMount } from 'svelte';
+	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
+	import { currentUser } from '../../../stores/store.js';
 
 	export let data;
 

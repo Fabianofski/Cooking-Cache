@@ -1,13 +1,13 @@
 <script lang="ts">
-	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
-	import { currentUser, type LoadingState, loadingStateStore } from '../../stores/store';
-	import type { RecipeCollection, RecipeCollections } from '../../models/RecipeCollections';
-	import type { User } from 'firebase/auth';
-	import { createNewAlert } from '../../components/alerts/alert.handler';
-	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
-	import Header from '../../components/Header.svelte';
-	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 	import { createNewRecipeCollection } from '$lib/recipeCollection.handler';
+	import type { User } from 'firebase/auth';
+	import Header from '../../components/Header.svelte';
+	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
+	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
+	import { createNewAlert } from '../../components/alerts/alert.handler';
+	import type { RecipeCollections } from '../../models/RecipeCollections';
+	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
+	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 
 	let user: User | null;
 	currentUser.subscribe((value) => {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type AlertOptions from '../../models/AlertOptions';
 	import Alert from './Alert.svelte';
-	import { alertStore, createNewAlert } from './alert.handler';
+	import { alertStore } from './alert.handler';
 
 	let alerts: {
 		[key: string]: AlertOptions;

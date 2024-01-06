@@ -1,13 +1,12 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { auth } from '$lib/firebase.client';
+	import { getUserRecipeCollections } from '$lib/recipeCollection.handler';
 	import type { User } from 'firebase/auth';
 	import '../app.css';
-	import { currentUser, loadingStateStore } from '../stores/store';
-	import { auth } from '$lib/firebase.client';
 	import Alerts from '../components/alerts/Alerts.svelte';
-	import { page } from '$app/stores';
-	import type { RecipeCollections } from '../models/RecipeCollections';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
-	import { getUserRecipeCollections } from '$lib/recipeCollection.handler';
+	import { currentUser, loadingStateStore } from '../stores/store';
 
 	let user: User | null;
 

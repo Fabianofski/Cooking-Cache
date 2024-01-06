@@ -1,11 +1,11 @@
 <script lang="ts">
+	import { deleteRecipeFromCollection } from '$lib/recipe.handler';
 	import type { User } from 'firebase/auth';
 	import Header from '../../../../components/Header.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
+	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
 	import { currentUser } from '../../../../stores/store';
 	import RecipePage from './RecipePage.svelte';
-	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
-	import { deleteRecipeFromCollection } from '$lib/recipe.handler';
 
 	export let data;
 

@@ -1,19 +1,19 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase.client';
 	import {
+		FacebookAuthProvider,
+		GoogleAuthProvider,
+		OAuthProvider,
 		createUserWithEmailAndPassword,
 		signInWithEmailAndPassword,
-		GoogleAuthProvider,
-		FacebookAuthProvider,
-		OAuthProvider,
-		updateProfile,
 		signInWithPopup,
+		updateProfile,
 		type AuthProvider,
 		type UserCredential
 	} from 'firebase/auth';
-	import { currentUser } from '../../stores/store';
-	import { goto } from '$app/navigation';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
+	import { currentUser } from '../../stores/store';
 
 	let loggingIn = true;
 	let optIn = false;
