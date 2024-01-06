@@ -4,7 +4,7 @@ import type { RecipeCollection } from '../../../../../models/RecipeCollections.j
 export async function PATCH({ params, request, url }) {
 	const token = request.headers.get('Authorization');
 	const collectionId = params.collectionId;
-	const visibility: boolean | undefined = Boolean(url.searchParams.get('private'));
+	const visibility: boolean | undefined = url.searchParams.get('private') === 'true';
 
 	if (!token || !collectionId || visibility === undefined)
 		return new Response('400 Bad Request', { status: 400 });

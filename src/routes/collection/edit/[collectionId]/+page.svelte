@@ -3,9 +3,15 @@
 	import { currentUser, loadingStateStore, type LoadingState } from '../../../../stores/store.js';
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
-	import { goto } from '$app/navigation';
 	import Header from '../../../../components/Header.svelte';
 	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore.js';
+	import {
+		deleteRecipeCollection,
+		editRecipeCollectionName,
+		leaveRecipeCollection,
+		replaceRecipeCollectionCoverImage,
+		toggleRecipeCollectionVisibility
+	} from '$lib/recipeCollection.handler.js';
 
 	export let data;
 	const collectionId = data.collectionId;
@@ -46,7 +52,7 @@
 	let editingName: boolean;
 	let loadingRename: boolean;
 	let newName: string;
-	function editName() {
+	async function editName() {
 		if (!editingName) {
 			newName = collectionName;
 			editingName = true;
@@ -58,101 +64,34 @@
 			return;
 		}
 
+		if (!user) return;
+
 		loadingRename = true;
 		collectionName = newName;
-		user?.getIdToken().then((token) => {
-			fetch(`/api/collection/${collectionId}/name?newCollectionName=${collectionName}`, {
-				method: 'PATCH',
-				headers: {
-					Authorization: token
-				}
-			})
-				.then(async () => {
-					recipeCollectionsStore.update((value) => {
-						value[collectionId].name = collectionName;
-						return value;
-					});
-					createNewAlert({
-						message: 'Der Name der Rezeptsammlung wurde erfolgreich geändert!',
-						type: 'success'
-					});
-					loadingRename = false;
-					editingName = false;
-				})
-				.catch(() => {
-					createNewAlert({
-						message: 'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-					loadingRename = false;
-					editingName = false;
-				});
-		});
+
+		await editRecipeCollectionName(user, collectionId, newName);
+
+		loadingRename = false;
+		editingName = false;
 	}
 
 	let dialog: HTMLDialogElement;
 	let confirmation: string = '';
 	let loadingDeletion: boolean = false;
-	function deleteList() {
+	async function deleteList() {
+		if (!user) return;
+
 		loadingDeletion = true;
-		user?.getIdToken().then((token) => {
-			fetch(`/api/collection?collectionId=${collectionId}`, {
-				method: 'DELETE',
-				headers: {
-					Authorization: token
-				}
-			})
-				.then(async () => {
-					recipeCollectionsStore.update((value) => {
-						delete value[collectionId];
-						return value;
-					});
-					createNewAlert({
-						message: 'Die Rezeptsammlung wurde erfolgreich gelöscht!',
-						type: 'success'
-					});
-					loadingDeletion = false;
-					goto('/recipes');
-				})
-				.catch(() => {
-					createNewAlert({
-						message: 'Beim Löschen der Rezeptsammlung ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-					loadingDeletion = false;
-				});
-		});
+		await deleteRecipeCollection(user, collectionId);
+		loadingDeletion = false;
 	}
 
-	function leaveList() {
+	async function leaveList() {
+		if (!user) return;
+
 		loadingDeletion = true;
-		user?.getIdToken().then((token) => {
-			fetch(`/api/collection/${collectionId}/leave`, {
-				method: 'DELETE',
-				headers: {
-					Authorization: token
-				}
-			})
-				.then(async () => {
-					recipeCollectionsStore.update((value) => {
-						delete value[collectionId];
-						return value;
-					});
-					createNewAlert({
-						message: 'Du hast die Rezeptsammlung erfolgreich verlassen!',
-						type: 'success'
-					});
-					loadingDeletion = false;
-					goto('/recipes');
-				})
-				.catch(() => {
-					createNewAlert({
-						message: 'Beim Verlassen der Rezeptsammlung ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-					loadingDeletion = false;
-				});
-		});
+		await leaveRecipeCollection(user, collectionId);
+		loadingDeletion = false;
 	}
 
 	let coverFileInput: HTMLInputElement;
@@ -161,79 +100,22 @@
 	}
 
 	let loadingCoverReplacement: boolean = false;
-	function replaceCoverImage(event: Event) {
+	async function replaceCoverImage(event: Event) {
 		const file = (event.target as HTMLInputElement).files?.[0];
-		if (!file) return;
+		if (!file || !user) return;
 
-		if (!(file['type'].split('/')[0] === 'image')) {
-			createNewAlert({
-				message: `Das Cover der Rezeptsammlung muss eine Bilddatei sein!`,
-				type: 'error'
-			});
-			return;
-		}
 		loadingCoverReplacement = true;
-
-		const formData = new FormData();
-		formData.append('cover', file);
-		user?.getIdToken().then((token) => {
-			fetch(`/api/collection/${collectionId}/cover`, {
-				method: 'PATCH',
-				headers: {
-					Authorization: token
-				},
-				body: formData
-			})
-				.then(async (response) => {
-					const photoURL = await response.json();
-					recipeCollectionsStore.update((value) => {
-						value[collectionId].cover = photoURL;
-						return value;
-					});
-					createNewAlert({
-						message: 'Das Cover der Rezeptsammlung wurde erfolgreich geändert!',
-						type: 'success'
-					});
-					loadingCoverReplacement = false;
-				})
-				.catch(() => {
-					createNewAlert({
-						message: 'Beim Ändern des Covers ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-					loadingCoverReplacement = false;
-				});
-		});
+		await replaceRecipeCollectionCoverImage(user, collectionId, file);
+		loadingCoverReplacement = false;
 	}
 
 	let loadingVisibilityChange: boolean = false;
-	function changeCollectionVisibility() {
-		user?.getIdToken().then((token) => {
-			loadingVisibilityChange = true;
-			fetch(`/api/collection/${collectionId}/visibility?private=${recipeCollection.private}`, {
-				method: 'PATCH',
-				headers: {
-					Authorization: token
-				}
-			})
-				.then(() => {
-					loadingVisibilityChange = false;
-					createNewAlert({
-						message: `Die Rezeptsammlung ist nun ${
-							recipeCollection.private ? 'privat' : 'öffentlich'
-						}!`,
-						type: 'success'
-					});
-				})
-				.catch(() => {
-					loadingVisibilityChange = false;
-					recipeCollection.private = !recipeCollection.private;
-					createNewAlert({
-						message: 'Beim Ändern der Sichtbarkeit ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-				});
-		});
+	async function changeCollectionVisibility() {
+		if (!user) return;
+
+		loadingVisibilityChange = true;
+		await toggleRecipeCollectionVisibility(user, collectionId, !recipeCollection.private);
+		loadingVisibilityChange = false;
 	}
 </script>
 
