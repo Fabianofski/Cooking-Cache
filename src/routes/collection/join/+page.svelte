@@ -1,10 +1,11 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
-	import { currentUser, recipesStore } from '../../../stores/store.js';
+	import { currentUser } from '../../../stores/store.js';
 	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { createNewAlert } from '../../../components/alerts/alert.handler.js';
+	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore.js';
 
 	export let data;
 
@@ -52,7 +53,7 @@
 						res.json().then((data) => {
 							const collection: RecipeCollection = data;
 							console.log(collection);
-							recipesStore.update((recipes) => {
+							recipeCollectionsStore.update((recipes) => {
 								recipes[collection.id] = collection;
 								return recipes;
 							});

@@ -1,16 +1,12 @@
 <script lang="ts">
 	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
-	import {
-		currentUser,
-		recipesStore,
-		type LoadingState,
-		loadingStateStore
-	} from '../../stores/store';
+	import { currentUser, type LoadingState, loadingStateStore } from '../../stores/store';
 	import type { RecipeCollection, RecipeCollections } from '../../models/RecipeCollections';
 	import type { User } from 'firebase/auth';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
 	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
 	import Header from '../../components/Header.svelte';
+	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
@@ -18,7 +14,7 @@
 	});
 
 	let recipeCollections: RecipeCollections;
-	recipesStore.subscribe((value) => {
+	recipeCollectionsStore.subscribe((value) => {
 		recipeCollections = value;
 	});
 
@@ -57,7 +53,7 @@
 			})
 				.then(async (response: Response) => {
 					const collection: RecipeCollection = await response.json();
-					recipesStore.update((value) => {
+					recipeCollectionsStore.update((value) => {
 						value[collection.id] = collection;
 						return value;
 					});

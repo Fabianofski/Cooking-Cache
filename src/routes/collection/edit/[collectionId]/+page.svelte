@@ -1,15 +1,11 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
-	import {
-		currentUser,
-		loadingStateStore,
-		type LoadingState,
-		recipesStore
-	} from '../../../../stores/store.js';
+	import { currentUser, loadingStateStore, type LoadingState } from '../../../../stores/store.js';
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
 	import { goto } from '$app/navigation';
 	import Header from '../../../../components/Header.svelte';
+	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore.js';
 
 	export let data;
 	const collectionId = data.collectionId;
@@ -28,7 +24,7 @@
 	let recipeCollection: RecipeCollection;
 	let isOwner: boolean;
 	let inviteLink: string = '';
-	recipesStore.subscribe((value) => {
+	recipeCollectionsStore.subscribe((value) => {
 		if (collectionId in value) {
 			recipeCollection = value[collectionId];
 			collectionName = recipeCollection.name;
@@ -72,7 +68,7 @@
 				}
 			})
 				.then(async () => {
-					recipesStore.update((value) => {
+					recipeCollectionsStore.update((value) => {
 						value[collectionId].name = collectionName;
 						return value;
 					});
@@ -107,7 +103,7 @@
 				}
 			})
 				.then(async () => {
-					recipesStore.update((value) => {
+					recipeCollectionsStore.update((value) => {
 						delete value[collectionId];
 						return value;
 					});
@@ -138,7 +134,7 @@
 				}
 			})
 				.then(async () => {
-					recipesStore.update((value) => {
+					recipeCollectionsStore.update((value) => {
 						delete value[collectionId];
 						return value;
 					});
@@ -190,7 +186,7 @@
 			})
 				.then(async (response) => {
 					const photoURL = await response.json();
-					recipesStore.update((value) => {
+					recipeCollectionsStore.update((value) => {
 						value[collectionId].cover = photoURL;
 						return value;
 					});

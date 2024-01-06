@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { User } from 'firebase/auth';
 	import '../app.css';
-	import { currentUser, loadingStateStore, recipesStore } from '../stores/store';
+	import { currentUser, loadingStateStore } from '../stores/store';
 	import { auth } from '$lib/firebase.client';
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import { page } from '$app/stores';
 	import type { RecipeCollections } from '../models/RecipeCollections';
+	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 
 	let user: User | null;
 
@@ -19,7 +20,7 @@
 
 		if (value === null) {
 			loadingStateStore.set('NOUSER');
-			recipesStore.set({});
+			recipeCollectionsStore.set({});
 			return;
 		}
 		value.getIdToken().then((token) => {
@@ -30,7 +31,7 @@
 				}
 			}).then(async (response) => {
 				const data: RecipeCollections = await response.json();
-				recipesStore.set(data);
+				recipeCollectionsStore.set(data);
 				loadingStateStore.set('FINISHED');
 			});
 		});

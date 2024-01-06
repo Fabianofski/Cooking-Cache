@@ -2,10 +2,11 @@
 	import type { User } from 'firebase/auth';
 	import Header from '../../../../components/Header.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
-	import { currentUser, recipesStore } from '../../../../stores/store';
+	import { currentUser } from '../../../../stores/store';
 	import RecipePage from './RecipePage.svelte';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import { goto } from '$app/navigation';
+	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
 
 	export let data;
 
@@ -17,7 +18,7 @@
 	let recipe: Recipe | undefined;
 	let loading = true;
 	let editPermissions = false;
-	recipesStore.subscribe((collections) => {
+	recipeCollectionsStore.subscribe((collections) => {
 		if (!collections || !(data.collectionId in collections)) return;
 		loading = false;
 		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
@@ -43,7 +44,7 @@
 			})
 				.then(async () => {
 					const link = `/recipes/${recipe?.collectionId}`;
-					recipesStore.update((value) => {
+					recipeCollectionsStore.update((value) => {
 						if (recipe)
 							value[recipe.collectionId].recipes = value[recipe.collectionId].recipes.filter(
 								(x) => x.id !== recipe?.id

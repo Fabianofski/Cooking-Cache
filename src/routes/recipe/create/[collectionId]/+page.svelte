@@ -2,9 +2,10 @@
 	import { goto } from '$app/navigation';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../../models/Recipe';
-	import { currentUser, recipesStore } from '../../../../stores/store';
+	import { currentUser } from '../../../../stores/store';
 	import type { User } from 'firebase/auth';
 	import RecipePage from '../../[collectionId]/[id]/RecipePage.svelte';
+	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
 
 	export let data;
 
@@ -100,7 +101,7 @@
 			})
 				.then(async (response: Response) => {
 					const recipe = (await response.json()) as Recipe;
-					recipesStore.update((value) => {
+					recipeCollectionsStore.update((value) => {
 						value[data.collectionId].recipes.push(recipe);
 						return value;
 					});
