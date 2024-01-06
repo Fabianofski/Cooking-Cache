@@ -7,6 +7,7 @@
 	import { page } from '$app/stores';
 	import type { RecipeCollections } from '../models/RecipeCollections';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
+	import { getUserRecipeCollections } from '$lib/recipeCollection.handler';
 
 	let user: User | null;
 
@@ -14,7 +15,7 @@
 		user = value;
 	});
 
-	auth.onAuthStateChanged((value) => {
+	auth.onAuthStateChanged(async (value) => {
 		loadingStateStore.set('LOADING');
 		currentUser.set(value);
 
@@ -23,18 +24,9 @@
 			recipeCollectionsStore.set({});
 			return;
 		}
-		value.getIdToken().then((token) => {
-			fetch('/api/collection', {
-				headers: {
-					Accept: 'application/json',
-					Authorization: token
-				}
-			}).then(async (response) => {
-				const data: RecipeCollections = await response.json();
-				recipeCollectionsStore.set(data);
-				loadingStateStore.set('FINISHED');
-			});
-		});
+
+		await getUserRecipeCollections(value);
+		loadingStateStore.set('FINISHED');
 	});
 </script>
 

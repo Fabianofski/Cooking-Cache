@@ -4,9 +4,8 @@
 	import type { Recipe } from '../../../../models/Recipe';
 	import { currentUser } from '../../../../stores/store';
 	import RecipePage from './RecipePage.svelte';
-	import { createNewAlert } from '../../../../components/alerts/alert.handler';
-	import { goto } from '$app/navigation';
 	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
+	import { deleteRecipeFromCollection } from '$lib/recipe.handler';
 
 	export let data;
 
@@ -32,40 +31,11 @@
 	}
 
 	let loadingDeletion = false;
-	function deleteRecipe() {
-		user?.getIdToken().then((token) => {
-			if (!recipe) return;
-			loadingDeletion = true;
-			fetch(`/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`, {
-				method: 'DELETE',
-				headers: {
-					Authorization: token
-				}
-			})
-				.then(async () => {
-					const link = `/recipes/${recipe?.collectionId}`;
-					recipeCollectionsStore.update((value) => {
-						if (recipe)
-							value[recipe.collectionId].recipes = value[recipe.collectionId].recipes.filter(
-								(x) => x.id !== recipe?.id
-							);
-						return value;
-					});
-					loadingDeletion = false;
-					createNewAlert({
-						message: 'Das Rezept wurde erfolgreich gelöscht!',
-						type: 'success'
-					});
-					goto(link);
-				})
-				.catch(() => {
-					loadingDeletion = false;
-					createNewAlert({
-						message: 'Beim Löschen vom Rezept ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-				});
-		});
+	async function deleteRecipe() {
+		if (!recipe || !user) return;
+		loadingDeletion = true;
+		await deleteRecipeFromCollection(user, recipe);
+		loadingDeletion = false;
 	}
 </script>
 

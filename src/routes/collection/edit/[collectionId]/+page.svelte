@@ -6,11 +6,11 @@
 	import Header from '../../../../components/Header.svelte';
 	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore.js';
 	import {
-		deleteRecipeCollection,
 		editRecipeCollectionName,
+		editRecipeCollectionCoverImage,
+		toggleRecipeCollectionVisibility,
 		leaveRecipeCollection,
-		replaceRecipeCollectionCoverImage,
-		toggleRecipeCollectionVisibility
+		deleteRecipeCollection
 	} from '$lib/recipeCollection.handler.js';
 
 	export let data;
@@ -105,7 +105,7 @@
 		if (!file || !user) return;
 
 		loadingCoverReplacement = true;
-		await replaceRecipeCollectionCoverImage(user, collectionId, file);
+		await editRecipeCollectionCoverImage(user, collectionId, file);
 		loadingCoverReplacement = false;
 	}
 

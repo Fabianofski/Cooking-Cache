@@ -2,6 +2,90 @@ import { createNewAlert } from '../components/alerts/alert.handler';
 import type { User } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
+import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
+import { loadingStateStore } from '../stores/store';
+
+async function createNewRecipeCollection(user: User, collectionName: string) {
+	const token = await user.getIdToken();
+
+	return fetch(`/api/collection?collectionName=${collectionName}`, {
+		method: 'POST',
+		headers: {
+			Accept: 'application/json',
+			Authorization: token
+		}
+	})
+		.then(async (response: Response) => {
+			const collection: RecipeCollection = await response.json();
+			recipeCollectionsStore.update((value) => {
+				value[collection.id] = collection;
+				return value;
+			});
+
+			createNewAlert({
+				message: 'Die Rezeptsammlung wurde erfolgreich hinzugefügt!',
+				type: 'success'
+			});
+		})
+		.catch(() => {
+			createNewAlert({
+				message: 'Beim Hinzufügen der Rezeptsammlung ist ein Fehler aufgetreten!',
+				type: 'error'
+			});
+		});
+}
+
+async function getUserRecipeCollections(user: User) {
+	const token = await user.getIdToken();
+
+	return fetch('/api/collection', {
+		headers: {
+			Accept: 'application/json',
+			Authorization: token
+		}
+	}).then(async (response) => {
+		const data: RecipeCollections = await response.json();
+		recipeCollectionsStore.set(data);
+	});
+}
+
+async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string) {
+	const token = await user.getIdToken();
+
+	return fetch(`/api/collection/join?i=${inviteCode}`, {
+		method: 'POST',
+		headers: {
+			Authorization: token
+		}
+	})
+		.then((res) => {
+			if (res.status === 200) {
+				res.json().then((data) => {
+					const collection: RecipeCollection = data;
+					console.log(collection);
+					recipeCollectionsStore.update((recipes) => {
+						recipes[collection.id] = collection;
+						return recipes;
+					});
+					goto(`/recipes/${collection.id}`);
+					createNewAlert({
+						type: 'success',
+						message: `Du bist der Rezeptsammlung erfolgreich beigetreten!`
+					});
+				});
+			} else {
+				res.json().then((data) => {
+					console.log(data);
+				});
+			}
+		})
+		.catch(() => {
+			createNewAlert({
+				type: 'error',
+				message: 'Beitreten der Rezeptsammlung fehlgeschlagen!'
+			});
+		});
+}
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
@@ -153,8 +237,11 @@ async function deleteRecipeCollection(user: User, collectionId: string) {
 		});
 }
 export {
+	createNewRecipeCollection,
+	getUserRecipeCollections,
+	joinRecipeCollectionWithInviteCode,
 	editRecipeCollectionName,
-	editRecipeCollectionCoverImage as replaceRecipeCollectionCoverImage,
+	editRecipeCollectionCoverImage,
 	toggleRecipeCollectionVisibility,
 	leaveRecipeCollection,
 	deleteRecipeCollection

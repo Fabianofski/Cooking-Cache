@@ -7,6 +7,7 @@
 	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
 	import Header from '../../components/Header.svelte';
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
+	import { createNewRecipeCollection } from '$lib/recipeCollection.handler';
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
@@ -27,7 +28,7 @@
 	let illegalCharacters = ['.', '#', '$', '[', ']'];
 	let collectionName: string = '';
 	let loading: boolean = false;
-	function createNewCollection() {
+	async function createNewCollection() {
 		for (let char of illegalCharacters) {
 			if (collectionName.includes(char)) {
 				createNewAlert({
@@ -41,37 +42,12 @@
 			}
 		}
 
-		loading = true;
+		if (!user) return;
 
-		user?.getIdToken().then((token) => {
-			fetch(`/api/collection?collectionName=${collectionName}`, {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					Authorization: token
-				}
-			})
-				.then(async (response: Response) => {
-					const collection: RecipeCollection = await response.json();
-					recipeCollectionsStore.update((value) => {
-						value[collection.id] = collection;
-						return value;
-					});
-					loading = false;
-					createCollectionModal.close();
-					createNewAlert({
-						message: 'Die Rezeptsammlung wurde erfolgreich hinzugefügt!',
-						type: 'success'
-					});
-				})
-				.catch(() => {
-					loading = false;
-					createNewAlert({
-						message: 'Beim Hinzufügen der Rezeptsammlung ist ein Fehler aufgetreten!',
-						type: 'error'
-					});
-				});
-		});
+		loading = true;
+		await createNewRecipeCollection(user, collectionName);
+		loading = false;
+		createCollectionModal.close();
 	}
 </script>
 
