@@ -65,7 +65,7 @@
 		loadingRename = true;
 		collectionName = newName;
 		user?.getIdToken().then((token) => {
-			fetch(`/api/collection?newCollectionName=${collectionName}&collectionId=${collectionId}`, {
+			fetch(`/api/collection/${collectionId}/name?newCollectionName=${collectionName}`, {
 				method: 'PATCH',
 				headers: {
 					Authorization: token
