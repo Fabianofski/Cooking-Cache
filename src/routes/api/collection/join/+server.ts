@@ -46,7 +46,9 @@ export async function POST({ url, request }) {
 
 			collection.recipes = Object.values(collection.recipes || {});
 
-			const participants = collection.participants || [];
+			await database.ref(`users/${userId}/joinedCollectionsIds/${collection.id}`).set(true);
+
+			const participants = collection.participants ?? [];
 			if (participants.find((p) => p.uid === userId)) return json(collection);
 
 			const user = await auth.getUser(userId);
@@ -58,7 +60,6 @@ export async function POST({ url, request }) {
 			});
 
 			await database.ref(`collections/${collection.id}/participants`).set(participants);
-			await database.ref(`users/${userId}/joinedCollectionsIds/${collection.id}`).set(true);
 			collection.participants = participants;
 
 			return json(collection);

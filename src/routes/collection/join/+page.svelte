@@ -94,10 +94,10 @@
 			{:else}
 				<img
 					class="w-full h-36 rounded object-cover"
-					src={'/default-cover.jpg'}
+					src={recipeCollection?.cover || '/default-cover.jpg'}
 					alt={`${recipeCollection?.name} Cover`}
 				/>
-				<h1 class="text-2xl font-bold text-center">{recipeCollection?.name}</h1>
+				<h1 class="text-2xl font-bold text-center">"{recipeCollection?.name}"</h1>
 			{/if}
 		</div>
 		<div class="w-full flex flex-col items-center">
