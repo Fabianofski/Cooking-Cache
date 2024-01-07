@@ -1,12 +1,26 @@
 <script lang="ts">
 	import type AlertOptions from '../../models/AlertOptions';
+	import { alertStore } from './alert.handler';
 
 	export let alertOptions: AlertOptions;
+
+	function removeAlert() {
+		alertStore.update((value) => {
+			if (!alertOptions.id) return value;
+			delete value[alertOptions.id];
+			return value;
+		});
+	}
 </script>
 
 <div
-	class={`alert alert-${alertOptions.type} animate-fade max-w-sm w-full`}
+	class={`alert alert-${alertOptions.type} flex animate-fade max-w-sm w-full pointer-events-auto cursor-pointer opacity-0`}
 	style={`--lifetime: ${alertOptions.lifetime ?? 5}s`}
+	on:click={removeAlert}
+	on:keydown={removeAlert}
+	role="button"
+	tabindex="0"
+	aria-label={`Alert ${alertOptions.id}`}
 >
 	{#if alertOptions.type === 'error'}
 		<svg

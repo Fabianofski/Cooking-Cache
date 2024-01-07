@@ -123,7 +123,7 @@
 		<div class="divider -my-2" />
 	</div>
 
-	<div class="grid grid-cols-fluid gap-6 w-full justify-center mt-4">
+	<div class="grid grid-cols-fluid gap-6 w-full mt-4">
 		{#if loadingState === 'LOADING'}
 			<RecipeSkeleton />
 			<RecipeSkeleton />
