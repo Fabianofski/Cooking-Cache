@@ -10,6 +10,8 @@ function createNewAlert(alert: AlertOptions) {
 	do {
 		id = 'id' + Math.random().toString(16).slice(2);
 	} while (Object.keys(alertStore).includes(id));
+	alert.id = id;
+	alert.message = id;
 
 	alertStore.update((value) => {
 		value[id] = alert;
@@ -18,7 +20,7 @@ function createNewAlert(alert: AlertOptions) {
 
 	setTimeout(() => {
 		alertStore.update((value) => {
-			delete value[id];
+			if (id in value) delete value[id];
 			return value;
 		});
 	}, (alert.lifetime ?? 5) * 1000);

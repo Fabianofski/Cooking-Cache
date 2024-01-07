@@ -12,9 +12,9 @@
 </script>
 
 <div
-	class="absolute w-full h-full z-50 flex flex-col items-center justify-start gap-1 pointer-events-none"
+	class="fixed w-full h-full z-50 flex flex-col items-center justify-start gap-1 pointer-events-none mt-20"
 >
-	{#each Object.values(alerts) as alert}
+	{#each Object.values(alerts) as alert (alert)}
 		<Alert alertOptions={alert} />
 	{/each}
 </div>
