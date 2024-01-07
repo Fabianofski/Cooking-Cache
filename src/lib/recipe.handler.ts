@@ -14,8 +14,10 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 			Authorization: token
 		}
 	})
-		.then(async (response: Response) => {
-			const recipe = (await response.json()) as Recipe;
+		.then(async (res: Response) => {
+			if (res.status !== 200) return Promise.reject(res);
+
+			const recipe = (await res.json()) as Recipe;
 			recipeCollectionsStore.update((value) => {
 				value[collectionId].recipes.push(recipe);
 				return value;
@@ -26,9 +28,11 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 			});
 			goto(`/recipe/${recipe.collectionId}/${recipe.id}`);
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Hinzufügen vom Rezept ist ein Fehler aufgetreten!',
+				message:
+					'Beim Hinzufügen vom Rezept ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -42,7 +46,9 @@ async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 			Authorization: token
 		}
 	})
-		.then(async () => {
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
 			const link = `/recipes/${recipe?.collectionId}`;
 			recipeCollectionsStore.update((value) => {
 				if (recipe)
@@ -57,9 +63,11 @@ async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 			});
 			goto(link);
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Löschen vom Rezept ist ein Fehler aufgetreten!',
+				message:
+					'Beim Löschen vom Rezept ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});

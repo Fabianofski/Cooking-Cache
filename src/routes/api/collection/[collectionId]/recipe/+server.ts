@@ -19,7 +19,7 @@ export async function POST({ request }) {
 			const collection: RecipeCollection = data.val() || {};
 			if (!collection) return new Response('404 Not Found', { status: 404 });
 
-			const participants = collection.participants || [];
+			const participants = collection.participants ?? [];
 			if (!participants.find((p) => p.uid === uid))
 				return new Response('403 Forbidden', { status: 403 });
 
