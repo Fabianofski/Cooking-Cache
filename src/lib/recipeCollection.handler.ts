@@ -14,8 +14,8 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 			Authorization: token
 		}
 	})
-		.then(async (response: Response) => {
-			const collection: RecipeCollection = await response.json();
+		.then(async (res: Response) => {
+			const collection: RecipeCollection = await res.json();
 			recipeCollectionsStore.update((value) => {
 				value[collection.id] = collection;
 				return value;
@@ -26,9 +26,11 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 				type: 'success'
 			});
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Hinzufügen der Rezeptsammlung ist ein Fehler aufgetreten!',
+				message:
+					'Beim Hinzufügen der Rezeptsammlung ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -42,10 +44,13 @@ async function getUserRecipeCollections(user: User) {
 			Accept: 'application/json',
 			Authorization: token
 		}
-	}).then(async (response) => {
-		const data: RecipeCollections = await response.json();
-		recipeCollectionsStore.set(data);
-	});
+	})
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+			const data: RecipeCollections = await res.json();
+			recipeCollectionsStore.set(data);
+		})
+		.catch((error) => {});
 }
 
 async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string) {
@@ -57,31 +62,26 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 			Authorization: token
 		}
 	})
-		.then((res) => {
-			if (res.status === 200) {
-				res.json().then((data) => {
-					const collection: RecipeCollection = data;
-					console.log(collection);
-					recipeCollectionsStore.update((recipes) => {
-						recipes[collection.id] = collection;
-						return recipes;
-					});
-					goto(`/recipes/${collection.id}`);
-					createNewAlert({
-						type: 'success',
-						message: `Du bist der Rezeptsammlung erfolgreich beigetreten!`
-					});
-				});
-			} else {
-				res.json().then((data) => {
-					console.log(data);
-				});
-			}
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+			const data = await res.json();
+			const collection: RecipeCollection = data;
+			recipeCollectionsStore.update((recipes) => {
+				recipes[collection.id] = collection;
+				return recipes;
+			});
+			goto(`/recipes/${collection.id}`);
+			createNewAlert({
+				type: 'success',
+				message: `Du bist der Rezeptsammlung erfolgreich beigetreten!`
+			});
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
 				type: 'error',
-				message: 'Beitreten der Rezeptsammlung fehlgeschlagen!'
+				message:
+					'Beitreten der Rezeptsammlung fehlgeschlagen!' +
+					(error.status ? ` (Error ${error.status})` : '')
 			});
 		});
 }
@@ -94,7 +94,9 @@ async function editRecipeCollectionName(user: User, collectionId: string, collec
 			Authorization: token
 		}
 	})
-		.then(async () => {
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
 			recipeCollectionsStore.update((value) => {
 				value[collectionId].name = collectionName;
 				return value;
@@ -104,9 +106,11 @@ async function editRecipeCollectionName(user: User, collectionId: string, collec
 				type: 'success'
 			});
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!',
+				message:
+					'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -132,8 +136,10 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 		},
 		body: formData
 	})
-		.then(async (response) => {
-			const photoURL = await response.json();
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
+			const photoURL = await res.json();
 			recipeCollectionsStore.update((value) => {
 				value[collectionId].cover = photoURL;
 				return value;
@@ -143,9 +149,11 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 				type: 'success'
 			});
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Ändern des Covers ist ein Fehler aufgetreten!',
+				message:
+					'Beim Ändern des Covers ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -163,19 +171,23 @@ async function toggleRecipeCollectionVisibility(
 			Authorization: token
 		}
 	})
-		.then(() => {
+		.then((res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
 			createNewAlert({
 				message: `Die Rezeptsammlung ist nun ${privateState ? 'privat' : 'öffentlich'}!`,
 				type: 'success'
 			});
 		})
-		.catch(() => {
+		.catch((error) => {
 			recipeCollectionsStore.update((value) => {
 				value[collectionId].private = !privateState;
 				return value;
 			});
 			createNewAlert({
-				message: 'Beim Ändern der Sichtbarkeit ist ein Fehler aufgetreten!',
+				message:
+					'Beim Ändern der Sichtbarkeit ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -189,7 +201,9 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 			Authorization: token
 		}
 	})
-		.then(async () => {
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
 			recipeCollectionsStore.update((value) => {
 				delete value[collectionId];
 				return value;
@@ -200,9 +214,11 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 			});
 			goto('/recipes');
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Verlassen der Rezeptsammlung ist ein Fehler aufgetreten!',
+				message:
+					'Beim Verlassen der Rezeptsammlung ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -217,7 +233,9 @@ async function deleteRecipeCollection(user: User, collectionId: string) {
 			Authorization: token
 		}
 	})
-		.then(async () => {
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
 			recipeCollectionsStore.update((value) => {
 				delete value[collectionId];
 				return value;
@@ -228,9 +246,11 @@ async function deleteRecipeCollection(user: User, collectionId: string) {
 			});
 			goto('/recipes');
 		})
-		.catch(() => {
+		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Löschen der Rezeptsammlung ist ein Fehler aufgetreten!',
+				message:
+					'Beim Löschen der Rezeptsammlung ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});

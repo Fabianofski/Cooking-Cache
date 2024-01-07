@@ -18,12 +18,12 @@
 	onMount(() => {
 		fetch(`/api/collection/join?i=${data.inviteCode}`)
 			.then((res) => {
-				if (res.status === 200) {
-					res.json().then((data) => {
-						recipeCollection = data;
-						owner = recipeCollection?.participants?.find((p) => p.uid === data.ownerId);
-					});
-				}
+				if (res.status !== 200) return Promise.reject(res);
+
+				res.json().then((data) => {
+					recipeCollection = data;
+					owner = recipeCollection?.participants?.find((p) => p.uid === data.ownerId);
+				});
 				loading = false;
 			})
 			.catch((err) => {
