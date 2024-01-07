@@ -5,8 +5,8 @@ export default {
 	theme: {
 		extend: {
 			gridTemplateColumns: {
-				fluid: 'repeat(auto-fit, minmax(20rem, 1fr))',
-				'fluid-narrow': 'repeat(auto-fit, minmax(15rem, 1fr))'
+				fluid: 'repeat(auto-fill, minmax(20rem, 1fr))',
+				'fluid-narrow': 'repeat(auto-fill, minmax(15rem, 1fr))'
 			},
 			animation: {
 				fade: 'fadeOut var(--lifetime) ease-in-out forwards'
