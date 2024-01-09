@@ -11,7 +11,6 @@ function createNewAlert(alert: AlertOptions) {
 		id = 'id' + Math.random().toString(16).slice(2);
 	} while (Object.keys(alertStore).includes(id));
 	alert.id = id;
-	alert.message = id;
 
 	alertStore.update((value) => {
 		value[id] = alert;

@@ -24,7 +24,7 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 				return value;
 			});
 			createNewAlert({
-				message: 'Das Rezept wurde erfolgreich hinzugefügt!',
+				message: 'Das Rezept wurde erfolgreich gespeichert!',
 				type: 'success'
 			});
 			goto(`/recipe/${recipe.collectionId}/${recipe.id}`);

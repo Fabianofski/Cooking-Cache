@@ -15,6 +15,8 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 		}
 	})
 		.then(async (res: Response) => {
+			if (res.status !== 200) return Promise.reject(res);
+
 			const collection: RecipeCollection = await res.json();
 			recipeCollectionsStore.update((value) => {
 				value[collection.id] = collection;
