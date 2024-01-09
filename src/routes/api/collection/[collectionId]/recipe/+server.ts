@@ -23,7 +23,7 @@ export async function POST({ request }) {
 			if (!participants.find((p) => p.uid === uid))
 				return new Response('403 Forbidden', { status: 403 });
 
-			recipe.id = uuidv4();
+			if (!recipe.id) recipe.id = uuidv4();
 			const cover = formData.get('cover') as File;
 			if (cover)
 				recipe.image = await uploadFileToStorage(

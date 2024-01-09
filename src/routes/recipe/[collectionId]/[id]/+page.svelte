@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { deleteRecipeFromCollection } from '$lib/recipe.handler';
 	import type { User } from 'firebase/auth';
 	import Header from '../../../../components/Header.svelte';
@@ -49,7 +50,7 @@
 				? [
 						{
 							title: 'Rezept bearbeiten',
-							callback: () => console.log('edit'),
+							callback: () => goto(`/recipe/${data.collectionId}/${data.id}/edit`),
 							icon: '/edit.svg'
 						},
 						{

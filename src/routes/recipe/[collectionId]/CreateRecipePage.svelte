@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { addRecipeToCollection } from '$lib/recipe.handler';
 	import type { User } from 'firebase/auth';
-	import { createNewAlert } from '../../../../components/alerts/alert.handler';
-	import type { Recipe } from '../../../../models/Recipe';
-	import { currentUser } from '../../../../stores/store';
-	import RecipePage from '../../[collectionId]/[id]/RecipePage.svelte';
-
-	export let data;
+	import { createNewAlert } from '../../../components/alerts/alert.handler';
+	import type { Recipe } from '../../../models/Recipe';
+	import { currentUser } from '../../../stores/store';
+	import RecipePage from './[id]/RecipePage.svelte';
 
 	let editMode = true;
 	let files: FileList | null = null;
@@ -21,7 +19,10 @@
 			fileInput.value = '';
 		} else recipe.image = URL.createObjectURL(files[0]);
 	}
-	let recipe: Recipe = {
+
+	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
+	export let collectionId: string;
+	export let recipe: Recipe = {
 		image: '',
 		title: '',
 		tagline: '',
@@ -30,9 +31,11 @@
 		description: [''],
 		id: '',
 		url: '',
-		collectionId: data.collectionId,
+		collectionId: collectionId,
 		creatorId: ''
 	};
+	ingredientInputChanged(recipe.ingredients.length - 1);
+	stepInputChanged(recipe.description.length - 1);
 
 	let user: User;
 	currentUser.subscribe((value) => {
@@ -49,7 +52,7 @@
 		);
 	}
 
-	function ingredientInputChanged(e: Event, index: number) {
+	function ingredientInputChanged(index: number) {
 		if (index + 1 === recipe.ingredients.length) recipe.ingredients.push({ amount: '', name: '' });
 
 		let count = -1;
@@ -88,7 +91,7 @@
 		recipe.creatorId = user.uid;
 
 		formData.append('recipe', JSON.stringify(recipe));
-		await addRecipeToCollection(user, formData, data.collectionId);
+		await addRecipeToCollection(user, formData, collectionId);
 		loading = false;
 	}
 </script>
@@ -113,7 +116,11 @@
 </div>
 <div class={`card w-full bg-base-100 shadow-xl ${editMode ? 'visible' : 'hidden'}`}>
 	<div class="card-body">
-		<h2 class="card-title">Neues Rezept hinzufügen:</h2>
+		{#if mode === 'CREATE'}
+			<h2 class="card-title">Neues Rezept hinzufügen:</h2>
+		{:else}
+			<h2 class="card-title">Rezept bearbeiten:</h2>
+		{/if}
 		<div class="form-control w-full">
 			<label class="label" for="">
 				<span class="label-text">Cover</span>
@@ -194,7 +201,7 @@
 										placeholder="1"
 										class="input input-bordered w-full"
 										bind:value={recipe.ingredients[i].amount}
-										on:input={(e) => ingredientInputChanged(e, i)}
+										on:input={(e) => ingredientInputChanged(i)}
 									/>
 								</td>
 								<td class="pl-1 pr-0">
@@ -203,7 +210,7 @@
 										placeholder="Tomate"
 										class="input input-bordered w-full"
 										bind:value={recipe.ingredients[i].name}
-										on:input={(e) => ingredientInputChanged(e, i)}
+										on:input={(e) => ingredientInputChanged(i)}
 									/>
 								</td>
 							</tr>
@@ -242,7 +249,7 @@
 				disabled={formIsInvalid(recipe) || loading}
 			>
 				{#if !loading}
-					Hinzufügen
+					{mode === 'CREATE' ? 'Hinzufügen' : 'Speichern'}
 				{:else}
 					<span class="loading loading-spinner loading-md" />
 				{/if}
