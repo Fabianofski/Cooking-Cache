@@ -19,11 +19,12 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 
 			const recipe = (await res.json()) as Recipe;
 			recipeCollectionsStore.update((value) => {
+				if (value[collectionId].recipes.find((x) => x.id === recipe.id)) return value;
 				value[collectionId].recipes.push(recipe);
 				return value;
 			});
 			createNewAlert({
-				message: 'Das Rezept wurde erfolgreich hinzugefügt!',
+				message: 'Das Rezept wurde erfolgreich gespeichert!',
 				type: 'success'
 			});
 			goto(`/recipe/${recipe.collectionId}/${recipe.id}`);

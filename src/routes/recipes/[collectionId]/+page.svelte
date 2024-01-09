@@ -152,7 +152,7 @@
 <div class="fixed max-w-3xl w-full bottom-0">
 	<a
 		class="btn btn-circle btn-primary absolute bottom-20 right-6"
-		href={`/recipe/create/${data.collectionId}`}
+		href={`/recipe/${data.collectionId}/create`}
 		class:btn-disabled={user === null}
 	>
 		<svg
