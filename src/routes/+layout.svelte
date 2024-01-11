@@ -43,7 +43,7 @@
 	</div>
 
 	<Alerts />
-	<div class="flex flex-col justify-start items-center py-2 flex-1 my-20">
+	<div class="flex flex-col justify-start items-center px-2 py-2 flex-1 my-20">
 		<div class="flex flex-col flex-1 max-w-3xl w-full relative">
 			<slot />
 		</div>

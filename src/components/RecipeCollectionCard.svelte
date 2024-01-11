@@ -16,7 +16,7 @@
 </script>
 
 <a class="w-full" href={`/recipes/${recipeCollection?.id}`}>
-	<div class="card w-full h-64 bg-base-200 shadow-xl">
+	<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">
 		<figure class="h-32 overflow-visible relative">
 			<img
 				class="absolute top-0 left-0 h-44 w-full rounded-t-2xl z-0"
