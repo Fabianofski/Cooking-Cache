@@ -38,7 +38,7 @@
 
 <Header title={'Rezeptsammlungen'} loading={false} />
 
-<div class="grid grid-cols-fluid gap-4">
+<div class="grid grid-cols-fluid gap-4 mt-4">
 	{#if loadingState === 'LOADING'}
 		<RecipeCollectionSkeleton />
 		<RecipeCollectionSkeleton />
