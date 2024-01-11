@@ -42,6 +42,10 @@
 	{#if loadingState === 'LOADING'}
 		<RecipeCollectionSkeleton />
 		<RecipeCollectionSkeleton />
+	{:else if Object.values(recipeCollections).length === 0}
+		<p class="italic text-center col-span-full text-neutral-400 mt-12">
+			Du bist noch keiner Rezeptsammlung beigetreten oder hast noch keine erstellt.
+		</p>
 	{:else}
 		{#each Object.values(recipeCollections) as collection}
 			<RecipeCollectionCard recipeCollection={collection} />

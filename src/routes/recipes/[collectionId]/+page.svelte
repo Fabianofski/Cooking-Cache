@@ -64,7 +64,7 @@
 	}
 </script>
 
-<div class="flex gap-4 flex-col items-center">
+<div class="flex-1 flex gap-4 flex-col items-center">
 	<Header
 		backLink="/recipes"
 		title={collectionName}
@@ -123,29 +123,35 @@
 		<div class="divider -my-2" />
 	</div>
 
-	<div class="grid grid-cols-fluid gap-6 w-full mt-4">
-		{#if loadingState === 'LOADING'}
-			<RecipeSkeleton />
-			<RecipeSkeleton />
-		{:else}
-			{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
-				<RecipeCard {recipe} collectionId={data.collectionId} />
-			{/each}
-		{/if}
-	</div>
-	<div class="join justify-center">
-		<a href="#top" class="join-item btn" on:click={() => page--} class:btn-disabled={page <= 0}>
-			«
-		</a>
-		<button class="join-item btn">Page {page + 1}</button>
-		<a
-			href="#top"
-			class="join-item btn"
-			on:click={() => page++}
-			class:btn-disabled={(page + 1) * pageSize >= recipes.length}
-		>
-			»
-		</a>
+	<div class="w-full flex-1 flex flex-col gap-4 justify-between">
+		<div class="grid grid-cols-fluid gap-6 w-full mt-4">
+			{#if loadingState === 'LOADING'}
+				<RecipeSkeleton />
+				<RecipeSkeleton />
+			{:else if recipes.length === 0}
+				<p class="italic text-center col-span-full text-neutral-400 mt-12">
+					In dieser Sammlung sind noch keine Rezepte vorhanden.
+				</p>
+			{:else}
+				{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
+					<RecipeCard {recipe} collectionId={data.collectionId} />
+				{/each}
+			{/if}
+		</div>
+		<div class="join justify-center">
+			<a href="#top" class="join-item btn" on:click={() => page--} class:btn-disabled={page <= 0}>
+				«
+			</a>
+			<button class="join-item btn">Page {page + 1}</button>
+			<a
+				href="#top"
+				class="join-item btn"
+				on:click={() => page++}
+				class:btn-disabled={(page + 1) * pageSize >= recipes.length}
+			>
+				»
+			</a>
+		</div>
 	</div>
 </div>
 
