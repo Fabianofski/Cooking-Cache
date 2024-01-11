@@ -114,8 +114,8 @@
 		bind:group={editMode}
 	/>
 </div>
-<div class={`card w-full bg-base-100 shadow-xl ${editMode ? 'visible' : 'hidden'}`}>
-	<div class="card-body">
+<div class={`pt-4 ${editMode ? 'visible' : 'hidden'}`}>
+	<div>
 		{#if mode === 'CREATE'}
 			<h2 class="card-title">Neues Rezept hinzufügen:</h2>
 		{:else}
@@ -254,7 +254,14 @@
 					<span class="loading loading-spinner loading-md" />
 				{/if}
 			</button>
-			<a class="btn btn-ghost flex-2" href="/recipes">Abbrechen</a>
+			<a
+				class="btn btn-ghost flex-2"
+				href={mode === 'CREATE'
+					? `/recipes/${recipe.collectionId}`
+					: `/recipe/${recipe.collectionId}/${recipe.id}`}
+			>
+				Abbrechen
+			</a>
 		</div>
 	</div>
 </div>

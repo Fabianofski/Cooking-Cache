@@ -24,24 +24,27 @@ export default {
 	daisyui: {
 		themes: [
 			{
-				mytheme: {
-					primary: '#f27359',
-
-					secondary: '#afffc1',
-
-					accent: '#6be5cf',
-
-					neutral: '#171f2b',
-
-					'base-100': '#484148',
-
-					info: '#8cc4de',
-
-					success: '#82e3b3',
-
-					warning: '#f5d261',
-
-					error: '#eb5665'
+				myTheme: {
+					primary: '#15803d',
+					secondary: '#0000ff',
+					accent: '#5d73ff',
+					neutral: '#0d070e',
+					'base-100': '#1d252e',
+					info: '#004eff',
+					success: '#3d9700',
+					warning: '#ba3700',
+					error: '#ff7e98'
+				},
+				myTheme2: {
+					primary: '#00b998',
+					secondary: '#001dff',
+					accent: '#00dff1',
+					neutral: '#000412',
+					'base-100': '#252a27',
+					info: '#5ac6ff',
+					success: '#8dc211',
+					warning: '#b38f00',
+					error: '#f12843'
 				}
 			}
 		]

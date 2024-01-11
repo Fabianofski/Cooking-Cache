@@ -75,6 +75,7 @@
 					class="w-24 rounded-full"
 					src={owner?.photoURL || '/default-profile.jpg'}
 					alt={owner?.displayName || 'User Profile Picture'}
+					referrerpolicy="no-referrer"
 				/>
 				{owner?.displayName}
 				<p class="text-center">
@@ -113,6 +114,7 @@
 								class="w-12 h-12 rounded-full"
 								src={participant.photoURL || '/default-profile.jpg'}
 								alt={participant.displayName || 'User Profile Picture'}
+								referrerpolicy="no-referrer"
 							/>
 							<p class="text-sm text-center">{participant.displayName}</p>
 						</div>

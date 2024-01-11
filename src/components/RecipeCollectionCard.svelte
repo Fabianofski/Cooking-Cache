@@ -16,16 +16,19 @@
 </script>
 
 <a class="w-full" href={`/recipes/${recipeCollection?.id}`}>
-	<div class="card w-full h-64 bg-base-100 shadow-xl">
-		<figure class="h-32 overflow-x-hidden">
+	<div class="card w-full h-64 bg-base-200 shadow-xl">
+		<figure class="h-32 overflow-visible relative">
 			<img
-				class="h-full w-full"
+				class="absolute top-0 left-0 h-44 w-full rounded-t-2xl z-0"
 				src={recipeCollection?.cover || '/default-cover.jpg'}
 				alt={`${recipeCollection?.name} Cover`}
 				style="object-fit: cover;"
 			/>
+			<div
+				class="absolute top-0 left-0 h-44 w-full rounded-t-2xl bg-gradient-to-t from-base-200 via-base-200/80 via-30% to-70%"
+			/>
 		</figure>
-		<div class="card-body">
+		<div class="card-body relative z-10">
 			<h2 class="card-title flex justify-between">
 				{recipeCollection?.name}
 				<div class="flex gap-2 text-sm">
@@ -73,7 +76,12 @@
 				</div>
 			</h2>
 			<div class="flex gap-2">
-				<img class="rounded-full w-6" src={owner?.photoURL} alt={owner?.displayName} />
+				<img
+					class="rounded-full w-6"
+					src={owner?.photoURL}
+					alt={owner?.displayName}
+					referrerpolicy="no-referrer"
+				/>
 				<p>{owner?.displayName} {owner?.uid === user?.uid ? '(Du)' : ''}</p>
 			</div>
 			<p>{recipeCollection?.recipes.length} Rezepte</p>
