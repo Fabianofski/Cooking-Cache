@@ -49,7 +49,7 @@
 		</div>
 	</div>
 
-	<div class="btm-nav rounded-t-lg bg-base-300 max-w-3xl left-1/2 -translate-x-1/2">
+	<div class="btm-nav rounded-t-lg bg-base-300 max-w-3xl left-1/2 -translate-x-1/2 z-20">
 		<a class:active={$page.url.pathname === '/'} href="/">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
