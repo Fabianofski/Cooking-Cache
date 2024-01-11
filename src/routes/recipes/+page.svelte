@@ -4,7 +4,6 @@
 	import Header from '../../components/Header.svelte';
 	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';
 	import RecipeCollectionSkeleton from '../../components/RecipeCollectionSkeleton.svelte';
-	import { createNewAlert } from '../../components/alerts/alert.handler';
 	import type { RecipeCollections } from '../../models/RecipeCollections';
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
@@ -25,23 +24,9 @@
 	});
 
 	let createCollectionModal: HTMLDialogElement;
-	let illegalCharacters = ['.', '#', '$', '[', ']'];
 	let collectionName: string = '';
 	let loading: boolean = false;
 	async function createNewCollection() {
-		for (let char of illegalCharacters) {
-			if (collectionName.includes(char)) {
-				createNewAlert({
-					message:
-						'Der Name der Sammlung darf die folgenden Buchstaben nicht enthalten: "' +
-						illegalCharacters.join('", "') +
-						'"',
-					type: 'error'
-				});
-				return;
-			}
-		}
-
 		if (!user) return;
 
 		loading = true;
@@ -94,11 +79,6 @@
 				class="input input-bordered w-full"
 				bind:value={collectionName}
 			/>
-			<div class="label">
-				<span class="label-text-alt">
-					Name der Rezeptsammlung (Ohne: "{illegalCharacters.join('", "')}")
-				</span>
-			</div>
 		</div>
 		<button
 			class="btn btn-block"

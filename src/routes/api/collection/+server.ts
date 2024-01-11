@@ -63,15 +63,6 @@ export async function POST({ request, url }) {
 			const collectionName = url.searchParams.get('collectionName');
 
 			if (!collectionName) return new Response('400 Bad Request', { status: 400 });
-			let illegalCharacters = ['.', '#', '$', '[', ']'];
-			for (let char of illegalCharacters) {
-				if (collectionName.includes(char)) {
-					return new Response(
-						'400 Bad Request. ' + illegalCharacters.join(' ,' + ' are not allowed.'),
-						{ status: 400 }
-					);
-				}
-			}
 
 			return addCollectionToDatabase(collectionName, uid);
 		} catch (err) {
