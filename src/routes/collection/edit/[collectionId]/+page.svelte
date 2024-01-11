@@ -246,116 +246,114 @@
 
 	<hr class="rounded border-neutral" />
 
-	<div class="grid grid-cols-fluid gap-4">
-		<div class="flex flex-col gap-2">
-			<h3 class="font-bold text-md text-center">Teilnehmer</h3>
+	<div class="flex flex-col gap-2">
+		<h3 class="font-bold text-md text-center">Teilnehmer</h3>
 
-			{#if loadingState !== 'FINISHED'}
-				{#each [1, 2] as _}
-					<div class="flex gap-2 items-center">
-						<div class="skeleton w-20 h-12 rounded-full" />
-						<div class="flex flex-col gap-1 justify-between w-full">
-							<div class="skeleton w-48 h-6 rounded" />
-							<div class="skeleton w-56 h-4 rounded" />
-						</div>
-						<div class="skeleton w-32 h-4 rounded mr-4" />
+		{#if loadingState !== 'FINISHED'}
+			{#each [1, 2] as _}
+				<div class="flex gap-2 items-center">
+					<div class="skeleton w-20 h-12 rounded-full" />
+					<div class="flex flex-col gap-1 justify-between w-full">
+						<div class="skeleton w-48 h-6 rounded" />
+						<div class="skeleton w-56 h-4 rounded" />
 					</div>
-				{/each}
-			{:else}
-				<table>
-					<tbody>
-						{#each recipeCollection?.participants || [] as participant}
-							<tr>
-								<td>
-									<img
-										class="w-10 h-10 rounded-full"
-										src={participant.photoURL || '/default-profile.jpg'}
-										alt={participant.displayName || 'User Profile Picture'}
-										referrerpolicy="no-referrer"
-									/>
-								</td>
-								<td>
-									<p class="font-bold">{participant.displayName || '-'}</p>
-									<p class="text-sm">{participant.email || '-'}</p>
-								</td>
-								<td class="text-sm italic">
-									{participant.uid === recipeCollection.ownerId ? 'Ersteller' : 'Teilnehmer'}
-									{participant.uid === user?.uid ? '(Du)' : ''}
-								</td>
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-			{/if}
+					<div class="skeleton w-32 h-4 rounded mr-4" />
+				</div>
+			{/each}
+		{:else}
+			<table>
+				<tbody>
+					{#each recipeCollection?.participants || [] as participant}
+						<tr>
+							<td>
+								<img
+									class="w-10 h-10 rounded-full"
+									src={participant.photoURL || '/default-profile.jpg'}
+									alt={participant.displayName || 'User Profile Picture'}
+									referrerpolicy="no-referrer"
+								/>
+							</td>
+							<td>
+								<p class="font-bold">{participant.displayName || '-'}</p>
+								<p class="text-sm">{participant.email || '-'}</p>
+							</td>
+							<td class="text-sm italic">
+								{participant.uid === recipeCollection.ownerId ? 'Ersteller' : 'Teilnehmer'}
+								{participant.uid === user?.uid ? '(Du)' : ''}
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		{/if}
 
+		{#if loadingState !== 'FINISHED'}
+			<div class="w-full flex gap-1">
+				<div class="skeleton w-16 h-8 rounded-3xl" />
+				<div class="skeleton w-52 h-8 rounded" />
+			</div>
+		{:else}
+			<div class="form-control">
+				<label for="" class="label cursor-pointer justify-start gap-4">
+					{#if loadingVisibilityChange}
+						<span class="loading loading-spinner loading-md" />
+					{/if}
+					<input
+						type="checkbox"
+						class="toggle"
+						bind:checked={recipeCollection.private}
+						on:input={changeCollectionVisibility}
+						disabled={loadingVisibilityChange || !isOwner}
+						class:hidden={loadingVisibilityChange}
+					/>
+					<span class="label-text">Neue Beitrittsanfragen blockieren</span>
+				</label>
+			</div>
+		{/if}
+
+		<div>
+			<label for="link" class="form-control w-full max-w-xs">
+				<div class="label">
+					<span class="label-text">Teilnehmer einladen</span>
+				</div>
+			</label>
 			{#if loadingState !== 'FINISHED'}
 				<div class="w-full flex gap-1">
-					<div class="skeleton w-16 h-8 rounded-3xl" />
-					<div class="skeleton w-52 h-8 rounded" />
+					<div class="skeleton w-full h-12 rounded" />
+					<div class="skeleton w-24 h-12 rounded" />
 				</div>
 			{:else}
-				<div class="form-control">
-					<label for="" class="label cursor-pointer justify-start gap-4">
-						{#if loadingVisibilityChange}
-							<span class="loading loading-spinner loading-md" />
-						{/if}
-						<input
-							type="checkbox"
-							class="toggle"
-							bind:checked={recipeCollection.private}
-							on:input={changeCollectionVisibility}
-							disabled={loadingVisibilityChange || !isOwner}
-							class:hidden={loadingVisibilityChange}
-						/>
-						<span class="label-text">Neue Beitrittsanfragen blockieren</span>
-					</label>
+				<div class="w-full flex">
+					<input
+						name="link"
+						type="text"
+						placeholder=""
+						class="input input-bordered w-full rounded-r-none"
+						value={inviteLink}
+						disabled={recipeCollection.private}
+					/>
+					<button
+						class="btn w-24 rounded-l-none"
+						on:click={copyInviteLink}
+						disabled={recipeCollection.private}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="w-6 h-6"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+							/>
+						</svg>
+					</button>
 				</div>
 			{/if}
-
-			<div>
-				<label for="link" class="form-control w-full max-w-xs">
-					<div class="label">
-						<span class="label-text">Teilnehmer einladen</span>
-					</div>
-				</label>
-				{#if loadingState !== 'FINISHED'}
-					<div class="w-full flex gap-1">
-						<div class="skeleton w-full h-12 rounded" />
-						<div class="skeleton w-24 h-12 rounded" />
-					</div>
-				{:else}
-					<div class="w-full flex">
-						<input
-							name="link"
-							type="text"
-							placeholder=""
-							class="input input-bordered w-full rounded-r-none"
-							value={inviteLink}
-							disabled={recipeCollection.private}
-						/>
-						<button
-							class="btn w-24 rounded-l-none"
-							on:click={copyInviteLink}
-							disabled={recipeCollection.private}
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-								class="w-6 h-6"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
-								/>
-							</svg>
-						</button>
-					</div>
-				{/if}
-			</div>
 		</div>
 	</div>
 
