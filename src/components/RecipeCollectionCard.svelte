@@ -16,7 +16,7 @@
 </script>
 
 <a class="w-full" href={`/recipes/${recipeCollection?.id}`}>
-	<div class="card w-full h-64 bg-base-100 shadow-xl">
+	<div class="card w-full h-64 bg-base-200 shadow-xl">
 		<figure class="h-32 overflow-x-hidden">
 			<img
 				class="h-full w-full"
@@ -73,7 +73,12 @@
 				</div>
 			</h2>
 			<div class="flex gap-2">
-				<img class="rounded-full w-6" src={owner?.photoURL} alt={owner?.displayName} />
+				<img
+					class="rounded-full w-6"
+					src={owner?.photoURL}
+					alt={owner?.displayName}
+					referrerpolicy="no-referrer"
+				/>
 				<p>{owner?.displayName} {owner?.uid === user?.uid ? '(Du)' : ''}</p>
 			</div>
 			<p>{recipeCollection?.recipes.length} Rezepte</p>

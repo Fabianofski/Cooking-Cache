@@ -271,6 +271,7 @@
 										class="w-10 h-10 rounded-full"
 										src={participant.photoURL || '/default-profile.jpg'}
 										alt={participant.displayName || 'User Profile Picture'}
+										referrerpolicy="no-referrer"
 									/>
 								</td>
 								<td>

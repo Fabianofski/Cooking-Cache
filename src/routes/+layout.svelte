@@ -30,7 +30,7 @@
 </script>
 
 <div class="min-h-screen flex flex-col justify-between" id="top">
-	<div class="w-full flex justify-center bg-base-200 fixed top-0 left-0 z-10">
+	<div class="w-full flex justify-center bg-base-300 fixed top-0 left-0 z-10">
 		<div class="navbar max-w-3xl w-full">
 			<div class="navbar-start" />
 			<div class="navbar-center">
@@ -49,7 +49,7 @@
 		</div>
 	</div>
 
-	<div class="btm-nav rounded-t-lg bg-base-200 max-w-3xl left-1/2 -translate-x-1/2">
+	<div class="btm-nav rounded-t-lg bg-base-300 max-w-3xl left-1/2 -translate-x-1/2">
 		<a class:active={$page.url.pathname === '/'} href="/">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@
 		>
 			<div class="w-6 rounded-full">
 				{#if user && user.photoURL}
-					<img src={user.photoURL} alt="Profile" />
+					<img src={user.photoURL} alt="Profile" referrerpolicy="no-referrer" />
 				{:else}
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

@@ -157,7 +157,7 @@
 				{#if loadingState !== 'FINISHED'}
 					<div class="skeleton w-full h-full" />
 				{:else if user && user.photoURL}
-					<img src={user.photoURL} alt="Profile" />
+					<img src={user.photoURL} alt="Profile" referrerpolicy="no-referrer" />
 				{:else}
 					<img src={'/default-cover.jpg'} alt="Default Profile" />
 				{/if}

@@ -14,7 +14,7 @@
 
 {#if recipe}
 	<a class="w-full" href={`/recipe/${collectionId}/${recipe.id}`}>
-		<div class="card w-full h-96 bg-base-100 shadow-xl">
+		<div class="card w-full h-96 bg-base-200 shadow-xl">
 			<figure class="h-64 overflow-x-hidden">
 				<img
 					class="h-full w-full"
