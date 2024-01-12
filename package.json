@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.1.0",
+		"@sveltejs/adapter-static": "^3.0.1",
 		"@sveltejs/kit": "^2.3.2",
 		"@types/mmmagic": "^0.4.33",
 		"@types/uuid": "^9.0.6",
@@ -30,8 +31,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@capacitor/android": "^5.6.0",
 		"@capacitor/cli": "^5.6.0",
 		"@capacitor/core": "^5.6.0",
+		"@capacitor/ios": "^5.6.0",
 		"firebase": "^10.5.2",
 		"firebase-admin": "^11.10.1",
 		"mmmagic": "^0.5.3",
