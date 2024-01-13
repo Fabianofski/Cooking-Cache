@@ -53,7 +53,7 @@
 	{/if}
 </div>
 
-<div class="fixed max-w-3xl w-full bottom-0">
+<div class="fixed max-w-3xl w-full bottom-0 z-20">
 	<button
 		class="btn btn-circle btn-primary absolute bottom-20 right-6"
 		class:btn-disabled={user === null}
