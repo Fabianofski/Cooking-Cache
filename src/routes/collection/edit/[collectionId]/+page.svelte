@@ -35,9 +35,7 @@
 			recipeCollection = value[collectionId];
 			collectionName = recipeCollection.name;
 			isOwner = recipeCollection.ownerId === user?.uid;
-			const hostname = window.location.hostname;
-			const port = hostname == 'localhost' ? ':' + window.location.port : '';
-			inviteLink = `${hostname}${port}/collection/join?i=${recipeCollection.inviteCode}`;
+			inviteLink = `https://cooking-cache.web.app/collection/join?i=${recipeCollection.inviteCode}`;
 		}
 	});
 
