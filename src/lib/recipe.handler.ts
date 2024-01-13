@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_URL } from '$env/static/public';
-import { CapacitorHttp, type HttpResponse } from '@capacitor/core';
+import { CapacitorHttp } from '@capacitor/core';
+import axios, { type AxiosResponse } from 'axios';
 import type { User } from 'firebase/auth';
 import { createNewAlert } from '../components/alerts/alert.handler';
 import type { Recipe } from '../models/Recipe';
@@ -8,15 +9,16 @@ import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 
 async function addRecipeToCollection(user: User, formData: FormData, collectionId: string) {
 	const token = await user.getIdToken();
-	return CapacitorHttp.post({
+	return axios({
 		url: `${PUBLIC_URL}/api/collection/${collectionId}/recipe`,
+		method: 'post',
 		data: formData,
 		headers: {
 			Accept: 'application/json',
 			Authorization: token
 		}
 	})
-		.then(async (res: HttpResponse) => {
+		.then(async (res: AxiosResponse) => {
 			if (res.status !== 200) return Promise.reject(res);
 
 			const recipe = res.data as Recipe;

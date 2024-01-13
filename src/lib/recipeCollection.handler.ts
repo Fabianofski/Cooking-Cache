@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_URL } from '$env/static/public';
 import { CapacitorHttp, type HttpResponse } from '@capacitor/core';
+import axios from 'axios';
 import type { User } from 'firebase/auth';
 import { createNewAlert } from '../components/alerts/alert.handler';
 import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
@@ -142,10 +143,12 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 
 	const formData = new FormData();
 	formData.append('cover', file);
-	return CapacitorHttp.patch({
+	return axios({
+		method: 'patch',
 		url: `${PUBLIC_URL}/api/collection/${collectionId}/cover`,
 		headers: {
-			Authorization: token
+			Authorization: token,
+			'Content-Type': 'multipart/form-data'
 		},
 		data: formData
 	})
@@ -164,9 +167,7 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 		})
 		.catch((error) => {
 			createNewAlert({
-				message:
-					'Beim Ändern des Covers ist ein Fehler aufgetreten!' +
-					(error.status ? ` (Error ${error.status})` : ''),
+				message: 'Beim Ändern des Covers ist ein Fehler aufgetreten!' + error,
 				type: 'error'
 			});
 		});
