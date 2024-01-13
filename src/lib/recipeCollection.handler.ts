@@ -1,4 +1,6 @@
 import { goto } from '$app/navigation';
+import { PUBLIC_URL } from '$env/static/public';
+import { CapacitorHttp, type HttpResponse } from '@capacitor/core';
 import type { User } from 'firebase/auth';
 import { createNewAlert } from '../components/alerts/alert.handler';
 import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
@@ -7,17 +9,17 @@ import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 async function createNewRecipeCollection(user: User, collectionName: string) {
 	const token = await user.getIdToken();
 
-	return fetch(`/api/collection?collectionName=${collectionName}`, {
-		method: 'POST',
+	return CapacitorHttp.post({
+		url: `${PUBLIC_URL}/api/collection?collectionName=${collectionName}`,
 		headers: {
 			Accept: 'application/json',
 			Authorization: token
 		}
 	})
-		.then(async (res: Response) => {
+		.then(async (res: HttpResponse) => {
 			if (res.status !== 200) return Promise.reject(res);
 
-			const collection: RecipeCollection = await res.json();
+			const collection: RecipeCollection = res.data;
 			recipeCollectionsStore.update((value) => {
 				value[collection.id] = collection;
 				return value;
@@ -41,7 +43,8 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 async function getUserRecipeCollections(user: User) {
 	const token = await user.getIdToken();
 
-	return fetch('/api/collection', {
+	return CapacitorHttp.get({
+		url: `${PUBLIC_URL}/api/collection`,
 		headers: {
 			Accept: 'application/json',
 			Authorization: token
@@ -49,24 +52,32 @@ async function getUserRecipeCollections(user: User) {
 	})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
-			const data: RecipeCollections = await res.json();
+			const data: RecipeCollections = res.data;
+			console.log(data);
 			recipeCollectionsStore.set(data);
 		})
-		.catch((error) => {});
+		.catch((error) => {
+			createNewAlert({
+				message:
+					'Beim Laden der Rezeptsammlungen ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
+				type: 'error'
+			});
+		});
 }
 
 async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string) {
 	const token = await user.getIdToken();
 
-	return fetch(`/api/collection/join?i=${inviteCode}`, {
-		method: 'POST',
+	return CapacitorHttp.post({
+		url: `${PUBLIC_URL}/api/collection/join?i=${inviteCode}`,
 		headers: {
 			Authorization: token
 		}
 	})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
-			const data = await res.json();
+			const data = res.data;
 			const collection: RecipeCollection = data;
 			recipeCollectionsStore.update((recipes) => {
 				recipes[collection.id] = collection;
@@ -90,8 +101,8 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
-	return fetch(`/api/collection/${collectionId}/name?newCollectionName=${collectionName}`, {
-		method: 'PATCH',
+	return CapacitorHttp.patch({
+		url: `${PUBLIC_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
 		headers: {
 			Authorization: token
 		}
@@ -131,17 +142,17 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 
 	const formData = new FormData();
 	formData.append('cover', file);
-	return fetch(`/api/collection/${collectionId}/cover`, {
-		method: 'PATCH',
+	return CapacitorHttp.patch({
+		url: `${PUBLIC_URL}/api/collection/${collectionId}/cover`,
 		headers: {
 			Authorization: token
 		},
-		body: formData
+		data: formData
 	})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
-			const photoURL = await res.json();
+			const photoURL = res.data;
 			recipeCollectionsStore.update((value) => {
 				value[collectionId].cover = photoURL;
 				return value;
@@ -167,8 +178,8 @@ async function toggleRecipeCollectionVisibility(
 	privateState: boolean
 ) {
 	const token = await user.getIdToken();
-	return fetch(`/api/collection/${collectionId}/visibility?private=${privateState}`, {
-		method: 'PATCH',
+	return CapacitorHttp.patch({
+		url: `${PUBLIC_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
 		headers: {
 			Authorization: token
 		}
@@ -197,8 +208,8 @@ async function toggleRecipeCollectionVisibility(
 
 async function leaveRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
-	return fetch(`/api/collection/${collectionId}/leave`, {
-		method: 'DELETE',
+	return CapacitorHttp.delete({
+		url: `${PUBLIC_URL}/api/collection/${collectionId}/leave`,
 		headers: {
 			Authorization: token
 		}
@@ -229,8 +240,8 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 async function deleteRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
 
-	return fetch(`/api/collection?collectionId=${collectionId}`, {
-		method: 'DELETE',
+	return CapacitorHttp.delete({
+		url: `${PUBLIC_URL}/api/collection?collectionId=${collectionId}`,
 		headers: {
 			Authorization: token
 		}
