@@ -7,7 +7,7 @@
 {#if recipe}
 	<figure class="w-full max-h-72 flex items-center flex-col mt-4">
 		<img
-			class="w-full h-full rounded object-cover"
+			class="w-full h-full max-h-72 rounded object-cover"
 			src={recipe.image === '' ? '/default-cover.jpg' : recipe.image}
 			alt={`${recipe.title} Cover`}
 		/>

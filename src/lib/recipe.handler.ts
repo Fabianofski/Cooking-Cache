@@ -1,4 +1,6 @@
 import { goto } from '$app/navigation';
+import { PUBLIC_BASE_URL } from '$env/static/public';
+import axios, { type AxiosResponse } from 'axios';
 import type { User } from 'firebase/auth';
 import { createNewAlert } from '../components/alerts/alert.handler';
 import type { Recipe } from '../models/Recipe';
@@ -6,18 +8,19 @@ import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 
 async function addRecipeToCollection(user: User, formData: FormData, collectionId: string) {
 	const token = await user.getIdToken();
-	return fetch(`/api/collection/${collectionId}/recipe`, {
-		method: 'POST',
-		body: formData,
+	return axios({
+		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/recipe`,
+		method: 'post',
+		data: formData,
 		headers: {
 			Accept: 'application/json',
 			Authorization: token
 		}
 	})
-		.then(async (res: Response) => {
+		.then(async (res: AxiosResponse) => {
 			if (res.status !== 200) return Promise.reject(res);
 
-			const recipe = (await res.json()) as Recipe;
+			const recipe = res.data as Recipe;
 			recipeCollectionsStore.update((value) => {
 				if (value[collectionId].recipes.find((x) => x.id === recipe.id)) return value;
 				value[collectionId].recipes.push(recipe);
@@ -41,8 +44,9 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 
 async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 	const token = await user.getIdToken();
-	return fetch(`/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`, {
-		method: 'DELETE',
+	return axios({
+		method: 'delete',
+		url: `${PUBLIC_BASE_URL}/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`,
 		headers: {
 			Authorization: token
 		}

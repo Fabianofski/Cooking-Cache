@@ -155,7 +155,7 @@
 	</div>
 </div>
 
-<div class="fixed max-w-3xl w-full bottom-0">
+<div class="fixed max-w-3xl w-full bottom-0 z-20">
 	<a
 		class="btn btn-circle btn-primary absolute bottom-20 right-6"
 		href={`/recipe/${data.collectionId}/create`}

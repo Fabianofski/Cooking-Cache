@@ -30,7 +30,7 @@
 </script>
 
 <div class="min-h-screen flex flex-col justify-between" id="top" data-theme="myTheme">
-	<div class="w-full flex justify-center bg-base-300 fixed top-0 left-0 z-10">
+	<div class="w-full flex justify-center bg-base-300 fixed top-0 left-0 z-20">
 		<div class="navbar max-w-3xl w-full">
 			<div class="navbar-start" />
 			<div class="navbar-center">

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Cooking Cache</string>
+    <string name="title_activity_main">Cooking Cache</string>
+    <string name="package_name">com.f4b1.cookingcache</string>
+    <string name="custom_url_scheme">com.f4b1.cookingcache</string>
+</resources>
