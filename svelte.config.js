@@ -1,6 +1,7 @@
 import adapterAuto from '@sveltejs/adapter-auto';
 import adapterStatic from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import 'dotenv/config';
 
 const staticSetup = adapterStatic({
 	pages: 'build',
