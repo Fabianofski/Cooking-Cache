@@ -1,6 +1,5 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_BASE_URL } from '$env/static/public';
-import { CapacitorHttp } from '@capacitor/core';
 import axios, { type AxiosResponse } from 'axios';
 import type { User } from 'firebase/auth';
 import { createNewAlert } from '../components/alerts/alert.handler';
@@ -45,7 +44,8 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 
 async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 	const token = await user.getIdToken();
-	return CapacitorHttp.delete({
+	return axios({
+		method: 'delete',
 		url: `${PUBLIC_BASE_URL}/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`,
 		headers: {
 			Authorization: token

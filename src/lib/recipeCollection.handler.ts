@@ -1,7 +1,6 @@
 import { goto } from '$app/navigation';
 import { PUBLIC_BASE_URL } from '$env/static/public';
-import { CapacitorHttp, type HttpResponse } from '@capacitor/core';
-import axios from 'axios';
+import axios, { type AxiosResponse } from 'axios';
 import type { User } from 'firebase/auth';
 import { createNewAlert } from '../components/alerts/alert.handler';
 import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
@@ -10,14 +9,15 @@ import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 async function createNewRecipeCollection(user: User, collectionName: string) {
 	const token = await user.getIdToken();
 
-	return CapacitorHttp.post({
+	return axios({
+		method: 'post',
 		url: `${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`,
 		headers: {
 			Accept: 'application/json',
 			Authorization: token
 		}
 	})
-		.then(async (res: HttpResponse) => {
+		.then(async (res: AxiosResponse) => {
 			if (res.status !== 200) return Promise.reject(res);
 
 			const collection: RecipeCollection = res.data;
@@ -44,7 +44,8 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 async function getUserRecipeCollections(user: User) {
 	const token = await user.getIdToken();
 
-	return CapacitorHttp.get({
+	return axios({
+		method: 'get',
 		url: `${PUBLIC_BASE_URL}/api/collection`,
 		headers: {
 			Accept: 'application/json',
@@ -70,7 +71,8 @@ async function getUserRecipeCollections(user: User) {
 async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string) {
 	const token = await user.getIdToken();
 
-	return CapacitorHttp.post({
+	return axios({
+		method: 'post',
 		url: `${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`,
 		headers: {
 			Authorization: token
@@ -102,7 +104,8 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
-	return CapacitorHttp.patch({
+	return axios({
+		method: 'patch',
 		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
 		headers: {
 			Authorization: token
@@ -179,7 +182,8 @@ async function toggleRecipeCollectionVisibility(
 	privateState: boolean
 ) {
 	const token = await user.getIdToken();
-	return CapacitorHttp.patch({
+	return axios({
+		method: 'patch',
 		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
 		headers: {
 			Authorization: token
@@ -209,7 +213,8 @@ async function toggleRecipeCollectionVisibility(
 
 async function leaveRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
-	return CapacitorHttp.delete({
+	return axios({
+		method: 'delete',
 		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave`,
 		headers: {
 			Authorization: token
@@ -241,7 +246,8 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 async function deleteRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
 
-	return CapacitorHttp.delete({
+	return axios({
+		method: 'delete',
 		url: `${PUBLIC_BASE_URL}/api/collection?collectionId=${collectionId}`,
 		headers: {
 			Authorization: token
