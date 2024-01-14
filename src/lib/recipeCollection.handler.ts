@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation';
-import { PUBLIC_URL } from '$env/static/public';
+import { PUBLIC_BASE_URL } from '$env/static/public';
 import { CapacitorHttp, type HttpResponse } from '@capacitor/core';
 import axios from 'axios';
 import type { User } from 'firebase/auth';
@@ -11,7 +11,7 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 	const token = await user.getIdToken();
 
 	return CapacitorHttp.post({
-		url: `${PUBLIC_URL}/api/collection?collectionName=${collectionName}`,
+		url: `${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`,
 		headers: {
 			Accept: 'application/json',
 			Authorization: token
@@ -45,7 +45,7 @@ async function getUserRecipeCollections(user: User) {
 	const token = await user.getIdToken();
 
 	return CapacitorHttp.get({
-		url: `${PUBLIC_URL}/api/collection`,
+		url: `${PUBLIC_BASE_URL}/api/collection`,
 		headers: {
 			Accept: 'application/json',
 			Authorization: token
@@ -71,7 +71,7 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 	const token = await user.getIdToken();
 
 	return CapacitorHttp.post({
-		url: `${PUBLIC_URL}/api/collection/join?i=${inviteCode}`,
+		url: `${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`,
 		headers: {
 			Authorization: token
 		}
@@ -103,7 +103,7 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
 	return CapacitorHttp.patch({
-		url: `${PUBLIC_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
+		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
 		headers: {
 			Authorization: token
 		}
@@ -145,7 +145,7 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 	formData.append('cover', file);
 	return axios({
 		method: 'patch',
-		url: `${PUBLIC_URL}/api/collection/${collectionId}/cover`,
+		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover`,
 		headers: {
 			Authorization: token,
 			'Content-Type': 'multipart/form-data'
@@ -180,7 +180,7 @@ async function toggleRecipeCollectionVisibility(
 ) {
 	const token = await user.getIdToken();
 	return CapacitorHttp.patch({
-		url: `${PUBLIC_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
+		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
 		headers: {
 			Authorization: token
 		}
@@ -210,7 +210,7 @@ async function toggleRecipeCollectionVisibility(
 async function leaveRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
 	return CapacitorHttp.delete({
-		url: `${PUBLIC_URL}/api/collection/${collectionId}/leave`,
+		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave`,
 		headers: {
 			Authorization: token
 		}
@@ -242,7 +242,7 @@ async function deleteRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
 
 	return CapacitorHttp.delete({
-		url: `${PUBLIC_URL}/api/collection?collectionId=${collectionId}`,
+		url: `${PUBLIC_BASE_URL}/api/collection?collectionId=${collectionId}`,
 		headers: {
 			Authorization: token
 		}

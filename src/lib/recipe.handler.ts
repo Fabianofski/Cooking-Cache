@@ -1,5 +1,5 @@
 import { goto } from '$app/navigation';
-import { PUBLIC_URL } from '$env/static/public';
+import { PUBLIC_BASE_URL } from '$env/static/public';
 import { CapacitorHttp } from '@capacitor/core';
 import axios, { type AxiosResponse } from 'axios';
 import type { User } from 'firebase/auth';
@@ -10,7 +10,7 @@ import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 async function addRecipeToCollection(user: User, formData: FormData, collectionId: string) {
 	const token = await user.getIdToken();
 	return axios({
-		url: `${PUBLIC_URL}/api/collection/${collectionId}/recipe`,
+		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/recipe`,
 		method: 'post',
 		data: formData,
 		headers: {
@@ -46,7 +46,7 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 	const token = await user.getIdToken();
 	return CapacitorHttp.delete({
-		url: `${PUBLIC_URL}/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`,
+		url: `${PUBLIC_BASE_URL}/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`,
 		headers: {
 			Authorization: token
 		}
