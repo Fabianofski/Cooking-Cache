@@ -179,10 +179,10 @@
 		{#if loadingState !== 'FINISHED'}
 			<div class="skeleton w-3/4 h-10 rounded" />
 		{:else}
-			<table class="text-lg">
+			<table class="text-lg" style="width: fit-content">
 				<tbody>
 					<td class="w-24">Name:</td>
-					<td class="font-bold w-40">
+					<td class="font-bold min-w-40">
 						{#if editingName && isOwner}
 							<input
 								type="text"

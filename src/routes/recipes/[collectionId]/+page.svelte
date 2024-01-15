@@ -157,15 +157,15 @@
 
 <div class="fixed max-w-3xl w-full bottom-0 z-20">
 	<a
-		class="btn btn-circle btn-primary absolute bottom-20 right-6"
+		class="btn btn-circle btn-primary w-14 h-14 absolute bottom-[5.5rem] right-9"
 		href={`/recipe/${data.collectionId}/create`}
 		class:btn-disabled={user === null}
 	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			height="24"
+			height="26"
 			viewBox="0 -960 960 960"
-			width="24"
+			width="26"
 			fill="currentColor"
 		>
 			<path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
