@@ -2,11 +2,19 @@
 	import { page } from '$app/stores';
 	import { auth } from '$lib/firebase.client';
 	import { getUserRecipeCollections } from '$lib/recipeCollection.handler';
+	import { Capacitor } from '@capacitor/core';
+	import { StatusBar } from '@capacitor/status-bar';
+	import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
 	import type { User } from 'firebase/auth';
 	import '../app.css';
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore } from '../stores/store';
+
+	if (Capacitor.isNativePlatform()) {
+		StatusBar.setBackgroundColor({ color: '#161c24' });
+		NavigationBar.setColor({ color: '#161c24' });
+	}
 
 	let user: User | null;
 
