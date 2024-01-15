@@ -28,7 +28,7 @@
 
 	let deletionModal: HTMLDialogElement;
 	function openDeletionModal() {
-		deletionModal.open = true;
+		deletionModal.showModal();
 	}
 
 	let loadingDeletion = false;

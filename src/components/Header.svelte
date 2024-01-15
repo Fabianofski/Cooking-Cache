@@ -65,7 +65,7 @@
 							viewBox="0 0 24 24"
 							stroke-width="1.5"
 							stroke="currentColor"
-							class="w-6 h-6"
+							class="w-7 h-7"
 						>
 							<path
 								stroke-linecap="round"
@@ -76,12 +76,12 @@
 					</div>
 					<ul
 						tabindex="-1"
-						class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+						class="dropdown-content z-[1] menu p-2 my-2 shadow-lg shadow-neutral/100 bg-base-200 rounded-xl w-52"
 					>
-						<ul class="py-2 shadow menu dropdown-content z-[1] bg-base-200 rounded w-52">
-							{#each options as option}
+						{#each options as option, index}
+							<div>
 								<button
-									class="btn btn-ghost min-h-0 h-8 flex justify-start"
+									class="btn btn-ghost min-h-0 h-8 w-full flex justify-start"
 									on:click={option.callback}
 								>
 									{#if option.icon}<img
@@ -91,8 +91,11 @@
 										/>{/if}
 									{option.title}
 								</button>
-							{/each}
-						</ul>
+								{#if options.length - 1 !== index}
+									<div class="divider m-0 p-0" />
+								{/if}
+							</div>
+						{/each}
 					</ul>
 				</div>
 			</div>
