@@ -82,14 +82,16 @@
 	}
 
 	function loginWithCapacitorOAuth() {
-		FirebaseAuthentication.signInWithGoogle({}).then((result) => {
-			if (!result.credential) return;
-			const credential = GoogleAuthProvider.credential(
-				result.credential.idToken,
-				result.credential.nonce
-			);
-			signInWithCredential(auth, credential).then(loggedInHandler).catch(errorHandling);
-		});
+		FirebaseAuthentication.signInWithGoogle()
+			.then((result) => {
+				if (!result.credential) return;
+				const credential = GoogleAuthProvider.credential(
+					result.credential.idToken,
+					result.credential.nonce
+				);
+				signInWithCredential(auth, credential).then(loggedInHandler).catch(errorHandling);
+			})
+			.catch(errorHandling);
 	}
 
 	function signUpWithEmailAndPassword() {

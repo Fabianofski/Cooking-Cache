@@ -15,6 +15,7 @@
 	import { onMount } from 'svelte';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
+	import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 
 	let oldPassword: string = '';
 	let password: string = '';
@@ -273,6 +274,7 @@
 				disabled={loadingState !== 'FINISHED'}
 				on:click={() => {
 					signOut(auth);
+					FirebaseAuthentication.signOut();
 					goto('/login');
 				}}
 			>
