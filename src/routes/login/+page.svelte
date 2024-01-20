@@ -7,13 +7,18 @@
 		OAuthProvider,
 		createUserWithEmailAndPassword,
 		signInWithEmailAndPassword,
-		signInWithPopup,
 		updateProfile,
 		type AuthProvider,
-		type UserCredential
+		type UserCredential,
+		signInWithCredential,
+		browserPopupRedirectResolver,
+		getRedirectResult,
+		signInWithPopup
 	} from 'firebase/auth';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
 	import { currentUser } from '../../stores/store';
+	import { Capacitor } from '@capacitor/core';
+	import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 
 	let loggingIn = true;
 	let optIn = false;
@@ -67,7 +72,26 @@
 
 	function loginWithOAuth(provider: AuthProvider) {
 		loading = true;
-		signInWithPopup(auth, provider).then(loggedInHandler).catch(errorHandling);
+		if (Capacitor.isNativePlatform()) {
+			loginWithCapacitorOAuth();
+		} else {
+			signInWithPopup(auth, provider, browserPopupRedirectResolver)
+				.then(loggedInHandler)
+				.catch(errorHandling);
+		}
+	}
+
+	function loginWithCapacitorOAuth() {
+		FirebaseAuthentication.signInWithGoogle()
+			.then((result) => {
+				if (!result.credential) return;
+				const credential = GoogleAuthProvider.credential(
+					result.credential.idToken,
+					result.credential.nonce
+				);
+				signInWithCredential(auth, credential).then(loggedInHandler).catch(errorHandling);
+			})
+			.catch(errorHandling);
 	}
 
 	function signUpWithEmailAndPassword() {
