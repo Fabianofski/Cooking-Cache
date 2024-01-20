@@ -37,7 +37,7 @@
 	});
 </script>
 
-<div class="min-h-screen flex flex-col justify-between" id="top" data-theme="myTheme">
+<div class="h-svh flex flex-col justify-between" id="top" data-theme="myTheme">
 	<div class="w-full flex justify-center bg-base-300 fixed top-0 left-0 z-20">
 		<div class="navbar max-w-3xl w-full">
 			<div class="navbar-start" />
@@ -51,9 +51,13 @@
 	</div>
 
 	<Alerts />
-	<div class="flex flex-col justify-start items-center px-2 py-2 flex-1 my-20">
-		<div class="flex flex-col flex-1 max-w-3xl w-full relative">
-			<slot />
+	<div class="h-svh py-16">
+		<div
+			class="flex flex-col h-full justify-start items-center overflow-y-scroll overscroll-contain"
+		>
+			<div class="flex flex-col max-w-3xl w-full relative px-2 py-4">
+				<slot />
+			</div>
 		</div>
 	</div>
 
