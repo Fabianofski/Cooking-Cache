@@ -10,20 +10,26 @@
 		reauthenticateWithPopup,
 		signOut,
 		updatePassword,
+		signInWithCredential,
+		GoogleAuthProvider,
 		type User
 	} from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 	import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
+	import { Capacitor } from '@capacitor/core';
 
 	let oldPassword: string = '';
 	let password: string = '';
 	let repeatPassword: string = '';
 
 	let user: User | null = null;
+	let userHasEmailProvider: boolean = false;
 	currentUser.subscribe((value) => {
 		user = value;
+		userHasEmailProvider =
+			user?.providerData.find((x) => x.providerId === 'password') !== undefined;
 	});
 
 	let loadingState: LoadingState;
@@ -36,7 +42,7 @@
 
 	let loadingPasswordChange = false;
 	function formIsInvalid(oldPassword: string, password: string, repeatPassword: string): boolean {
-		return oldPassword === '' || password === '' || repeatPassword === '';
+		return (oldPassword === '' && userHasEmailProvider) || password === '' || repeatPassword === '';
 	}
 
 	function reauthenticate(password: string) {
@@ -47,30 +53,45 @@
 			}
 			let providerId = user.providerData[0].providerId;
 
-			if (providerId === 'password') {
+			if (userHasEmailProvider) {
 				if (!user.email) {
 					reject('E-Mail is null');
 					return;
 				}
 				let credential: AuthCredential = EmailAuthProvider.credential(user.email, password);
 				reauthenticateWithCredential(user, credential)
-					.then(() => {
-						resolve();
-					})
-					.catch((err) => {
-						reject(err);
-					});
+					.then(() => resolve())
+					.catch(reject);
 			} else {
-				const provider = new OAuthProvider(providerId);
-				reauthenticateWithPopup(user, provider)
-					.then(() => {
-						resolve();
-					})
-					.catch((err) => {
-						reject(err);
-					});
+				if (Capacitor.isNativePlatform()) {
+					reauthenticateNative(resolve, reject);
+				} else {
+					const provider = new OAuthProvider(providerId);
+					reauthenticateWithPopup(user, provider)
+						.then(() => resolve())
+						.catch(reject);
+				}
 			}
 		});
+	}
+
+	function reauthenticateNative(resolve: (value?: any) => void, reject: (reason?: any) => void) {
+		FirebaseAuthentication.signInWithGoogle()
+			.then((result) => {
+				if (!result.credential || !result.user || !user) {
+					reject('Result is null');
+					return;
+				}
+
+				const credential = GoogleAuthProvider.credential(
+					result.credential.idToken,
+					result.credential.nonce
+				);
+				reauthenticateWithCredential(user, credential)
+					.then(() => resolve())
+					.catch(reject);
+			})
+			.catch(reject);
 	}
 
 	function changePassword() {
@@ -220,16 +241,18 @@
 	<div class="grid grid-cols-fluid gap-4">
 		<div class="flex flex-col gap-2">
 			<h3 class="font-bold text-md text-center">Passwort ändern</h3>
-			<div class="form-control w-full max-w-s">
-				<input
-					type="password"
-					disabled={loadingState !== 'FINISHED'}
-					placeholder="Altes Passwort"
-					bind:value={oldPassword}
-					class="input input-bordered w-full max-w-s"
-					required
-				/>
-			</div>
+			{#if userHasEmailProvider}
+				<div class="form-control w-full max-w-s">
+					<input
+						type="password"
+						disabled={loadingState !== 'FINISHED'}
+						placeholder="Altes Passwort"
+						bind:value={oldPassword}
+						class="input input-bordered w-full max-w-s"
+						required
+					/>
+				</div>
+			{/if}
 
 			<div class="form-control w-full max-w-s">
 				<input
