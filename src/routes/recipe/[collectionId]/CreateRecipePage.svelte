@@ -27,14 +27,18 @@
 		title: '',
 		tagline: '',
 		tags: [],
-		ingredients: [{ amount: '', name: '' }],
-		description: [''],
-		id: '',
+		ingredients: { Kategorie: [{ amount: '', name: '' }] },
 		url: '',
-		collectionId: collectionId,
+		createdTime: new Date(),
+		updatedTime: new Date(),
+		numberOfServings: 0,
+		cookingTime: 0,
+		difficulty: 'easy',
+		description: [],
+		id: '',
+		collectionId: '',
 		creatorId: ''
 	};
-	ingredientInputChanged(recipe.ingredients.length - 1);
 	stepInputChanged(recipe.description.length - 1);
 
 	let user: User;
@@ -46,22 +50,19 @@
 		return (
 			recipe.title === '' ||
 			recipe.tagline === '' ||
-			recipe.ingredients[0].amount === '' ||
-			recipe.ingredients[0].name === '' ||
+			// recipe.ingredients[0].amount === '' ||
+			// recipe.ingredients[0].name === '' ||
 			recipe.description[0] === ''
 		);
 	}
 
-	function ingredientInputChanged(index: number) {
-		if (index + 1 === recipe.ingredients.length) recipe.ingredients.push({ amount: '', name: '' });
+	function addIngredientToCategroy(category: string) {
+		recipe.ingredients[category] = [...recipe.ingredients[category], { amount: '', name: '' }];
+	}
 
-		let count = -1;
-		for (let j = recipe.ingredients.length - 1; j >= 0; j--) {
-			const ingredient = recipe.ingredients[j];
-			if (ingredient.name !== '' || ingredient.amount !== '') break;
-			count++;
-		}
-		recipe.ingredients = recipe.ingredients.slice(0, recipe.ingredients.length - count);
+	let newCategory: string = '';
+	function addIngredientCategory() {
+		recipe.ingredients = { ...recipe.ingredients, [newCategory]: [{ amount: '', name: '' }] };
 	}
 
 	function stepInputChanged(index: number) {
@@ -85,7 +86,12 @@
 		if (files && files.length > 0) formData.append('cover', files[0]);
 
 		// Remove empty buffer fields at end from array inputs
-		recipe.ingredients.pop();
+		recipe.ingredients = Object.fromEntries(
+			Object.entries(recipe.ingredients).map(([key, value]) => [
+				key,
+				value.filter((ingredient) => ingredient.amount !== '' || ingredient.name !== '')
+			])
+		);
 		recipe.description.pop();
 
 		recipe.creatorId = user.uid;
@@ -193,28 +199,65 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each { length: recipe.ingredients.length } as _, i}
+						{#each Object.keys(recipe.ingredients) as category}
 							<tr>
-								<td class="pl-0 pr-1">
-									<input
-										type="text"
-										placeholder="1"
-										class="input input-bordered w-full"
-										bind:value={recipe.ingredients[i].amount}
-										on:input={(e) => ingredientInputChanged(i)}
-									/>
+								<td colspan="2" class="font-bold py-1 pl-0">
+									{category}
 								</td>
-								<td class="pl-1 pr-0">
-									<input
-										type="text"
-										placeholder="Tomate"
-										class="input input-bordered w-full"
-										bind:value={recipe.ingredients[i].name}
-										on:input={(e) => ingredientInputChanged(i)}
-									/>
+							</tr>
+							{#each { length: recipe.ingredients[category].length } as _, i}
+								<tr>
+									<td class="pl-0 pr-0.5 py-0 w-36">
+										<input
+											type="text"
+											placeholder="1"
+											class="input input-sm input-bordered w-full"
+											bind:value={recipe.ingredients[category][i].amount}
+										/>
+									</td>
+									<td class="pl-0.5 pr-0 py-0">
+										<input
+											type="text"
+											placeholder="Tomate"
+											class="input input-sm input-bordered w-full"
+											bind:value={recipe.ingredients[category][i].name}
+										/>
+									</td>
+								</tr>
+							{/each}
+							<tr>
+								<td class="p-0">
+									<button
+										class="btn btn-neutral btn-sm w-32 my-1"
+										on:click={() => {
+											addIngredientToCategroy(category);
+										}}
+									>
+										+
+									</button>
 								</td>
 							</tr>
 						{/each}
+						<tr>
+							<td colspan="2" class="p-0">
+								<div class="divider my-0.5" />
+								<input
+									type="text"
+									placeholder="Kategorie"
+									class="input input-bordered input-sm w-36"
+									bind:value={newCategory}
+								/>
+								<button
+									class="btn btn-neutral btn-sm btn-block my-1"
+									disabled={newCategory === '' || newCategory in recipe.ingredients}
+									on:click={() => {
+										addIngredientCategory();
+									}}
+								>
+									+
+								</button>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

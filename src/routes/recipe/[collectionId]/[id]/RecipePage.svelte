@@ -56,11 +56,18 @@
 			</thead>
 			<tbody>
 				{#if recipe}
-					{#each recipe.ingredients as ingredient}
-						<tr class="hover">
-							<td>{ingredient.amount}</td>
-							<td class="font-bold">{ingredient.name}</td>
+					{#each Object.keys(recipe.ingredients) as category}
+						<tr>
+							<td colspan="2" class="font-bold">
+								{category}
+							</td>
 						</tr>
+						{#each recipe.ingredients[category] as ingredient}
+							<tr class="hover">
+								<td>{ingredient.amount}</td>
+								<td class="font-bold">{ingredient.name}</td>
+							</tr>
+						{/each}
 					{/each}
 				{:else}
 					{#each Array(3) as _}
