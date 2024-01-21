@@ -65,12 +65,7 @@
 </script>
 
 <div class="flex-1 flex gap-4 flex-col items-center">
-	<Header
-		backLink="/recipes"
-		title={collectionName}
-		loading={loadingState !== 'FINISHED'}
-		sticky={true}
-	/>
+	<Header backLink="/recipes" title={collectionName} loading={loadingState !== 'FINISHED'} />
 
 	<div class="w-full flex flex-col gap-2">
 		<div class="join flex">

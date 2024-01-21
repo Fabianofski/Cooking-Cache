@@ -2,7 +2,6 @@
 	export let title: string;
 	export let loading: boolean;
 	export let backLink: string | undefined = undefined;
-	export let sticky: boolean = false;
 	export let options: { callback: () => void; title: string; icon: string | undefined }[] = [];
 
 	let justFocussed = false;
@@ -18,7 +17,7 @@
 	}
 </script>
 
-<div class={`w-full bg-base-100 ${sticky ? 'sticky top-16 z-10' : ''}`}>
+<div class="w-full bg-base-100">
 	<div class="w-full relative">
 		{#if backLink}
 			<a href={backLink} class="absolute top-1">
