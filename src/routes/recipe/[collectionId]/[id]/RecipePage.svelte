@@ -57,16 +57,20 @@
 			<tbody>
 				{#if recipe}
 					{#each Object.keys(recipe.ingredients) as category}
-						<tr>
-							<td colspan="2" class="font-bold">
-								{category}
-							</td>
-						</tr>
-						{#each recipe.ingredients[category] as ingredient}
-							<tr class="hover">
-								<td>{ingredient.amount}</td>
-								<td class="font-bold">{ingredient.name}</td>
+						{#if category !== 'Default'}
+							<tr>
+								<td colspan="2" class="font-bold">
+									{category}
+								</td>
 							</tr>
+						{/if}
+						{#each recipe.ingredients[category] as ingredient}
+							{#if ingredient.name !== '' || ingredient.amount !== ''}
+								<tr class="hover">
+									<td>{ingredient.amount}</td>
+									<td class="font-bold">{ingredient.name}</td>
+								</tr>
+							{/if}
 						{/each}
 					{/each}
 				{:else}

@@ -27,7 +27,7 @@
 		title: '',
 		tagline: '',
 		tags: [],
-		ingredients: { Kategorie: [{ amount: '', name: '' }] },
+		ingredients: { Default: [{ amount: '', name: '' }] },
 		url: '',
 		createdTime: new Date(),
 		updatedTime: new Date(),
@@ -36,9 +36,16 @@
 		difficulty: 'easy',
 		description: [],
 		id: '',
-		collectionId: '',
+		collectionId: collectionId,
 		creatorId: ''
 	};
+	let editingCategoryName: {
+		[key: string]: {
+			editing: boolean;
+			name: string;
+		};
+	} = {};
+
 	stepInputChanged(recipe.description.length - 1);
 
 	let user: User;
@@ -61,8 +68,39 @@
 	}
 
 	let newCategory: string = '';
-	function addIngredientCategory() {
+	function addIngredientCategory(e: Event | undefined = undefined) {
+		if (
+			newCategory === '' ||
+			newCategory in recipe.ingredients ||
+			(e && (<KeyboardEvent>e).key !== 'Enter')
+		)
+			return;
+
 		recipe.ingredients = { ...recipe.ingredients, [newCategory]: [{ amount: '', name: '' }] };
+		editingCategoryName[newCategory] = { editing: false, name: newCategory };
+		newCategory = '';
+	}
+
+	function updateCategoryName(category: string, e: Event | undefined = undefined) {
+		if (e && (<KeyboardEvent>e).key === 'Escape') {
+			editingCategoryName[category].name = category;
+			editingCategoryName[category].editing = false;
+			return;
+		}
+
+		if (
+			editingCategoryName[category].name === '' ||
+			editingCategoryName[category].name in recipe.ingredients ||
+			(e && (<KeyboardEvent>e).key !== 'Enter')
+		)
+			return;
+
+		const categoryInfo = editingCategoryName[category];
+		recipe.ingredients[categoryInfo.name] = recipe.ingredients[category];
+		editingCategoryName[categoryInfo.name] = { editing: false, name: categoryInfo.name };
+
+		delete recipe.ingredients[category];
+		delete editingCategoryName[category];
 	}
 
 	function stepInputChanged(index: number) {
@@ -191,20 +229,71 @@
 				<label class="label" for="">
 					<span class="label-text">Zutaten*</span>
 				</label>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Anzahl</th>
-							<th>Zutat</th>
-						</tr>
-					</thead>
-					<tbody>
-						{#each Object.keys(recipe.ingredients) as category}
+				{#each Object.keys(recipe.ingredients) as category}
+					{#if category !== 'Default'}
+						<div class="flex items-center gap-1">
+							{#if editingCategoryName[category]?.editing}
+								<input
+									type="text"
+									placeholder="z.B. Für den Teig"
+									class="input input-bordered input-sm w-36"
+									bind:value={editingCategoryName[category].name}
+									on:keyup={(e) => {
+										updateCategoryName(category, e);
+									}}
+								/>
+								<button
+									class="btn btn-ghost btn-sm"
+									on:click={() => updateCategoryName(category)}
+									disabled={editingCategoryName[category].name === ''}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M4.5 12.75l6 6 9-13.5"
+										/>
+									</svg>
+								</button>
+							{:else}
+								<h3 class="align-middle text-sm">{category}</h3>
+								<button
+									class="btn btn-ghost btn-sm"
+									on:click={() => (editingCategoryName[category].editing = true)}
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+										/>
+									</svg>
+								</button>
+							{/if}
+						</div>
+					{/if}
+					<table class="table">
+						<thead>
 							<tr>
-								<td colspan="2" class="font-bold py-1 pl-0">
-									{category}
-								</td>
+								<th class="pl-0 pt-0.5">Anzahl</th>
+								<th class="pl-0 pt-0.5">Zutat</th>
 							</tr>
+						</thead>
+						<tbody>
 							{#each { length: recipe.ingredients[category].length } as _, i}
 								<tr>
 									<td class="pl-0 pr-0.5 py-0 w-36">
@@ -237,29 +326,31 @@
 									</button>
 								</td>
 							</tr>
-						{/each}
-						<tr>
-							<td colspan="2" class="p-0">
-								<div class="divider my-0.5" />
-								<input
-									type="text"
-									placeholder="Kategorie"
-									class="input input-bordered input-sm w-36"
-									bind:value={newCategory}
-								/>
-								<button
-									class="btn btn-neutral btn-sm btn-block my-1"
-									disabled={newCategory === '' || newCategory in recipe.ingredients}
-									on:click={() => {
-										addIngredientCategory();
-									}}
-								>
-									+
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+						</tbody>
+					</table>
+					<div class="divider my-0.5" />
+				{/each}
+				<label class="form-control w-full max-w-xs">
+					<div class="label">
+						<span class="label-text">Kategorie hinzufügen</span>
+					</div>
+					<input
+						type="text"
+						placeholder="z.B. Für den Teig"
+						class="input input-bordered input-sm w-36"
+						bind:value={newCategory}
+						on:keyup={addIngredientCategory}
+					/>
+				</label>
+				<button
+					class="btn btn-neutral btn-sm btn-block my-1"
+					disabled={newCategory === '' || newCategory in recipe.ingredients}
+					on:click={() => {
+						addIngredientCategory();
+					}}
+				>
+					+
+				</button>
 			</div>
 			<div class="form-control col-span-full">
 				<label class="label" for="">
