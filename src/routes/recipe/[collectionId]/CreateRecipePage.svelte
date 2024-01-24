@@ -27,7 +27,7 @@
 		title: '',
 		tagline: '',
 		tags: [],
-		ingredients: { Default: [{ amount: '', name: '' }] },
+		ingredients: { Default: [{ amount: undefined, name: '', unit: '' }] },
 		url: '',
 		createdTime: new Date(),
 		updatedTime: new Date(),
@@ -63,7 +63,10 @@
 	}
 
 	function addIngredientToCategroy(category: string) {
-		recipe.ingredients[category] = [...recipe.ingredients[category], { amount: '', name: '' }];
+		recipe.ingredients[category] = [
+			...recipe.ingredients[category],
+			{ amount: undefined, name: '', unit: '' }
+		];
 	}
 
 	let newCategory: string = '';
@@ -75,7 +78,10 @@
 		)
 			return;
 
-		recipe.ingredients = { ...recipe.ingredients, [newCategory]: [{ amount: '', name: '' }] };
+		recipe.ingredients = {
+			...recipe.ingredients,
+			[newCategory]: [{ amount: undefined, name: '', unit: '' }]
+		};
 		editingCategoryName[newCategory] = { editing: false, name: newCategory };
 		newCategory = '';
 	}
@@ -126,7 +132,7 @@
 		recipe.ingredients = Object.fromEntries(
 			Object.entries(recipe.ingredients).map(([key, value]) => [
 				key,
-				value.filter((ingredient) => ingredient.amount !== '' || ingredient.name !== '')
+				value.filter((ingredient) => !ingredient.amount || ingredient.name !== '')
 			])
 		);
 		recipe.description.pop();
@@ -322,7 +328,7 @@
 					<input
 						class="btn btn-ghost input-bordered flex-1 join-item"
 						type="radio"
-						name="options"
+						name="difficulty"
 						aria-label="Einfach"
 						value={'easy'}
 						bind:group={recipe.difficulty}
@@ -330,7 +336,7 @@
 					<input
 						class="btn btn-ghost input-bordered flex-1 join-item"
 						type="radio"
-						name="options"
+						name="difficulty"
 						aria-label="Mittel"
 						value={'medium'}
 						bind:group={recipe.difficulty}
@@ -338,7 +344,7 @@
 					<input
 						class="btn btn-ghost input-bordered flex-1 join-item"
 						type="radio"
-						name="options"
+						name="difficulty"
 						aria-label="Schwer"
 						value={'hard'}
 						bind:group={recipe.difficulty}
@@ -410,7 +416,8 @@
 					<table class="table">
 						<thead>
 							<tr>
-								<th class="pl-0 pt-0.5">Anzahl</th>
+								<th class="pl-0 pt-0.5">Menge</th>
+								<th class="pl-0 pt-0.5">Einheit</th>
 								<th class="pl-0 pt-0.5">Zutat</th>
 							</tr>
 						</thead>
@@ -419,16 +426,24 @@
 								<tr>
 									<td class="pl-0 pr-0.5 py-0 w-36">
 										<input
-											type="text"
+											type="number"
 											placeholder="1"
 											class="input input-sm input-bordered w-full"
 											bind:value={recipe.ingredients[category][i].amount}
 										/>
 									</td>
+									<td class="pl-0 pr-0.5 py-0 w-36">
+										<input
+											type="text"
+											placeholder="Packung"
+											class="input input-sm input-bordered w-full"
+											bind:value={recipe.ingredients[category][i].unit}
+										/>
+									</td>
 									<td class="pl-0.5 pr-0 py-0">
 										<input
 											type="text"
-											placeholder="Tomate"
+											placeholder="Backpulver"
 											class="input input-sm input-bordered w-full"
 											bind:value={recipe.ingredients[category][i].name}
 										/>
