@@ -162,23 +162,15 @@
 				</button>
 			</div>
 		</div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Menge</th>
-					<th>Zutat</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#if recipe}
-					{#each Object.keys(recipe.ingredients) as category}
-						{#if category !== 'Default'}
-							<tr>
-								<td colspan="2" class="font-bold">
-									{category}
-								</td>
-							</tr>
-						{/if}
+		{#if recipe}
+			{#each Object.keys(recipe.ingredients) as category}
+				{#if category !== 'Default'}
+					<h3 class="font-bold text-md pl-2 mt-2">
+						{category}:
+					</h3>
+				{/if}
+				<table class="table">
+					<tbody>
 						{#each recipe.ingredients[category] as ingredient}
 							{#if ingredient.name !== '' && ingredient.amount}
 								<tr class="hover">
@@ -192,21 +184,30 @@
 								</tr>
 							{/if}
 						{/each}
-					{/each}
-				{:else}
+					</tbody>
+				</table>
+			{/each}
+		{:else}
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Menge</th>
+						<th>Zutat</th>
+					</tr>
+				</thead>
+				<tbody>
 					{#each Array(3) as _}
 						<tr>
 							<td class="skeleton rounded-sm p-6" />
 							<td class="skeleton rounded-sm p-6" />
 						</tr>
 					{/each}
-				{/if}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		{/if}
 	</div>
 
 	<div class="divider" />
-
 	<h2 class="font-bold text-lg">Zubereitung</h2>
 
 	<div class="overflow-x-auto rounded-sm">
