@@ -2,6 +2,7 @@
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe | undefined;
+	let numberOfServings = recipe?.numberOfServings || 4;
 
 	let difficulties: {
 		[key: string]: string;
@@ -10,6 +11,14 @@
 		medium: 'Mittel',
 		hard: 'Schwer'
 	};
+
+	function getIngredientPerServing(amount: number, numberOfServings: number) {
+		if (numberOfServings < 0) numberOfServings = -numberOfServings;
+		if (!numberOfServings) numberOfServings = recipe?.numberOfServings || 4;
+
+		const multiplier = numberOfServings / (recipe?.numberOfServings || 4);
+		return Number((multiplier * amount).toFixed(2));
+	}
 </script>
 
 {#if recipe}
@@ -113,7 +122,46 @@
 		<div class="skeleton h-12 w-full rounded" />
 	{/if}
 
+	<div class="divider" />
+
+	<h2 class="font-bold text-lg">Zutaten</h2>
 	<div class="overflow-x-auto">
+		<div class="flex justify-between gap-2">
+			<p>
+				Für <strong>{numberOfServings}</strong>
+				{numberOfServings === 1 ? 'Portion' : 'Portionen'}
+			</p>
+			<div class="join gap-0.5">
+				<button
+					class="btn btn-primary btn-sm join-item"
+					on:click={() => (numberOfServings > 1 ? numberOfServings-- : '')}
+					disabled={numberOfServings <= 1}
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-5 h-5"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+					</svg>
+				</button>
+				<button class="btn btn-primary btn-sm join-item" on:click={() => numberOfServings++}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="w-5 h-5"
+					>
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+					</svg>
+				</button>
+			</div>
+		</div>
 		<table class="table">
 			<thead>
 				<tr>
@@ -135,7 +183,9 @@
 							{#if ingredient.name !== '' && ingredient.amount}
 								<tr class="hover">
 									<td class="w-48">
-										<strong class="mr-2">{ingredient.amount}</strong>
+										<strong>
+											{getIngredientPerServing(ingredient.amount, numberOfServings)}
+										</strong>
 										{ingredient.unit || ''}
 									</td>
 									<td class="font-bold">{ingredient.name}</td>
@@ -156,6 +206,8 @@
 	</div>
 
 	<div class="divider" />
+
+	<h2 class="font-bold text-lg">Zubereitung</h2>
 
 	<div class="overflow-x-auto rounded-sm">
 		<table class="table rounded-none">
