@@ -29,8 +29,8 @@
 		tags: [],
 		ingredients: { Default: [{ amount: undefined, name: '', unit: '' }] },
 		url: '',
-		createdTime: new Date(),
-		updatedTime: new Date(),
+		createdTime: new Date().toISOString(),
+		updatedTime: new Date().toISOString(),
 		difficulty: 'medium',
 		numberOfServings: 4,
 		description: [],
@@ -53,13 +53,7 @@
 	});
 
 	function formIsInvalid(recipe: Recipe) {
-		return (
-			recipe.title === '' ||
-			recipe.tagline === '' ||
-			// recipe.ingredients[0].amount === '' ||
-			// recipe.ingredients[0].name === '' ||
-			recipe.description[0] === ''
-		);
+		return recipe.title === '' || recipe.tagline === '' || recipe.description[0] === '';
 	}
 
 	function addIngredientToCategroy(category: string) {
@@ -429,6 +423,7 @@
 											type="number"
 											placeholder="1"
 											class="input input-sm input-bordered w-full"
+											required
 											bind:value={recipe.ingredients[category][i].amount}
 										/>
 									</td>
@@ -445,6 +440,7 @@
 											type="text"
 											placeholder="Backpulver"
 											class="input input-sm input-bordered w-full"
+											required
 											bind:value={recipe.ingredients[category][i].name}
 										/>
 									</td>

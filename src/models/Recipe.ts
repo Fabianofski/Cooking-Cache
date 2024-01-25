@@ -8,8 +8,8 @@ export interface Recipe {
 	url: string;
 
 	tags?: string[];
-	createdTime: Date;
-	updatedTime: Date;
+	createdTime: string;
+	updatedTime: string;
 	numberOfServings?: number;
 	cookingTime?: number;
 	difficulty: 'easy' | 'medium' | 'hard';

@@ -49,7 +49,7 @@
 						d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
 					/>
 				</svg>
-				{recipe.cookingTime || '60 Minuten'}
+				{recipe.cookingTime || '60'} Minuten
 			</div>
 			<div class="badge badge-neutral h-8">
 				<svg
@@ -66,7 +66,7 @@
 						d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"
 					/>
 				</svg>
-				{recipe.createdTime.toLocaleDateString()}
+				{new Date(recipe.createdTime).toLocaleString()}
 			</div>
 			<div class="badge badge-neutral h-8">
 				<svg
@@ -136,7 +136,7 @@
 								<tr class="hover">
 									<td class="w-48">
 										<strong class="mr-2">{ingredient.amount}</strong>
-										{ingredient.unit}
+										{ingredient.unit || ''}
 									</td>
 									<td class="font-bold">{ingredient.name}</td>
 								</tr>
