@@ -1,6 +1,7 @@
 <script lang="ts">
 	import RecipeCard from '../../../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
+	import { onMount } from 'svelte';
 
 	export let recipe: Recipe;
 
@@ -16,6 +17,11 @@
 			fileInput.value = '';
 		} else recipe.image = URL.createObjectURL(files[0]);
 	}
+
+	let inputFocus: HTMLElement;
+	onMount(() => {
+		inputFocus.focus();
+	});
 </script>
 
 <div class="col-span-full flex justify-center">
@@ -43,6 +49,7 @@
 		<span class="label-text">Titel*</span>
 	</label>
 	<input
+		bind:this={inputFocus}
 		type="text"
 		placeholder="Cheeseburger.."
 		class="input input-bordered w-full"

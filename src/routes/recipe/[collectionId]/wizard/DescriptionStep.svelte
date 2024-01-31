@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
@@ -17,6 +18,11 @@
 		}
 		recipe.description = recipe.description.slice(0, recipe.description.length - count);
 	}
+
+	let inputs: HTMLElement[] = [];
+	onMount(() => {
+		inputs[inputs.length - 1].focus();
+	});
 </script>
 
 <div class="form-control col-span-full">
@@ -29,8 +35,9 @@
 				<p class="p-2 font-bold w-8 text-center">
 					{index + 1}.
 				</p>
-				<textarea
-					class="textarea textarea-bordered h-12 w-full"
+				<input
+					bind:this={inputs[index]}
+					class="input input-bordered h-12 w-full"
 					placeholder={'Schritt 1'}
 					bind:value={recipe.description[index]}
 					on:input={() => {

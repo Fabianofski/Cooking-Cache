@@ -1,8 +1,24 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import RecipeCard from '../../../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
+
+	function applyTags(e: Event) {
+		if (e.target === null) return;
+
+		const tags = (e.target as HTMLInputElement).value.split(',');
+		tags.forEach((tag: string, index: number) => {
+			tags[index] = tag.trim();
+		});
+		recipe.tags = tags;
+	}
+
+	let inputFocus: HTMLElement;
+	onMount(() => {
+		inputFocus.focus();
+	});
 </script>
 
 <div class="col-span-full flex justify-center">
@@ -17,13 +33,12 @@
 		<span class="label-text">Tags (getrennt durch Komma)</span>
 	</label>
 	<input
+		bind:this={inputFocus}
 		type="text"
 		placeholder="Mittag, Abend, Frühstück.."
 		class="input input-bordered w-full"
-		on:input={(e) => {
-			//@ts-ignore
-			recipe.tags = e.target?.value.split(',');
-		}}
+		on:input={applyTags}
+		value={recipe.tags?.join(', ')}
 	/>
 </div>
 

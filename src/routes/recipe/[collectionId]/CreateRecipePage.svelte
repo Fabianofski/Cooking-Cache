@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { addRecipeToCollection } from '$lib/recipe.handler';
 	import type { User } from 'firebase/auth';
-	import { createNewAlert } from '../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../models/Recipe';
 	import { currentUser } from '../../../stores/store';
 	import RecipePage from './[id]/RecipePage.svelte';
@@ -14,7 +13,7 @@
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
-	let selectedStep = 5;
+	let selectedStep = 0;
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let collectionId: string;
@@ -87,7 +86,7 @@
 	{/each}
 </ul>
 
-<div class="grid grid-cols-fluid items-center gap-2 overflow-auto pb-20">
+<div class="grid grid-cols-fluid items-center gap-2 pb-20">
 	{#if steps[selectedStep] === 'Import'}
 		<ImportStep bind:recipe />
 	{:else if steps[selectedStep] === 'Allgemein'}
