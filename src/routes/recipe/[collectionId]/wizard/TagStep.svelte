@@ -1,8 +1,16 @@
 <script lang="ts">
+	import RecipeCard from '../../../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
 </script>
+
+<div class="col-span-full flex justify-center">
+	<div class="w-[25rem] max-w-full">
+		<h2 class="text-md font-bold mb-2">Vorschau:</h2>
+		<RecipeCard {recipe} />
+	</div>
+</div>
 
 <div class="form-control w-full">
 	<label class="label" for="">

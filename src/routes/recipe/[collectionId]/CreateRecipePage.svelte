@@ -13,7 +13,7 @@
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
-	let selectedStep = 4;
+	let selectedStep = 0;
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let collectionId: string;
@@ -74,7 +74,7 @@
 		: `/recipe/${recipe.collectionId}/${recipe.id}`}
 />
 
-<ul class="steps mb-6">
+<ul class="steps my-6">
 	{#each steps as step, index}
 		<button
 			class="step"
@@ -87,7 +87,7 @@
 </ul>
 
 <div class="flex-1 flex flex-col justify-between">
-	<div class="grid grid-cols-fluid gap-2 max-h-[35rem] overflow-auto">
+	<div class="grid grid-cols-fluid items-center gap-2 max-h-[36rem] overflow-auto">
 		{#if steps[selectedStep] === 'Allgemein'}
 			<GeneralStep bind:recipe bind:files />
 		{:else if steps[selectedStep] === 'Tags'}
