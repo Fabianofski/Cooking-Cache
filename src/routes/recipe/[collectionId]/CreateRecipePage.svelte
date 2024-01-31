@@ -9,10 +9,11 @@
 	import TagStep from './wizard/TagStep.svelte';
 	import IngredientStep from './wizard/IngredientStep.svelte';
 	import DescriptionStep from './wizard/DescriptionStep.svelte';
+	import Header from '../../../components/Header.svelte';
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
-	let selectedStep = 0;
+	let selectedStep = 4;
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let collectionId: string;
@@ -66,37 +67,43 @@
 	}
 </script>
 
-<div class="text-lg font-bold text-center mb-2">
-	{#if mode === 'CREATE'}
-		<h2>Neues Rezept hinzufügen</h2>
-	{:else}
-		<h2>Rezept bearbeiten:</h2>
-	{/if}
-</div>
+<Header
+	title={mode === 'CREATE' ? 'Neues Rezept hinzufügen' : 'Rezept bearbeiten'}
+	backLink={mode === 'CREATE'
+		? `/recipes/${recipe.collectionId}`
+		: `/recipe/${recipe.collectionId}/${recipe.id}`}
+/>
 
-<ul class="steps transition-all">
+<ul class="steps mb-6">
 	{#each steps as step, index}
-		<li class="step transition-all" class:step-primary={index <= selectedStep}>{step}</li>
+		<button
+			class="step"
+			class:step-primary={index <= selectedStep}
+			on:click={() => (selectedStep = index)}
+		>
+			{step}
+		</button>
 	{/each}
 </ul>
-<div>
-	<div>
-		<div class="grid grid-cols-fluid gap-2">
-			{#if steps[selectedStep] === 'Allgemein'}
-				<GeneralStep bind:recipe bind:files />
-			{:else if steps[selectedStep] === 'Tags'}
-				<TagStep bind:recipe />
-			{:else if steps[selectedStep] === 'Zutaten'}
-				<IngredientStep bind:recipe />
-			{:else if steps[selectedStep] === 'Zubereitung'}
-				<DescriptionStep bind:recipe />
-			{:else if steps[selectedStep] === 'Vorschau'}
-				<div class="col-span-full">
-					<RecipePage {recipe} />
-				</div>
-			{/if}
-		</div>
 
+<div class="flex-1 flex flex-col justify-between">
+	<div class="grid grid-cols-fluid gap-2 max-h-[35rem] overflow-auto">
+		{#if steps[selectedStep] === 'Allgemein'}
+			<GeneralStep bind:recipe bind:files />
+		{:else if steps[selectedStep] === 'Tags'}
+			<TagStep bind:recipe />
+		{:else if steps[selectedStep] === 'Zutaten'}
+			<IngredientStep bind:recipe />
+		{:else if steps[selectedStep] === 'Zubereitung'}
+			<DescriptionStep bind:recipe />
+		{:else if steps[selectedStep] === 'Vorschau'}
+			<div class="col-span-full">
+				<RecipePage {recipe} />
+			</div>
+		{/if}
+	</div>
+
+	<div>
 		<div class="flex gap-2 mt-6 w-full">
 			{#if selectedStep > 0}
 				<button
@@ -129,16 +136,6 @@
 					{/if}
 				</button>
 			{/if}
-		</div>
-		<div class="flex justify-center mt-6 w-full">
-			<a
-				class="btn btn-ghost"
-				href={mode === 'CREATE'
-					? `/recipes/${recipe.collectionId}`
-					: `/recipe/${recipe.collectionId}/${recipe.id}`}
-			>
-				Abbrechen
-			</a>
 		</div>
 	</div>
 </div>

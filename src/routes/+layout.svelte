@@ -51,11 +51,11 @@
 	</div>
 
 	<Alerts />
-	<div class="h-svh py-16">
+	<div class="h-svh py-16 flex flex-col flex-1">
 		<div
-			class="flex flex-col h-full justify-start items-center overflow-y-scroll overscroll-contain"
+			class="flex flex-col flex-1 justify-start items-center overflow-y-scroll overscroll-contain"
 		>
-			<div class="flex flex-col max-w-3xl w-full relative px-2 py-4">
+			<div class="flex flex-col flex-1 max-w-3xl w-full relative px-2 py-4">
 				<slot />
 			</div>
 		</div>

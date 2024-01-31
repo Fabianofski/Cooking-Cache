@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let title: string;
-	export let loading: boolean;
+	export let loading: boolean = false;
 	export let backLink: string | undefined = undefined;
 	export let options: { callback: () => void; title: string; icon: string | undefined }[] = [];
 
