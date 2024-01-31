@@ -14,7 +14,7 @@
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
-	let selectedStep = 0;
+	let selectedStep = 5;
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let collectionId: string;
@@ -87,58 +87,52 @@
 	{/each}
 </ul>
 
-<div class="flex-1 flex flex-col justify-between">
-	<div class="grid grid-cols-fluid items-center gap-2 max-h-[36rem] overflow-auto">
-		{#if steps[selectedStep] === 'Import'}
-			<ImportStep bind:recipe />
-		{:else if steps[selectedStep] === 'Allgemein'}
-			<GeneralStep bind:recipe bind:files />
-		{:else if steps[selectedStep] === 'Tags'}
-			<TagStep bind:recipe />
-		{:else if steps[selectedStep] === 'Zutaten'}
-			<IngredientStep bind:recipe />
-		{:else if steps[selectedStep] === 'Zubereitung'}
-			<DescriptionStep bind:recipe />
-		{:else if steps[selectedStep] === 'Vorschau'}
-			<div class="col-span-full">
-				<RecipePage {recipe} />
-			</div>
-		{/if}
-	</div>
-
-	<div>
-		<div class="flex gap-2 mt-6 w-full">
-			{#if selectedStep > 0}
-				<button
-					class="btn btn-ghost flex-2"
-					on:click={() => (selectedStep -= 1)}
-					disabled={loading}
-				>
-					Zurück
-				</button>
-			{/if}
-			{#if selectedStep < steps.length - 1}
-				<button
-					class="btn btn-primary flex-1"
-					on:click={() => (selectedStep += 1)}
-					disabled={loading}
-				>
-					Weiter
-				</button>
-			{/if}
-			{#if selectedStep === steps.length - 1}
-				<button
-					class="btn btn-primary flex-1"
-					on:click={addRecipeHandler}
-					disabled={formIsInvalid(recipe) || loading}
-				>
-					{#if !loading}
-						{mode === 'CREATE' ? 'Hinzufügen' : 'Speichern'}
-					{:else}
-						<span class="loading loading-spinner loading-md" />
-					{/if}
-				</button>
-			{/if}
+<div class="grid grid-cols-fluid items-center gap-2 overflow-auto pb-20">
+	{#if steps[selectedStep] === 'Import'}
+		<ImportStep bind:recipe />
+	{:else if steps[selectedStep] === 'Allgemein'}
+		<GeneralStep bind:recipe bind:files />
+	{:else if steps[selectedStep] === 'Tags'}
+		<TagStep bind:recipe />
+	{:else if steps[selectedStep] === 'Zutaten'}
+		<IngredientStep bind:recipe />
+	{:else if steps[selectedStep] === 'Zubereitung'}
+		<DescriptionStep bind:recipe />
+	{:else if steps[selectedStep] === 'Vorschau'}
+		<div class="col-span-full">
+			<RecipePage {recipe} />
 		</div>
+	{/if}
+</div>
+
+<div class="fixed z-20 bottom-0 pb-20 left-1/2 -translate-x-1/2 w-full max-w-3xl bg-base-100">
+	<div class="flex gap-2 mt-6 w-full">
+		{#if selectedStep > 0}
+			<button class="btn btn-ghost flex-2" on:click={() => (selectedStep -= 1)} disabled={loading}>
+				Zurück
+			</button>
+		{/if}
+		{#if selectedStep < steps.length - 1}
+			<button
+				class="btn btn-primary flex-1"
+				on:click={() => (selectedStep += 1)}
+				disabled={loading}
+			>
+				Weiter
+			</button>
+		{/if}
+		{#if selectedStep === steps.length - 1}
+			<button
+				class="btn btn-primary flex-1"
+				on:click={addRecipeHandler}
+				disabled={formIsInvalid(recipe) || loading}
+			>
+				{#if !loading}
+					{mode === 'CREATE' ? 'Hinzufügen' : 'Speichern'}
+				{:else}
+					<span class="loading loading-spinner loading-md" />
+				{/if}
+			</button>
+		{/if}
 	</div>
 </div>
