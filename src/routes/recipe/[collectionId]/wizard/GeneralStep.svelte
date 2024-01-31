@@ -34,7 +34,7 @@
 	</label>
 	<input
 		type="text"
-		placeholder="Cheeseburger1.."
+		placeholder="Cheeseburger.."
 		class="input input-bordered w-full"
 		bind:value={recipe.title}
 	/>
@@ -46,7 +46,7 @@
 	</label>
 	<input
 		type="text"
-		placeholder="Da best in da west1.."
+		placeholder="Da best in da west.."
 		class="input input-bordered w-full"
 		bind:value={recipe.tagline}
 	/>

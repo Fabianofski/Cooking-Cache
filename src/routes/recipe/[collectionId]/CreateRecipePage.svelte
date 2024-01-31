@@ -10,8 +10,9 @@
 	import IngredientStep from './wizard/IngredientStep.svelte';
 	import DescriptionStep from './wizard/DescriptionStep.svelte';
 
-	let editMode = true;
 	let files: FileList | null = null;
+	let steps: string[] = ['Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
+	let selectedStep = 0;
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let collectionId: string;
@@ -65,52 +66,73 @@
 	}
 </script>
 
-<div class="join w-full">
-	<input
-		class="btn flex-1 join-item"
-		type="radio"
-		name="options"
-		aria-label="Bearbeiten"
-		value={true}
-		bind:group={editMode}
-	/>
-	<input
-		class="btn flex-1 join-item"
-		type="radio"
-		name="options"
-		aria-label="Vorschau"
-		value={false}
-		bind:group={editMode}
-	/>
+<div class="text-lg font-bold text-center mb-2">
+	{#if mode === 'CREATE'}
+		<h2>Neues Rezept hinzufügen</h2>
+	{:else}
+		<h2>Rezept bearbeiten:</h2>
+	{/if}
 </div>
-<div class={`pt-4 ${editMode ? 'visible' : 'hidden'}`}>
+
+<ul class="steps transition-all">
+	{#each steps as step, index}
+		<li class="step transition-all" class:step-primary={index <= selectedStep}>{step}</li>
+	{/each}
+</ul>
+<div>
 	<div>
-		{#if mode === 'CREATE'}
-			<h2 class="card-title">Neues Rezept hinzufügen:</h2>
-		{:else}
-			<h2 class="card-title">Rezept bearbeiten:</h2>
-		{/if}
 		<div class="grid grid-cols-fluid gap-2">
-			<GeneralStep bind:recipe bind:files />
-			<TagStep bind:recipe />
-			<IngredientStep bind:recipe />
-			<DescriptionStep bind:recipe />
+			{#if steps[selectedStep] === 'Allgemein'}
+				<GeneralStep bind:recipe bind:files />
+			{:else if steps[selectedStep] === 'Tags'}
+				<TagStep bind:recipe />
+			{:else if steps[selectedStep] === 'Zutaten'}
+				<IngredientStep bind:recipe />
+			{:else if steps[selectedStep] === 'Zubereitung'}
+				<DescriptionStep bind:recipe />
+			{:else if steps[selectedStep] === 'Vorschau'}
+				<div class="col-span-full">
+					<RecipePage {recipe} />
+				</div>
+			{/if}
 		</div>
 
 		<div class="flex gap-2 mt-6 w-full">
-			<button
-				class="btn btn-primary flex-1"
-				on:click={addRecipeHandler}
-				disabled={formIsInvalid(recipe) || loading}
-			>
-				{#if !loading}
-					{mode === 'CREATE' ? 'Hinzufügen' : 'Speichern'}
-				{:else}
-					<span class="loading loading-spinner loading-md" />
-				{/if}
-			</button>
+			{#if selectedStep > 0}
+				<button
+					class="btn btn-ghost flex-2"
+					on:click={() => (selectedStep -= 1)}
+					disabled={loading}
+				>
+					Zurück
+				</button>
+			{/if}
+			{#if selectedStep < steps.length - 1}
+				<button
+					class="btn btn-primary flex-1"
+					on:click={() => (selectedStep += 1)}
+					disabled={loading}
+				>
+					Weiter
+				</button>
+			{/if}
+			{#if selectedStep === steps.length - 1}
+				<button
+					class="btn btn-primary flex-1"
+					on:click={addRecipeHandler}
+					disabled={formIsInvalid(recipe) || loading}
+				>
+					{#if !loading}
+						{mode === 'CREATE' ? 'Hinzufügen' : 'Speichern'}
+					{:else}
+						<span class="loading loading-spinner loading-md" />
+					{/if}
+				</button>
+			{/if}
+		</div>
+		<div class="flex justify-center mt-6 w-full">
 			<a
-				class="btn btn-ghost flex-2"
+				class="btn btn-ghost"
 				href={mode === 'CREATE'
 					? `/recipes/${recipe.collectionId}`
 					: `/recipe/${recipe.collectionId}/${recipe.id}`}
@@ -119,7 +141,4 @@
 			</a>
 		</div>
 	</div>
-</div>
-<div class={`${editMode ? 'hidden' : 'visible'}`}>
-	<RecipePage {recipe} />
 </div>
