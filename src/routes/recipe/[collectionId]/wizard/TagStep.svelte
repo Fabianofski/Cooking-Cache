@@ -14,17 +14,6 @@
 
 <div class="form-control w-full">
 	<label class="label" for="">
-		<span class="label-text">Rezept URL</span>
-	</label>
-	<input
-		type="text"
-		placeholder="https://www.chefkoch.de/.."
-		class="input input-bordered w-full"
-		bind:value={recipe.url}
-	/>
-</div>
-<div class="form-control w-full">
-	<label class="label" for="">
 		<span class="label-text">Tags (getrennt durch Komma)</span>
 	</label>
 	<input

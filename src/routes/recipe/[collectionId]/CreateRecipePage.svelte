@@ -10,9 +10,10 @@
 	import IngredientStep from './wizard/IngredientStep.svelte';
 	import DescriptionStep from './wizard/DescriptionStep.svelte';
 	import Header from '../../../components/Header.svelte';
+	import ImportStep from './wizard/ImportStep.svelte';
 
 	let files: FileList | null = null;
-	let steps: string[] = ['Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
+	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
 	let selectedStep = 0;
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
@@ -88,7 +89,9 @@
 
 <div class="flex-1 flex flex-col justify-between">
 	<div class="grid grid-cols-fluid items-center gap-2 max-h-[36rem] overflow-auto">
-		{#if steps[selectedStep] === 'Allgemein'}
+		{#if steps[selectedStep] === 'Import'}
+			<ImportStep bind:recipe />
+		{:else if steps[selectedStep] === 'Allgemein'}
 			<GeneralStep bind:recipe bind:files />
 		{:else if steps[selectedStep] === 'Tags'}
 			<TagStep bind:recipe />

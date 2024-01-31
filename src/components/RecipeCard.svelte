@@ -10,6 +10,13 @@
 	currentUser.subscribe((value) => {
 		user = value;
 	});
+
+	function truncateString(str: string, length: number) {
+		if (str.length > length) {
+			return str.slice(0, length) + '...';
+		}
+		return str;
+	}
 </script>
 
 {#if recipe}
@@ -28,16 +35,16 @@
 			</figure>
 			<div class="card-body relative z-10">
 				<h2 class="card-title">
-					{recipe.title}
+					{recipe.title === '' ? 'Titel' : truncateString(recipe.title, 13)}
 					{#if recipe.tags}
 						<div class="w-full card-actions justify-end">
-							{#each recipe.tags as tag}
+							{#each recipe.tags.filter((x) => x != '') as tag}
 								<div class="badge badge-outline">{tag}</div>
 							{/each}
 						</div>
 					{/if}
 				</h2>
-				<p>{recipe.tagline}</p>
+				<p>{recipe.tagline === '' ? 'Tagline' : truncateString(recipe.tagline, 27)}</p>
 			</div>
 		</div>
 	</a>

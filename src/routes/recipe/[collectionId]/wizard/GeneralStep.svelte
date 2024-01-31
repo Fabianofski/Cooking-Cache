@@ -25,7 +25,7 @@
 	</div>
 </div>
 
-<div class="form-control w-full">
+<div class="form-control w-full col-span-full">
 	<label class="label" for="">
 		<span class="label-text">Cover</span>
 	</label>
