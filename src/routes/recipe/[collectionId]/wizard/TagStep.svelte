@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import RecipeCard from '../../../../components/RecipeCard.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
+	import { Capacitor } from '@capacitor/core';
 
 	export let recipe: Recipe;
 
@@ -17,7 +18,7 @@
 
 	let inputFocus: HTMLElement;
 	onMount(() => {
-		inputFocus.focus();
+		if (!Capacitor.isNativePlatform()) inputFocus.focus();
 	});
 </script>
 

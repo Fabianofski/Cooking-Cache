@@ -10,6 +10,7 @@
 	import DescriptionStep from './wizard/DescriptionStep.svelte';
 	import Header from '../../../components/Header.svelte';
 	import ImportStep from './wizard/ImportStep.svelte';
+	import { Capacitor } from '@capacitor/core';
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
@@ -81,7 +82,7 @@
 			class:step-primary={index <= selectedStep}
 			on:click={() => (selectedStep = index)}
 		>
-			{step}
+			<p class:opacity-0={Capacitor.isNativePlatform() && selectedStep !== index}>{step}</p>
 		</button>
 	{/each}
 </ul>

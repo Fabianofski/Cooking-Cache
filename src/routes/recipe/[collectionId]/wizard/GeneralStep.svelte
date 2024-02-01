@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Capacitor } from '@capacitor/core';
 	import RecipeCard from '../../../../components/RecipeCard.svelte';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../../models/Recipe';
@@ -21,7 +22,7 @@
 
 	let inputFocus: HTMLElement;
 	onMount(() => {
-		inputFocus.focus();
+		if (!Capacitor.isNativePlatform()) inputFocus.focus();
 	});
 </script>
 
