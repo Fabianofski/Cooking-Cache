@@ -4,16 +4,23 @@
 	import { currentUser } from '../stores/store';
 
 	export let recipe: Recipe | null;
-	export let collectionId: string;
+	export let collectionId: string | null = null;
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
 		user = value;
 	});
+
+	function truncateString(str: string, length: number) {
+		if (str.length > length) {
+			return str.slice(0, length) + '...';
+		}
+		return str;
+	}
 </script>
 
 {#if recipe}
-	<a class="w-full" href={`/recipe/${collectionId}/${recipe.id}`}>
+	<a class="w-full" href={collectionId ? `/recipe/${collectionId}/${recipe.id}` : ''}>
 		<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">
 			<figure class="h-32 overflow-visible relative">
 				<img
@@ -28,16 +35,16 @@
 			</figure>
 			<div class="card-body relative z-10">
 				<h2 class="card-title">
-					{recipe.title}
+					{recipe.title === '' ? 'Titel' : truncateString(recipe.title, 13)}
 					{#if recipe.tags}
 						<div class="w-full card-actions justify-end">
-							{#each recipe.tags as tag}
+							{#each recipe.tags.filter((x) => x != '') as tag}
 								<div class="badge badge-outline">{tag}</div>
 							{/each}
 						</div>
 					{/if}
 				</h2>
-				<p>{recipe.tagline}</p>
+				<p>{recipe.tagline === '' ? 'Tagline' : truncateString(recipe.tagline, 27)}</p>
 			</div>
 		</div>
 	</a>

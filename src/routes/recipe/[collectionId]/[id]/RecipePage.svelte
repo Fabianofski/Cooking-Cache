@@ -97,7 +97,7 @@
 		</div>
 		{#if recipe.tags}
 			<div class="card-actions">
-				{#each recipe.tags as tag}
+				{#each recipe.tags.filter((x) => x !== '') as tag}
 					<div class="badge badge-outline">{tag}</div>
 				{/each}
 			</div>
@@ -221,7 +221,7 @@
 			</thead>
 			<tbody>
 				{#if recipe}
-					{#each recipe?.description || [] as step, index}
+					{#each recipe?.description.filter((x) => x.trim() != '') || [] as step, index}
 						<tr class="hover">
 							<td class="font-bold w-8 text-center">{index + 1}.</td>
 							<td class="text-justify w-full">{step}</td>

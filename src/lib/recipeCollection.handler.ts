@@ -55,7 +55,6 @@ async function getUserRecipeCollections(user: User) {
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 			const data: RecipeCollections = res.data;
-			console.log(data);
 			recipeCollectionsStore.set(data);
 		})
 		.catch((error) => {
