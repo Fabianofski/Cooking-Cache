@@ -1,5 +1,6 @@
 <script lang="ts">
 	import RecipeCard from '../../../../components/RecipeCard.svelte';
+	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import type { Recipe } from '../../../../models/Recipe';
 	import { onMount } from 'svelte';
 
