@@ -42,8 +42,7 @@
 			<div class="w-full flex justify-center" data-testid="header-skeleton">
 				<div class="skeleton h-6 w-32" />
 			</div>
-		{/if}
-		{#if !loading}
+		{:else}
 			<h2 class="text-lg font-bold text-center" data-testid="header-title">{title}</h2>
 		{/if}
 
