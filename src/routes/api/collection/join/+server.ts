@@ -1,4 +1,4 @@
-import { auth, database, verifyIdToken } from '$lib/firebase.admin';
+import { auth, database, verifyIdToken } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection, RecipeCollections } from '../../../../models/RecipeCollections.js';
 

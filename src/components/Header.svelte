@@ -20,7 +20,7 @@
 <div class="w-full bg-base-100">
 	<div class="w-full relative">
 		{#if backLink}
-			<a href={backLink} class="absolute top-1">
+			<a href={backLink} class="absolute top-1" data-testid="backLink">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
@@ -39,15 +39,15 @@
 		{/if}
 
 		{#if loading}
-			<div class="w-full flex justify-center">
+			<div class="w-full flex justify-center" data-testid="header-skeleton">
 				<div class="skeleton h-6 w-32" />
 			</div>
 		{:else}
-			<h2 class="text-lg font-bold text-center">{title}</h2>
+			<h2 class="text-lg font-bold text-center" data-testid="header-title">{title}</h2>
 		{/if}
 
 		{#if options.length !== 0}
-			<div class="absolute top-1 right-0">
+			<div class="absolute top-1 right-0" data-testid="options">
 				<div class="dropdown dropdown-end">
 					<div
 						tabindex="-1"
@@ -78,15 +78,17 @@
 						class="dropdown-content z-[1] menu p-2 my-2 shadow-lg shadow-neutral/100 bg-base-200 rounded-xl w-52"
 					>
 						{#each options as option, index}
-							<div>
+							<div data-testid="option">
 								<button
 									class="btn btn-ghost min-h-0 h-8 w-full flex justify-start"
 									on:click={option.callback}
+									data-testid="option-button"
 								>
 									{#if option.icon}<img
 											class="h-5"
 											src={option.icon}
 											alt={option.title + 'Icon'}
+											data-testid="option-icon"
 										/>{/if}
 									{option.title}
 								</button>

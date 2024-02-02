@@ -1,4 +1,4 @@
-import { database, verifyIdToken } from '$lib/firebase.admin';
+import { database, verifyIdToken } from '$lib/server/firebase.admin';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections';
 
 export async function DELETE({ request, params }) {

@@ -4,7 +4,6 @@
 	import { currentUser } from '../stores/store';
 
 	export let recipe: Recipe | null;
-	export let collectionId: string | null = null;
 
 	let user: User | null;
 	currentUser.subscribe((value) => {
@@ -20,7 +19,7 @@
 </script>
 
 {#if recipe}
-	<a class="w-full" href={collectionId ? `/recipe/${collectionId}/${recipe.id}` : ''}>
+	<a class="w-full" href={`/recipe/${recipe.collectionId}/${recipe.id}`} data-testid="recipe-link">
 		<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">
 			<figure class="h-32 overflow-visible relative">
 				<img
@@ -28,6 +27,7 @@
 					src={recipe.image === '' ? '/default-cover.jpg' : recipe.image}
 					alt={`${recipe.title} Cover`}
 					style="object-fit: cover;"
+					data-testid="recipe-cover"
 				/>
 				<div
 					class="absolute top-0 left-0 h-44 w-full rounded-t-2xl bg-gradient-to-t from-base-200 via-base-200/80 via-30% to-70%"
@@ -39,7 +39,7 @@
 					{#if recipe.tags}
 						<div class="w-full card-actions justify-end">
 							{#each recipe.tags.filter((x) => x != '') as tag}
-								<div class="badge badge-outline">{tag}</div>
+								<div class="badge badge-outline" data-testid="tag">{tag}</div>
 							{/each}
 						</div>
 					{/if}

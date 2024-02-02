@@ -15,7 +15,7 @@
 	});
 </script>
 
-<a class="w-full" href={`/recipes/${recipeCollection?.id}`}>
+<a class="w-full" href={`/recipes/${recipeCollection?.id}`} data-testid="collection-link">
 	<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">
 		<figure class="h-32 overflow-visible relative">
 			<img
@@ -23,6 +23,7 @@
 				src={recipeCollection?.cover || '/default-cover.jpg'}
 				alt={`${recipeCollection?.name} Cover`}
 				style="object-fit: cover;"
+				data-testid="collection-cover"
 			/>
 			<div
 				class="absolute top-0 left-0 h-44 w-full rounded-t-2xl bg-gradient-to-t from-base-200 via-base-200/80 via-30% to-70%"
@@ -35,8 +36,11 @@
 					<div
 						class="flex gap-1 tooltip"
 						data-tip={`${recipeCollection?.participants?.length || 1} Teilnehmer`}
+						data-testid="participants-tooltip"
 					>
-						<p class="mt-0.5">{recipeCollection?.participants?.length || 1}</p>
+						<p class="mt-0.5" data-testid="participants">
+							{recipeCollection?.participants?.length || 1}
+						</p>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -52,7 +56,11 @@
 							/>
 						</svg>
 					</div>
-					<a class="btn-ghost rounded" href={`/collection/edit/${recipeCollection?.id}`}>
+					<a
+						class="btn-ghost rounded"
+						href={`/collection/edit/${recipeCollection?.id}`}
+						data-testid="edit-collection-link"
+					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"

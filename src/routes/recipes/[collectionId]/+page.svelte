@@ -129,7 +129,7 @@
 				</p>
 			{:else}
 				{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
-					<RecipeCard {recipe} collectionId={data.collectionId} />
+					<RecipeCard {recipe} />
 				{/each}
 			{/if}
 		</div>

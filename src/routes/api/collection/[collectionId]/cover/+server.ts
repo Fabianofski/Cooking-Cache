@@ -1,4 +1,4 @@
-import { database, uploadFileToStorage, verifyIdToken } from '$lib/firebase.admin';
+import { database, uploadFileToStorage, verifyIdToken } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
 
