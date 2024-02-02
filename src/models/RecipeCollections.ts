@@ -17,8 +17,8 @@ export interface RecipeCollection {
 }
 
 export interface Participant {
-	displayName: string | undefined;
+	displayName: string | undefined | null;
 	uid: string;
-	email: string | undefined;
-	photoURL: string | undefined;
+	email: string | undefined | null;
+	photoURL: string | undefined | null;
 }
