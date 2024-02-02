@@ -16,7 +16,7 @@
 	setRandomRecipeIndex();
 </script>
 
-<RecipeCard recipe={recipes[index]} collectionId={'Hauptsammlung'} />
+<RecipeCard recipe={recipes[index]} />
 <button class="btn btn-primary w-full mt-2" on:click={setRandomRecipeIndex}>
 	Neues zufälliges Rezept
 </button>

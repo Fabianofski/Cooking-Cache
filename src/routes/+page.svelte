@@ -18,13 +18,13 @@
 				<div class="rounded-box flex gap-2 absolute top-0 left-0 pl-2 pr-2">
 					{#each recipes as recipe}
 						<div class="w-96">
-							<RecipeCard {recipe} collectionId={'Hauptsammlung'} />
+							<RecipeCard {recipe} />
 						</div>
 					{/each}
 				</div>
 			</div>
 		{:else}
-			<RecipeCard recipe={null} collectionId={'Hauptsammlung'} />
+			<RecipeCard recipe={null} />
 		{/if}
 	</div>
 
