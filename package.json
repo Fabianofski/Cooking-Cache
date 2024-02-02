@@ -4,6 +4,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
+		"test": "vitest",
+		"test:coverage": "vitest --coverage",
 		"build": "vite build",
 		"build:static": "ADAPTER=static PUBLIC_BASE_URL=https://cooking-cache.web.app vite build; npx cap sync",
 		"preview": "vite preview",
