@@ -1,12 +1,13 @@
-import { database } from '$lib/server/firebase.admin';
-import { verifyIdToken } from '$lib/server/firebase.utils';
+import { auth, database } from '$lib/server/firebase.admin';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections';
 
 export async function PATCH({ request, url, params }) {
 	const token = request.headers.get('Authorization');
 
 	try {
-		const uid = await verifyIdToken(token);
+		if (token === null) throw new Error('No token provided');
+		const { uid } = await auth.verifyIdToken(token);
+
 		try {
 			const newCollectionName = url.searchParams.get('newCollectionName');
 			const collectionId = params.collectionId;

@@ -1,5 +1,5 @@
 import { Magic } from 'mmmagic';
-import { auth, bucket } from './firebase.admin';
+import { bucket } from './firebase.admin';
 
 async function uploadFileToStorage(file: File, path: string): Promise<string> {
 	return await new Promise<string>(async (resolve, reject) => {
@@ -40,19 +40,4 @@ async function uploadFileToStorage(file: File, path: string): Promise<string> {
 	});
 }
 
-function verifyIdToken(token: string | null): Promise<string> {
-	return new Promise((resolve, reject) => {
-		if (!token) reject(new Error('Token is null'));
-		else
-			auth
-				.verifyIdToken(token)
-				.then((decodedToken) => {
-					resolve(decodedToken.uid);
-				})
-				.catch((err) => {
-					reject(err);
-				});
-	});
-}
-
-export { uploadFileToStorage, verifyIdToken };
+export { uploadFileToStorage };

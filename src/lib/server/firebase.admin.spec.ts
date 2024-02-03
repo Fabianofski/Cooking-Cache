@@ -1,11 +1,4 @@
-import {
-	admin,
-	auth,
-	bucket,
-	database,
-	uploadFileToStorage,
-	verifyIdToken
-} from './firebase.admin';
+import { admin, auth, bucket, database } from './firebase.admin';
 import { describe, expect, it } from 'vitest';
 
 describe('Firebase Client', () => {

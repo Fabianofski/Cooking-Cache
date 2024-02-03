@@ -1,9 +1,8 @@
-import { database } from '$lib/server/firebase.admin';
+import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
 import type { RecipeCollection, RecipeCollections } from '../../../models/RecipeCollections';
 import { addCollectionToDatabase, getDefaultCollection } from './collection.handler';
-import { verifyIdToken } from '$lib/server/firebase.utils';
 
 async function getJoinedCollections(uid: string): Promise<RecipeCollections> {
 	let collections: RecipeCollections = {};
@@ -24,7 +23,8 @@ export async function GET({ request }) {
 	const token = request.headers.get('Authorization');
 
 	try {
-		const uid = await verifyIdToken(token);
+		if (token === null) throw new Error('No token provided');
+		const { uid } = await auth.verifyIdToken(token);
 
 		try {
 			const data = await database.ref(`collections`).orderByChild('ownerId').equalTo(uid).get();
@@ -59,7 +59,9 @@ export async function POST({ request, url }) {
 	const token = request.headers.get('Authorization');
 
 	try {
-		const uid = await verifyIdToken(token);
+		if (token === null) throw new Error('No token provided');
+		const { uid } = await auth.verifyIdToken(token);
+
 		try {
 			const collectionName = url.searchParams.get('collectionName');
 
@@ -79,7 +81,9 @@ export async function DELETE({ request, url }) {
 	const token = request.headers.get('Authorization');
 
 	try {
-		const uid = await verifyIdToken(token);
+		if (token === null) throw new Error('No token provided');
+		const { uid } = await auth.verifyIdToken(token);
+
 		try {
 			const collectionId = url.searchParams.get('collectionId');
 

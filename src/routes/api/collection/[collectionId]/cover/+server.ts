@@ -1,7 +1,7 @@
-import { database } from '$lib/server/firebase.admin';
+import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
-import { verifyIdToken, uploadFileToStorage } from '$lib/server/firebase.utils.js';
+import { uploadFileToStorage } from '$lib/server/firebase.utils.js';
 
 export async function PATCH({ params, request }) {
 	const token = request.headers.get('Authorization');
@@ -9,7 +9,8 @@ export async function PATCH({ params, request }) {
 	if (!token || !collectionId) return new Response('400 Bad Request', { status: 400 });
 
 	try {
-		const userId = await verifyIdToken(token);
+		if (token === null) throw new Error('No token provided');
+		const { uid } = await auth.verifyIdToken(token);
 
 		try {
 			const formData = await request.formData();
@@ -21,7 +22,7 @@ export async function PATCH({ params, request }) {
 			const collection: RecipeCollection = data.val() || {};
 
 			if (!collection) return new Response('404 Not Found', { status: 404 });
-			if (collection.ownerId !== userId) return new Response('403 Forbidden', { status: 403 });
+			if (collection.ownerId !== uid) return new Response('403 Forbidden', { status: 403 });
 
 			const photoURL = await uploadFileToStorage(
 				cover,
