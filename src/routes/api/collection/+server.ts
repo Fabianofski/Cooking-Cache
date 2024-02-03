@@ -1,8 +1,9 @@
-import { database, verifyIdToken } from '$lib/server/firebase.admin';
+import { database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
 import type { RecipeCollection, RecipeCollections } from '../../../models/RecipeCollections';
 import { addCollectionToDatabase, getDefaultCollection } from './collection.handler';
+import { verifyIdToken } from '$lib/server/firebase.utils';
 
 async function getJoinedCollections(uid: string): Promise<RecipeCollections> {
 	let collections: RecipeCollections = {};

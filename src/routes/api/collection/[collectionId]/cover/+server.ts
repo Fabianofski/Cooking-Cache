@@ -1,6 +1,7 @@
-import { database, uploadFileToStorage, verifyIdToken } from '$lib/server/firebase.admin';
+import { database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
+import { verifyIdToken, uploadFileToStorage } from '$lib/server/firebase.utils.js';
 
 export async function PATCH({ params, request }) {
 	const token = request.headers.get('Authorization');

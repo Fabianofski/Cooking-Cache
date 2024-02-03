@@ -1,4 +1,5 @@
-import { database, verifyIdToken } from '$lib/server/firebase.admin';
+import { database } from '$lib/server/firebase.admin';
+import { verifyIdToken } from '$lib/server/firebase.utils.js';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
 
 export async function PATCH({ params, request, url }) {

@@ -1,8 +1,9 @@
-import { bucket, database, uploadFileToStorage, verifyIdToken } from '$lib/server/firebase.admin';
+import { bucket, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
 import type { Recipe } from '../../../../../models/Recipe.js';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
+import { verifyIdToken, uploadFileToStorage } from '$lib/server/firebase.utils.js';
 
 export async function POST({ request }) {
 	const token = request.headers.get('Authorization');

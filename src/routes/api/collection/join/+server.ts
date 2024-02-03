@@ -1,6 +1,7 @@
-import { auth, database, verifyIdToken } from '$lib/server/firebase.admin';
+import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection, RecipeCollections } from '../../../../models/RecipeCollections.js';
+import { verifyIdToken } from '$lib/server/firebase.utils.js';
 
 export async function GET({ url }) {
 	let inviteCode = url.searchParams.get('i');
