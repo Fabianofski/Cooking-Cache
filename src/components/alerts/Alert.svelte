@@ -6,8 +6,7 @@
 
 	function removeAlert() {
 		alertStore.update((value) => {
-			if (!alertOptions.id) return value;
-			delete value[alertOptions.id];
+			delete value[alertOptions.id!];
 			return value;
 		});
 	}
@@ -21,9 +20,11 @@
 	role="button"
 	tabindex="0"
 	aria-label={`Alert ${alertOptions.id}`}
+	data-testid="alert"
 >
 	{#if alertOptions.type === 'error'}
 		<svg
+			data-testid="error-icon"
 			xmlns="http://www.w3.org/2000/svg"
 			class="stroke-current shrink-0 h-6 w-6"
 			fill="none"
@@ -38,6 +39,7 @@
 		</svg>
 	{:else if alertOptions.type === 'info'}
 		<svg
+			data-testid="info-icon"
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
@@ -52,6 +54,7 @@
 		</svg>
 	{:else if alertOptions.type === 'warning'}
 		<svg
+			data-testid="warning-icon"
 			xmlns="http://www.w3.org/2000/svg"
 			class="stroke-current shrink-0 h-6 w-6"
 			fill="none"
@@ -66,6 +69,7 @@
 		</svg>
 	{:else if alertOptions.type === 'success'}
 		<svg
+			data-testid="success-icon"
 			xmlns="http://www.w3.org/2000/svg"
 			class="stroke-current shrink-0 h-6 w-6"
 			fill="none"
