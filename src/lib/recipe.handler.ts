@@ -8,20 +8,20 @@ import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 
 async function addRecipeToCollection(user: User, formData: FormData, collectionId: string) {
 	const token = await user.getIdToken();
-	return axios({
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/recipe`,
-		method: 'post',
-		data: formData,
-		headers: {
-			Accept: 'application/json',
-			Authorization: token
-		}
-	})
+	return axios
+		.post(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/recipe`, {
+			data: formData,
+			headers: {
+				Accept: 'application/json',
+				Authorization: token
+			}
+		})
 		.then(async (res: AxiosResponse) => {
 			if (res.status !== 200) return Promise.reject(res);
 
 			const recipe = res.data as Recipe;
 			recipeCollectionsStore.update((value) => {
+				if (!value[collectionId]) return value;
 				if (value[collectionId].recipes.find((x) => x.id === recipe.id)) return value;
 				value[collectionId].recipes.push(recipe);
 				return value;
@@ -44,13 +44,12 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 
 async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 	const token = await user.getIdToken();
-	return axios({
-		method: 'delete',
-		url: `${PUBLIC_BASE_URL}/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.delete(`${PUBLIC_BASE_URL}/api/collection/${recipe.collectionId}/recipe?id=${recipe.id}`, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
