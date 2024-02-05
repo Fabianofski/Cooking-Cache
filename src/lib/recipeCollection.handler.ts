@@ -9,14 +9,13 @@ import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 async function createNewRecipeCollection(user: User, collectionName: string) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'post',
-		url: `${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`,
-		headers: {
-			Accept: 'application/json',
-			Authorization: token
-		}
-	})
+	return axios
+		.post(`${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`, {
+			headers: {
+				Accept: 'application/json',
+				Authorization: token
+			}
+		})
 		.then(async (res: AxiosResponse) => {
 			if (res.status !== 200) return Promise.reject(res);
 
