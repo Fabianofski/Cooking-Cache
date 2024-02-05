@@ -6,6 +6,7 @@ import type { Recipe } from '../models/Recipe';
 import * as alertHandler from '../components/alerts/alert.handler';
 import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 import type { RecipeCollections } from '../models/RecipeCollections';
+import { goto } from '$app/navigation';
 
 describe('RecipeHandler', () => {
 	let recipe: Recipe;
@@ -15,7 +16,7 @@ describe('RecipeHandler', () => {
 	vi.mock('$app/navigation', () => {
 		return {
 			__esModule: true,
-			goto: vi.fn().mockImplementation((target) => console.log(target))
+			goto: vi.fn().mockImplementation(() => Promise.resolve())
 		};
 	});
 
@@ -72,6 +73,30 @@ describe('RecipeHandler', () => {
 				Authorization: 'token'
 			}
 		});
+	});
+
+	it('should goto recipe on create if request is successful', async () => {
+		const postMock = axios.post as MockedFunction<typeof axios.post>;
+		postMock.mockResolvedValue({ status: 200, data: recipe });
+		const gotoMock = goto as MockedFunction<typeof goto>;
+
+		const formData = new FormData();
+		formData.append('recipe', JSON.stringify(recipe));
+		await addRecipeToCollection(testUser, formData, '123');
+
+		expect(gotoMock).toHaveBeenCalledWith(`/recipe/123/recipe-id`);
+	});
+
+	it('should not goto recipe on create if request failed', async () => {
+		const postMock = axios.post as MockedFunction<typeof axios.post>;
+		postMock.mockResolvedValue({ status: 403, data: recipe });
+		const gotoMock = goto as MockedFunction<typeof goto>;
+
+		const formData = new FormData();
+		formData.append('recipe', JSON.stringify(recipe));
+		await addRecipeToCollection(testUser, formData, '123');
+
+		expect(gotoMock).not.toHaveBeenCalled();
 	});
 
 	it('should add the recipe to the collections store when request is successful', async () => {
@@ -192,6 +217,26 @@ describe('RecipeHandler', () => {
 
 		collections['123'].recipes = [];
 		expect(spy).toHaveBeenNthCalledWith(1, collections);
+	});
+
+	it('should goto recipes page on delete if request is successful', async () => {
+		const deleteMock = axios.delete as MockedFunction<typeof axios.post>;
+		deleteMock.mockResolvedValue({ status: 200, data: recipe });
+		const gotoMock = goto as MockedFunction<typeof goto>;
+
+		await deleteRecipeFromCollection(testUser, recipe);
+
+		expect(gotoMock).toHaveBeenCalledWith(`/recipes/123`);
+	});
+
+	it('should not goto recipes page on delete if request failed', async () => {
+		const deleteMock = axios.delete as MockedFunction<typeof axios.post>;
+		deleteMock.mockResolvedValue({ status: 403, data: recipe });
+		const gotoMock = goto as MockedFunction<typeof goto>;
+
+		await deleteRecipeFromCollection(testUser, recipe);
+
+		expect(gotoMock).not.toHaveBeenCalled();
 	});
 
 	it.each([[401], [500], [301], [400], [undefined]])(
