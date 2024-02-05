@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction, beforeAll } from 'vitest';
 import { testUser } from './dummyUser';
 import axios from 'axios';
-import type { Recipe } from '../models/Recipe';
 import * as alertHandler from '../components/alerts/alert.handler';
 import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
 import { createNewRecipeCollection } from './recipeCollection.handler';
+import { get } from 'svelte/store';
 
 describe('RecipeCollectionHandler', () => {
 	let collection: RecipeCollection;
@@ -40,7 +40,7 @@ describe('RecipeCollectionHandler', () => {
 
 	it('should create a post request to create a new collection', async () => {
 		const postMock = axios.post as MockedFunction<typeof axios.post>;
-		postMock.mockResolvedValue({ status: 200, collection: structuredClone(collection) });
+		postMock.mockResolvedValue({ status: 200, data: structuredClone(collection) });
 
 		await createNewRecipeCollection(testUser, 'testName');
 
@@ -49,6 +49,35 @@ describe('RecipeCollectionHandler', () => {
 				Accept: 'application/json',
 				Authorization: 'token'
 			}
+		});
+	});
+
+	it('should add the collection to the collections store when request is successful', async () => {
+		(axios.post as MockedFunction<typeof axios.post>).mockResolvedValue({
+			status: 200,
+			data: structuredClone(collection)
+		});
+
+		await createNewRecipeCollection(testUser, 'testName');
+
+		let collections: RecipeCollections = {};
+		collections['123'] = collection;
+		expect(get(recipeCollectionsStore)).toEqual(collections);
+	});
+
+	it('should create failed alert if data is undefined when creating new collection', async () => {
+		(axios.post as MockedFunction<typeof axios.post>).mockResolvedValue({
+			status: 200,
+			data: undefined
+		});
+
+		const alertSpy = vi.spyOn(alertHandler, 'createNewAlert');
+
+		await createNewRecipeCollection(testUser, 'testName');
+
+		expect(alertSpy).toHaveBeenCalledWith({
+			message: `Beim Hinzufügen der Rezeptsammlung ist ein Fehler aufgetreten!`,
+			type: 'error'
 		});
 	});
 

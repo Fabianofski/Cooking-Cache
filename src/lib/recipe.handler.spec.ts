@@ -7,6 +7,7 @@ import * as alertHandler from '../components/alerts/alert.handler';
 import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 import type { RecipeCollections } from '../models/RecipeCollections';
 import { goto } from '$app/navigation';
+import { get } from 'svelte/store';
 
 describe('RecipeHandler', () => {
 	let recipe: Recipe;
@@ -105,15 +106,12 @@ describe('RecipeHandler', () => {
 			data: recipe
 		});
 
-		const spy = vi.fn();
-		recipeCollectionsStore.subscribe(spy);
-
 		const formData = new FormData();
 		formData.append('recipe', JSON.stringify(recipe));
 		await addRecipeToCollection(testUser, formData, '123');
 
 		collections['123'].recipes = [recipe];
-		expect(spy).toHaveBeenNthCalledWith(1, collections);
+		expect(get(recipeCollectionsStore)).toEqual(collections);
 	});
 
 	it('should not add the recipe to the collections store when recipe with same id already exists', async () => {
@@ -125,14 +123,11 @@ describe('RecipeHandler', () => {
 		collections['123'].recipes = [recipe];
 		recipeCollectionsStore.set(structuredClone(collections));
 
-		const spy = vi.fn();
-		recipeCollectionsStore.subscribe(spy);
-
 		const formData = new FormData();
 		formData.append('recipe', JSON.stringify(recipe));
 		await addRecipeToCollection(testUser, formData, '123');
 
-		expect(spy).toHaveBeenNthCalledWith(1, collections);
+		expect(get(recipeCollectionsStore)).toEqual(collections);
 	});
 
 	it('should not add the recipe to the collections store if collection id doesnt exist', async () => {
@@ -141,15 +136,12 @@ describe('RecipeHandler', () => {
 			data: recipe
 		});
 
-		const spy = vi.fn();
-		recipeCollectionsStore.subscribe(spy);
-
 		const formData = new FormData();
 		recipe.id = 'non existant id';
 		formData.append('recipe', JSON.stringify(recipe));
 		await addRecipeToCollection(testUser, formData, 'non existant id');
 
-		expect(spy).toHaveBeenNthCalledWith(1, collections);
+		expect(get(recipeCollectionsStore)).toEqual(collections);
 	});
 
 	it('should create a success alert if request is successful', async () => {
@@ -210,13 +202,10 @@ describe('RecipeHandler', () => {
 		collections['123'].recipes = [recipe];
 		recipeCollectionsStore.set(structuredClone(collections));
 
-		const spy = vi.fn();
-		recipeCollectionsStore.subscribe(spy);
-
 		await deleteRecipeFromCollection(testUser, recipe);
 
 		collections['123'].recipes = [];
-		expect(spy).toHaveBeenNthCalledWith(1, collections);
+		expect(get(recipeCollectionsStore)).toEqual(collections);
 	});
 
 	it('should goto recipes page on delete if request is successful', async () => {
