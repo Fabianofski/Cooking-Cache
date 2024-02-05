@@ -44,14 +44,13 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 async function getUserRecipeCollections(user: User) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'get',
-		url: `${PUBLIC_BASE_URL}/api/collection`,
-		headers: {
-			Accept: 'application/json',
-			Authorization: token
-		}
-	})
+	return axios
+		.get(`${PUBLIC_BASE_URL}/api/collection`, {
+			headers: {
+				Accept: 'application/json',
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 			const data: RecipeCollections = res.data;
@@ -70,13 +69,12 @@ async function getUserRecipeCollections(user: User) {
 async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'post',
-		url: `${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.post(`${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 			const data = res.data;
