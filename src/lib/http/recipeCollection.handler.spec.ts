@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction, beforeAll } from 'vitest';
-import { testUser } from './dummyUser';
+import { testUser } from '../dummyUser';
 import axios from 'axios';
-import * as alertHandler from '../components/alerts/alert.handler';
-import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
-import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
+import * as alertHandler from '../../components/alerts/alert.handler';
+import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
+import type { RecipeCollection, RecipeCollections } from '../../models/RecipeCollections';
 import {
 	createNewRecipeCollection,
 	getUserRecipeCollections,

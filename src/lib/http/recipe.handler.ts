@@ -2,9 +2,9 @@ import { goto } from '$app/navigation';
 import { PUBLIC_BASE_URL } from '$env/static/public';
 import axios, { type AxiosResponse } from 'axios';
 import type { User } from 'firebase/auth';
-import { createNewAlert } from '../components/alerts/alert.handler';
-import type { Recipe } from '../models/Recipe';
-import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
+import { createNewAlert } from '../../components/alerts/alert.handler';
+import type { Recipe } from '../../models/Recipe';
+import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 
 async function addRecipeToCollection(user: User, formData: FormData, collectionId: string) {
 	const token = await user.getIdToken();

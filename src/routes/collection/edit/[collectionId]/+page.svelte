@@ -5,7 +5,7 @@
 		editRecipeCollectionName,
 		leaveRecipeCollection,
 		toggleRecipeCollectionVisibility
-	} from '$lib/recipeCollection.handler.js';
+	} from '$lib/http/recipeCollection.handler.js';
 	import type { User } from 'firebase/auth';
 	import Header from '../../../../components/Header.svelte';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';

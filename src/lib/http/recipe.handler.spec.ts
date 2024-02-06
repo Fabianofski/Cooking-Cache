@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach, type MockedFunction, beforeAll } from 'vitest';
 import { addRecipeToCollection, deleteRecipeFromCollection } from './recipe.handler';
-import { testUser } from './dummyUser';
+import { testUser } from '../dummyUser';
 import axios from 'axios';
-import type { Recipe } from '../models/Recipe';
-import * as alertHandler from '../components/alerts/alert.handler';
-import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
-import type { RecipeCollections } from '../models/RecipeCollections';
+import type { Recipe } from '../../models/Recipe';
+import * as alertHandler from '../../components/alerts/alert.handler';
+import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
+import type { RecipeCollections } from '../../models/RecipeCollections';
 import { goto } from '$app/navigation';
 import { get } from 'svelte/store';
 
