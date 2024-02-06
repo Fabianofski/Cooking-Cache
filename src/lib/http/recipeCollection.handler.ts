@@ -101,13 +101,15 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
-	return axios({
-		method: 'patch',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.patch(
+			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
+			{
+				headers: {
+					Authorization: token
+				}
+			}
+		)
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -143,15 +145,14 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 
 	const formData = new FormData();
 	formData.append('cover', file);
-	return axios({
-		method: 'patch',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover`,
-		headers: {
-			Authorization: token,
-			'Content-Type': 'multipart/form-data'
-		},
-		data: formData
-	})
+	return axios
+		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover`, {
+			headers: {
+				Authorization: token,
+				'Content-Type': 'multipart/form-data'
+			},
+			data: formData
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -167,7 +168,9 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 		})
 		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Ändern des Covers ist ein Fehler aufgetreten!' + error,
+				message:
+					'Beim Ändern des Covers ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -179,13 +182,12 @@ async function toggleRecipeCollectionVisibility(
 	privateState: boolean
 ) {
 	const token = await user.getIdToken();
-	return axios({
-		method: 'patch',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then((res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -210,13 +212,12 @@ async function toggleRecipeCollectionVisibility(
 
 async function leaveRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
-	return axios({
-		method: 'delete',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.delete(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave`, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -243,13 +244,12 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 async function deleteRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'delete',
-		url: `${PUBLIC_BASE_URL}/api/collection?collectionId=${collectionId}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.delete(`${PUBLIC_BASE_URL}/api/collection?collectionId=${collectionId}`, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
