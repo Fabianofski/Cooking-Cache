@@ -4,6 +4,14 @@ name: PR vitest with coverage
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Cooking-Cache
+    env:
+      PRIVATE_KEY: '${{ secrets.PRIVATE_KEY }}'
+      PROJECT_ID: cooking-cache
+      CLIENT_EMAIL: '${{ secrets.CLIENT_EMAIL }}'
+      DATABASE_URL: '${{ secrets.DATABASE_URL }}'
+      STORAGE_URL: '${{ secrets.STORAGE_URL }}'
+      PUBLIC_BASE_URL: ''
 
     steps:
       - name: Checkout code
