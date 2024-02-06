@@ -101,7 +101,6 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
-	console.log(token);
 	return axios
 		.patch(
 			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
@@ -125,7 +124,6 @@ async function editRecipeCollectionName(user: User, collectionId: string, collec
 			});
 		})
 		.catch((error) => {
-			console.log(error);
 			createNewAlert({
 				message:
 					'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!' +
