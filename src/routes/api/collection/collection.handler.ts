@@ -32,8 +32,7 @@ export async function getDefaultCollection(
 		name: collectionName,
 		id: collectionId,
 		inviteCode: generateRandomInviteCode(),
-		private: false,
-		cover: undefined
+		private: false
 	};
 	return defaultCollection;
 }
