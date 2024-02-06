@@ -44,7 +44,7 @@ describe('Create Collection Handler', () => {
 
 		await createNewRecipeCollection(testUser, 'testName');
 
-		expect(postMock).toHaveBeenCalledWith(`/api/collection?collectionName=testName`, {
+		expect(postMock).toHaveBeenCalledWith(`/api/collection?collectionName=testName`, null, {
 			headers: {
 				Accept: 'application/json',
 				Authorization: 'token'

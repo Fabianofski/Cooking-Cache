@@ -44,11 +44,15 @@ describe('Edit Collection Name Handler', () => {
 
 		await editRecipeCollectionName(testUser, '123', 'newName');
 
-		expect(patchMock).toHaveBeenCalledWith(`/api/collection/123/name?newCollectionName=newName`, {
-			headers: {
-				Authorization: 'token'
+		expect(patchMock).toHaveBeenCalledWith(
+			`/api/collection/123/name?newCollectionName=newName`,
+			null,
+			{
+				headers: {
+					Authorization: 'token'
+				}
 			}
-		});
+		);
 	});
 
 	it('should edit the collection in the collections store when request is successful', async () => {

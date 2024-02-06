@@ -44,7 +44,7 @@ describe('Edit Collection Visibility Handler', () => {
 
 		await toggleRecipeCollectionVisibility(testUser, '123', true);
 
-		expect(patchMock).toHaveBeenCalledWith(`/api/collection/123/visibility?private=true`, {
+		expect(patchMock).toHaveBeenCalledWith(`/api/collection/123/visibility?private=true`, null, {
 			headers: {
 				Authorization: 'token'
 			}

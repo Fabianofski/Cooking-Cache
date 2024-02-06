@@ -9,8 +9,7 @@ import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 async function addRecipeToCollection(user: User, formData: FormData, collectionId: string) {
 	const token = await user.getIdToken();
 	return axios
-		.post(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/recipe`, {
-			data: formData,
+		.post(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/recipe`, formData, {
 			headers: {
 				Accept: 'application/json',
 				Authorization: token

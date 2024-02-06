@@ -44,7 +44,7 @@ describe('Join Collection Handler', () => {
 
 		await joinRecipeCollectionWithInviteCode(testUser, 'inviteCode');
 
-		expect(postMock).toHaveBeenCalledWith(`/api/collection/join?i=inviteCode`, {
+		expect(postMock).toHaveBeenCalledWith(`/api/collection/join?i=inviteCode`, null, {
 			headers: {
 				Authorization: 'token'
 			}

@@ -47,8 +47,7 @@ describe('Edit Collection Cover Handler', () => {
 
 		const formData = new FormData();
 		formData.append('cover', file);
-		expect(patchMock).toHaveBeenCalledWith(`/api/collection/123/cover`, {
-			data: formData,
+		expect(patchMock).toHaveBeenCalledWith(`/api/collection/123/cover`, formData, {
 			headers: {
 				Authorization: 'token',
 				'Content-Type': 'multipart/form-data'

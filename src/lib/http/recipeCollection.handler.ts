@@ -10,7 +10,7 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 	const token = await user.getIdToken();
 
 	return axios
-		.post(`${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`, {
+		.post(`${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`, null, {
 			headers: {
 				Accept: 'application/json',
 				Authorization: token
@@ -70,7 +70,7 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 	const token = await user.getIdToken();
 
 	return axios
-		.post(`${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`, {
+		.post(`${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`, null, {
 			headers: {
 				Authorization: token
 			}
@@ -101,9 +101,11 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
+	console.log(token);
 	return axios
 		.patch(
 			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
+			null,
 			{
 				headers: {
 					Authorization: token
@@ -123,6 +125,7 @@ async function editRecipeCollectionName(user: User, collectionId: string, collec
 			});
 		})
 		.catch((error) => {
+			console.log(error);
 			createNewAlert({
 				message:
 					'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!' +
@@ -146,12 +149,11 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 	const formData = new FormData();
 	formData.append('cover', file);
 	return axios
-		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover`, {
+		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover`, formData, {
 			headers: {
 				Authorization: token,
 				'Content-Type': 'multipart/form-data'
-			},
-			data: formData
+			}
 		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
@@ -183,11 +185,15 @@ async function toggleRecipeCollectionVisibility(
 ) {
 	const token = await user.getIdToken();
 	return axios
-		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`, {
-			headers: {
-				Authorization: token
+		.patch(
+			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
+			null,
+			{
+				headers: {
+					Authorization: token
+				}
 			}
-		})
+		)
 		.then((res) => {
 			if (res.status !== 200) return Promise.reject(res);
 

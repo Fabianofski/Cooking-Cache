@@ -67,8 +67,7 @@ describe('RecipeHandler', () => {
 		formData.append('recipe', JSON.stringify(recipe));
 		await addRecipeToCollection(testUser, formData, '123');
 
-		expect(postMock).toHaveBeenCalledWith(`/api/collection/123/recipe`, {
-			data: formData,
+		expect(postMock).toHaveBeenCalledWith(`/api/collection/123/recipe`, formData, {
 			headers: {
 				Accept: 'application/json',
 				Authorization: 'token'
