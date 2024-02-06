@@ -6,6 +6,7 @@ const alertStore = writable<{
 }>({});
 
 function createNewAlert(alert: AlertOptions) {
+	alert = { ...alert };
 	let id: string = '';
 	do {
 		id = 'id' + Math.random().toString(16).slice(2);

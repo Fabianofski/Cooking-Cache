@@ -1,4 +1,4 @@
-import { auth, database, verifyIdToken } from '$lib/server/firebase.admin';
+import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection, RecipeCollections } from '../../../../models/RecipeCollections.js';
 
@@ -29,7 +29,8 @@ export async function POST({ url, request }) {
 	const token = request.headers.get('Authorization');
 
 	try {
-		const userId = await verifyIdToken(token);
+		if (token === null) throw new Error('No token provided');
+		const { uid } = await auth.verifyIdToken(token);
 
 		if (!inviteCode) return new Response('400 Bad Request', { status: 400 });
 
@@ -46,12 +47,12 @@ export async function POST({ url, request }) {
 
 			collection.recipes = Object.values(collection.recipes || {});
 
-			await database.ref(`users/${userId}/joinedCollectionsIds/${collection.id}`).set(true);
+			await database.ref(`users/${uid}/joinedCollectionsIds/${collection.id}`).set(true);
 
 			const participants = collection.participants ?? [];
-			if (participants.find((p) => p.uid === userId)) return json(collection);
+			if (participants.find((p) => p.uid === uid)) return json(collection);
 
-			const user = await auth.getUser(userId);
+			const user = await auth.getUser(uid);
 			participants.push({
 				displayName: user.displayName,
 				uid: user.uid,

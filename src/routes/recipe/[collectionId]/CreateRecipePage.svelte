@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { addRecipeToCollection } from '$lib/recipe.handler';
+	import { addRecipeToCollection } from '$lib/http/recipe.handler';
 	import type { User } from 'firebase/auth';
 	import type { Recipe } from '../../../models/Recipe';
 	import { currentUser } from '../../../stores/store';

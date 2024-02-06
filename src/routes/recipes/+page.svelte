@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createNewRecipeCollection } from '$lib/recipeCollection.handler';
+	import { createNewRecipeCollection } from '$lib/http/recipeCollection.handler';
 	import type { User } from 'firebase/auth';
 	import Header from '../../components/Header.svelte';
 	import RecipeCollectionCard from '../../components/RecipeCollectionCard.svelte';

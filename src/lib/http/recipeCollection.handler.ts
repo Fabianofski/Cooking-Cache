@@ -2,25 +2,25 @@ import { goto } from '$app/navigation';
 import { PUBLIC_BASE_URL } from '$env/static/public';
 import axios, { type AxiosResponse } from 'axios';
 import type { User } from 'firebase/auth';
-import { createNewAlert } from '../components/alerts/alert.handler';
-import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
-import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
+import { createNewAlert } from '../../components/alerts/alert.handler';
+import type { RecipeCollection, RecipeCollections } from '../../models/RecipeCollections';
+import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 
 async function createNewRecipeCollection(user: User, collectionName: string) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'post',
-		url: `${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`,
-		headers: {
-			Accept: 'application/json',
-			Authorization: token
-		}
-	})
+	return axios
+		.post(`${PUBLIC_BASE_URL}/api/collection?collectionName=${collectionName}`, null, {
+			headers: {
+				Accept: 'application/json',
+				Authorization: token
+			}
+		})
 		.then(async (res: AxiosResponse) => {
 			if (res.status !== 200) return Promise.reject(res);
 
 			const collection: RecipeCollection = res.data;
+			if (!collection) return Promise.reject('No collection returned');
 			recipeCollectionsStore.update((value) => {
 				value[collection.id] = collection;
 				return value;
@@ -44,14 +44,13 @@ async function createNewRecipeCollection(user: User, collectionName: string) {
 async function getUserRecipeCollections(user: User) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'get',
-		url: `${PUBLIC_BASE_URL}/api/collection`,
-		headers: {
-			Accept: 'application/json',
-			Authorization: token
-		}
-	})
+	return axios
+		.get(`${PUBLIC_BASE_URL}/api/collection`, {
+			headers: {
+				Accept: 'application/json',
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 			const data: RecipeCollections = res.data;
@@ -70,13 +69,12 @@ async function getUserRecipeCollections(user: User) {
 async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'post',
-		url: `${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.post(`${PUBLIC_BASE_URL}/api/collection/join?i=${inviteCode}`, null, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 			const data = res.data;
@@ -103,13 +101,17 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
-	return axios({
-		method: 'patch',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	console.log(token);
+	return axios
+		.patch(
+			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
+			null,
+			{
+				headers: {
+					Authorization: token
+				}
+			}
+		)
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -123,6 +125,7 @@ async function editRecipeCollectionName(user: User, collectionId: string, collec
 			});
 		})
 		.catch((error) => {
+			console.log(error);
 			createNewAlert({
 				message:
 					'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!' +
@@ -145,15 +148,13 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 
 	const formData = new FormData();
 	formData.append('cover', file);
-	return axios({
-		method: 'patch',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover`,
-		headers: {
-			Authorization: token,
-			'Content-Type': 'multipart/form-data'
-		},
-		data: formData
-	})
+	return axios
+		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover`, formData, {
+			headers: {
+				Authorization: token,
+				'Content-Type': 'multipart/form-data'
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -169,7 +170,9 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 		})
 		.catch((error) => {
 			createNewAlert({
-				message: 'Beim Ändern des Covers ist ein Fehler aufgetreten!' + error,
+				message:
+					'Beim Ändern des Covers ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
 				type: 'error'
 			});
 		});
@@ -181,13 +184,16 @@ async function toggleRecipeCollectionVisibility(
 	privateState: boolean
 ) {
 	const token = await user.getIdToken();
-	return axios({
-		method: 'patch',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.patch(
+			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/visibility?private=${privateState}`,
+			null,
+			{
+				headers: {
+					Authorization: token
+				}
+			}
+		)
 		.then((res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -212,13 +218,12 @@ async function toggleRecipeCollectionVisibility(
 
 async function leaveRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
-	return axios({
-		method: 'delete',
-		url: `${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.delete(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave`, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
@@ -245,13 +250,12 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 async function deleteRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
 
-	return axios({
-		method: 'delete',
-		url: `${PUBLIC_BASE_URL}/api/collection?collectionId=${collectionId}`,
-		headers: {
-			Authorization: token
-		}
-	})
+	return axios
+		.delete(`${PUBLIC_BASE_URL}/api/collection?collectionId=${collectionId}`, {
+			headers: {
+				Authorization: token
+			}
+		})
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { joinRecipeCollectionWithInviteCode } from '$lib/recipeCollection.handler.js';
+	import { joinRecipeCollectionWithInviteCode } from '$lib/http/recipeCollection.handler.js';
 	import type { User } from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';

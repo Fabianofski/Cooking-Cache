@@ -7,7 +7,8 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		coverage: {
-			include: ['src/**/*.svelte', 'src/**/*.ts']
+			include: ['src/**/*.svelte', 'src/**/*.ts'],
+			exclude: ['src/models/*', 'src/app.d.ts']
 		}
 	}
 });

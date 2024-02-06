@@ -1,4 +1,4 @@
-import { database, verifyIdToken } from '$lib/server/firebase.admin';
+import { auth, database } from '$lib/server/firebase.admin';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
 
 export async function PATCH({ params, request, url }) {
@@ -10,14 +10,15 @@ export async function PATCH({ params, request, url }) {
 		return new Response('400 Bad Request', { status: 400 });
 
 	try {
-		const userId = await verifyIdToken(token);
+		if (token === null) throw new Error('No token provided');
+		const { uid } = await auth.verifyIdToken(token);
 
 		try {
 			const data = await database.ref(`collections/${collectionId}`).get();
 			const collection: RecipeCollection = data.val() || {};
 
 			if (!collection) return new Response('404 Not Found', { status: 404 });
-			if (collection.ownerId !== userId) return new Response('403 Forbidden', { status: 403 });
+			if (collection.ownerId !== uid) return new Response('403 Forbidden', { status: 403 });
 
 			await database.ref(`collections/${collectionId}/private`).set(visibility);
 

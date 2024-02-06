@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { deleteRecipeFromCollection } from '$lib/recipe.handler';
+	import { deleteRecipeFromCollection } from '$lib/http/recipe.handler';
 	import type { User } from 'firebase/auth';
 	import Header from '../../../../components/Header.svelte';
 	import type { Recipe } from '../../../../models/Recipe';

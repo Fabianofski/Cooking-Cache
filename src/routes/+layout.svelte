@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { auth } from '$lib/firebase.client';
-	import { getUserRecipeCollections } from '$lib/recipeCollection.handler';
+	import { getUserRecipeCollections } from '$lib/http/recipeCollection.handler';
 	import { Capacitor } from '@capacitor/core';
 	import { StatusBar } from '@capacitor/status-bar';
 	import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
