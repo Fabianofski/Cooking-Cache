@@ -8,10 +8,7 @@
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 
-	let user: User | null;
-	currentUser.subscribe((value) => {
-		user = value;
-	});
+	let user: User | null = $currentUser;
 
 	let recipeCollections: RecipeCollections;
 	recipeCollectionsStore.subscribe((value) => {

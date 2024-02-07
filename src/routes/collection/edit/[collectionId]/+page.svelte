@@ -22,10 +22,7 @@
 		loadingState = value;
 	});
 
-	let user: User | null;
-	currentUser.subscribe((value) => {
-		user = value;
-	});
+	let user: User | null = $currentUser;
 
 	let recipeCollection: RecipeCollection;
 	let isOwner: boolean;

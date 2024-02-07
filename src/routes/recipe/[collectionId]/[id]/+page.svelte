@@ -10,10 +10,7 @@
 
 	export let data;
 
-	let user: User | null;
-	currentUser.subscribe((value) => {
-		user = value;
-	});
+	let user: User | null = $currentUser;
 
 	let recipe: Recipe | undefined;
 	let loading = true;

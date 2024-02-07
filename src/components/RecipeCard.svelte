@@ -5,10 +5,7 @@
 
 	export let recipe: Recipe | null;
 
-	let user: User | null;
-	currentUser.subscribe((value) => {
-		user = value;
-	});
+	let user: User | null = $currentUser;
 
 	function truncateString(str: string, length: number) {
 		if (str.length > length) {

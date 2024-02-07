@@ -16,11 +16,7 @@
 		NavigationBar.setColor({ color: '#161c24' });
 	}
 
-	let user: User | null;
-
-	currentUser.subscribe((value) => {
-		user = value;
-	});
+	let user: User | null = $currentUser;
 
 	auth.onAuthStateChanged(async (value) => {
 		loadingStateStore.set('LOADING');
