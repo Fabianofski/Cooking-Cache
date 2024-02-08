@@ -176,6 +176,37 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 		});
 }
 
+async function editRecipeCollectionCoverUrl(user: User, collectionId: string, coverUrl: string) {
+	const token = await user.getIdToken();
+	return axios
+		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover?coverUrl=${coverUrl}`, null, {
+			headers: {
+				Authorization: token
+			}
+		})
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
+			const photoURL = res.data;
+			recipeCollectionsStore.update((value) => {
+				value[collectionId].cover = photoURL;
+				return value;
+			});
+			createNewAlert({
+				message: 'Das Cover der Rezeptsammlung wurde erfolgreich geändert!',
+				type: 'success'
+			});
+		})
+		.catch((error) => {
+			createNewAlert({
+				message:
+					'Beim Ändern des Covers ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
+				type: 'error'
+			});
+		});
+}
+
 async function toggleRecipeCollectionVisibility(
 	user: User,
 	collectionId: string,
@@ -280,6 +311,7 @@ export {
 	createNewRecipeCollection,
 	deleteRecipeCollection,
 	editRecipeCollectionCoverImage,
+	editRecipeCollectionCoverUrl,
 	editRecipeCollectionName,
 	getUserRecipeCollections,
 	joinRecipeCollectionWithInviteCode,

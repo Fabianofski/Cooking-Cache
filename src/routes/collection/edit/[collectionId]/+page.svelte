@@ -441,7 +441,11 @@
 			{/if}
 		</button>
 
-		<DefaultCoversModal bind:modal={defaultCoversModal} bind:loadingCoverReplacement />
+		<DefaultCoversModal
+			bind:modal={defaultCoversModal}
+			bind:loadingCoverReplacement
+			{collectionId}
+		/>
 		<DeleteCollectionModal bind:dialog {isOwner} {collectionId} bind:loadingDeletion />
 	</div>
 </div>

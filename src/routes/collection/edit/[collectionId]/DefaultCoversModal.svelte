@@ -1,8 +1,19 @@
 <script lang="ts">
 	import { defaultCollectionCovers } from '$lib/defaultCollectionCovers';
+	import { editRecipeCollectionCoverUrl } from '$lib/http/recipeCollection.handler';
+	import { currentUser } from '../../../../stores/store';
 
 	export let modal: HTMLDialogElement;
 	export let loadingCoverReplacement: boolean;
+	export let collectionId: string;
+
+	async function replaceCover(cover: string) {
+		if (!$currentUser) return;
+		loadingCoverReplacement = true;
+		await editRecipeCollectionCoverUrl($currentUser, collectionId, cover);
+		loadingCoverReplacement = false;
+		modal.close();
+	}
 </script>
 
 <dialog class="modal" bind:this={modal}>
@@ -18,6 +29,7 @@
 						<button
 							class="btn btn-sm btn-block btn-primary mt-2"
 							disabled={loadingCoverReplacement}
+							on:click={() => replaceCover(cover)}
 						>
 							Auswählen
 						</button>
