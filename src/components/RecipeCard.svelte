@@ -1,11 +1,8 @@
 <script lang="ts">
-	import type { User } from 'firebase/auth';
 	import type { Recipe } from '../models/Recipe';
 	import { currentUser } from '../stores/store';
 
 	export let recipe: Recipe | null;
-
-	let user: User | null = $currentUser;
 
 	function truncateString(str: string, length: number) {
 		if (str.length > length) {
@@ -50,7 +47,7 @@
 		class="h-96 w-full bg-base-100 shadow-xl flex flex-col gap-2 justify-center items-center rounded-xl"
 	>
 		<p class="font-bold text-lg">Kein Rezept gefunden!</p>
-		<a class="btn" href="/recipe/create/Hauptsammlung" class:btn-disabled={user === null}>
+		<a class="btn" href="/recipe/create/Hauptsammlung" class:btn-disabled={$currentUser === null}>
 			Erstelle dein erstes Rezept
 		</a>
 	</div>

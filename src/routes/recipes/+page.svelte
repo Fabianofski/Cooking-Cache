@@ -8,8 +8,6 @@
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
 
-	let user: User | null = $currentUser;
-
 	let recipeCollections: RecipeCollections;
 	recipeCollectionsStore.subscribe((value) => {
 		recipeCollections = value;
@@ -24,10 +22,10 @@
 	let collectionName: string = '';
 	let loading: boolean = false;
 	async function createNewCollection() {
-		if (!user) return;
+		if (!$currentUser) return;
 
 		loading = true;
-		await createNewRecipeCollection(user, collectionName);
+		await createNewRecipeCollection($currentUser, collectionName);
 		loading = false;
 		createCollectionModal.close();
 	}
@@ -53,7 +51,7 @@
 <div class="fixed max-w-3xl w-full bottom-0 z-20">
 	<button
 		class="btn btn-circle btn-primary w-14 h-14 absolute bottom-[5.5rem] right-9"
-		class:btn-disabled={user === null}
+		class:btn-disabled={$currentUser === null}
 		on:click={() => {
 			createCollectionModal.showModal();
 		}}
