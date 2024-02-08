@@ -1,13 +1,10 @@
 <script lang="ts">
 	import { joinRecipeCollectionWithInviteCode } from '$lib/http/recipeCollection.handler.js';
-	import type { User } from 'firebase/auth';
 	import { onMount } from 'svelte';
 	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
 	import { currentUser } from '../../../stores/store.js';
 
 	export let data;
-
-	let user: User | null = $currentUser;
 
 	let recipeCollection: RecipeCollection | null;
 	let loading: boolean = true;
@@ -31,10 +28,10 @@
 
 	let loadingJoin = false;
 	async function joinCollection() {
-		if (!user || !data.inviteCode) return;
+		if (!$currentUser || !data.inviteCode) return;
 
 		loadingJoin = true;
-		await joinRecipeCollectionWithInviteCode(user, data.inviteCode);
+		await joinRecipeCollectionWithInviteCode($currentUser, data.inviteCode);
 		loadingJoin = false;
 	}
 </script>

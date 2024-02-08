@@ -10,8 +10,6 @@
 
 	export let data;
 
-	let user: User | null = $currentUser;
-
 	let recipe: Recipe | undefined;
 	let loading = true;
 	let editPermissions = false;
@@ -20,7 +18,8 @@
 		loading = false;
 		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
 		editPermissions =
-			collections[data.collectionId].ownerId === user?.uid || recipe?.creatorId === user?.uid;
+			collections[data.collectionId].ownerId === $currentUser?.uid ||
+			recipe?.creatorId === $currentUser?.uid;
 	});
 
 	let deletionModal: HTMLDialogElement;
@@ -30,9 +29,9 @@
 
 	let loadingDeletion = false;
 	async function deleteRecipe() {
-		if (!recipe || !user) return;
+		if (!recipe || !$currentUser) return;
 		loadingDeletion = true;
-		await deleteRecipeFromCollection(user, recipe);
+		await deleteRecipeFromCollection($currentUser, recipe);
 		loadingDeletion = false;
 	}
 </script>

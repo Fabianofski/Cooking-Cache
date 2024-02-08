@@ -35,14 +35,14 @@
 		creatorId: ''
 	};
 
-	let user: User = $currentUser;
-
 	function formIsInvalid(recipe: Recipe) {
 		return recipe.title === '' || recipe.tagline === '' || recipe.description[0] === '';
 	}
 
 	let loading = false;
 	async function addRecipeHandler() {
+		if (!$currentUser) return;
+
 		loading = true;
 
 		let formData = new FormData();
@@ -57,10 +57,10 @@
 		);
 		recipe.description.pop();
 
-		recipe.creatorId = user.uid;
+		recipe.creatorId = $currentUser.uid;
 
 		formData.append('recipe', JSON.stringify(recipe));
-		await addRecipeToCollection(user, formData, collectionId);
+		await addRecipeToCollection($currentUser, formData, collectionId);
 		loading = false;
 	}
 </script>

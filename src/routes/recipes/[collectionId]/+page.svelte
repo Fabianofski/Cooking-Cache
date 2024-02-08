@@ -18,8 +18,6 @@
 		collectionName = value[data.collectionId].name;
 	});
 
-	let user: User | null = $currentUser;
-
 	let loadingState: LoadingState;
 	loadingStateStore.subscribe((value) => {
 		loadingState = value;
@@ -151,7 +149,7 @@
 	<a
 		class="btn btn-circle btn-primary w-14 h-14 absolute bottom-[5.5rem] right-9"
 		href={`/recipe/${data.collectionId}/create`}
-		class:btn-disabled={user === null}
+		class:btn-disabled={$currentUser === null}
 	>
 		<svg
 			xmlns="http://www.w3.org/2000/svg"

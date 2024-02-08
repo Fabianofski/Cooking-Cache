@@ -5,7 +5,6 @@
 	import { Capacitor } from '@capacitor/core';
 	import { StatusBar } from '@capacitor/status-bar';
 	import { NavigationBar } from '@mauricewegner/capacitor-navigation-bar';
-	import type { User } from 'firebase/auth';
 	import '../app.css';
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
@@ -15,8 +14,6 @@
 		StatusBar.setBackgroundColor({ color: '#161c24' });
 		NavigationBar.setColor({ color: '#161c24' });
 	}
-
-	let user: User | null = $currentUser;
 
 	auth.onAuthStateChanged(async (value) => {
 		loadingStateStore.set('LOADING');
@@ -107,11 +104,11 @@
 		<a
 			class:active={$page.url.pathname.startsWith('/profile') ||
 				$page.url.pathname.startsWith('/login')}
-			href={user ? '/profile' : '/login'}
+			href={$currentUser ? '/profile' : '/login'}
 		>
 			<div class="w-6 rounded-full">
-				{#if user && user.photoURL}
-					<img src={user.photoURL} alt="Profile" referrerpolicy="no-referrer" />
+				{#if $currentUser && $currentUser.photoURL}
+					<img src={$currentUser.photoURL} alt="Profile" referrerpolicy="no-referrer" />
 				{:else}
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +125,7 @@
 					</svg>
 				{/if}
 			</div>
-			<span class="btm-nav-label">{user ? 'Profil' : 'Login'}</span>
+			<span class="btm-nav-label">{$currentUser ? 'Profil' : 'Login'}</span>
 		</a>
 	</div>
 
