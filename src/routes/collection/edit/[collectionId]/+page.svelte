@@ -445,6 +445,7 @@
 			bind:modal={defaultCoversModal}
 			bind:loadingCoverReplacement
 			{collectionId}
+			{recipeCollection}
 		/>
 		<DeleteCollectionModal bind:dialog {isOwner} {collectionId} bind:loadingDeletion />
 	</div>

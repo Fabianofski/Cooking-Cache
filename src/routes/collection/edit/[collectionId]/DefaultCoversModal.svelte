@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { defaultCollectionCovers } from '$lib/defaultCollectionCovers';
 	import { editRecipeCollectionCoverUrl } from '$lib/http/recipeCollection.handler';
+	import type { RecipeCollection } from '../../../../models/RecipeCollections';
 	import { currentUser } from '../../../../stores/store';
 
 	export let modal: HTMLDialogElement;
 	export let loadingCoverReplacement: boolean;
 	export let collectionId: string;
+	export let recipeCollection: RecipeCollection;
 
 	async function replaceCover(cover: string) {
 		if (!$currentUser) return;
@@ -18,7 +20,10 @@
 
 <dialog class="modal" bind:this={modal}>
 	<div class="modal-box flex flex-col gap-4 max-w-[40rem]">
-		<h3 class="font-bold text-lg">Cover der Rezeptsammlung ändern</h3>
+		<h3 class="text-lg">
+			Cover von <strong>"{recipeCollection?.name}"</strong>
+			:
+		</h3>
 
 		<div class="grid grid-cols-fluid-narrow gap-2 max-h-[34rem] overflow-y-auto">
 			{#each Object.keys(defaultCollectionCovers) as coverCategory}
