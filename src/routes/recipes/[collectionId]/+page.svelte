@@ -18,10 +18,7 @@
 		collectionName = value[data.collectionId].name;
 	});
 
-	let user: User | null;
-	currentUser.subscribe((value) => {
-		user = value;
-	});
+	let user: User | null = $currentUser;
 
 	let loadingState: LoadingState;
 	loadingStateStore.subscribe((value) => {

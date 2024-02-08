@@ -1,9 +1,7 @@
 <script lang="ts">
 	import {
-		deleteRecipeCollection,
 		editRecipeCollectionCoverImage,
 		editRecipeCollectionName,
-		leaveRecipeCollection,
 		toggleRecipeCollectionVisibility
 	} from '$lib/http/recipeCollection.handler.js';
 	import type { User } from 'firebase/auth';
@@ -12,6 +10,8 @@
 	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
 	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore.js';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../../../stores/store.js';
+	import DefaultCoversModal from './DefaultCoversModal.svelte';
+	import DeleteCollectionModal from './DeleteCollectionModal.svelte';
 
 	export let data;
 	const collectionId = data.collectionId;
@@ -27,14 +27,14 @@
 		user = value;
 	});
 
-	let recipeCollection: RecipeCollection;
-	let isOwner: boolean;
+	let isOwner: boolean = false;
 	let inviteLink: string = '';
+	let recipeCollection: RecipeCollection;
 	recipeCollectionsStore.subscribe((value) => {
 		if (collectionId in value) {
 			recipeCollection = value[collectionId];
 			collectionName = recipeCollection.name;
-			isOwner = recipeCollection.ownerId === user?.uid;
+			if (recipeCollection.ownerId === user?.uid) isOwner = true;
 			inviteLink = `https://cooking-cache.web.app/collection/join?i=${recipeCollection.inviteCode}`;
 		}
 	});
@@ -74,23 +74,6 @@
 	}
 
 	let dialog: HTMLDialogElement;
-	let confirmation: string = '';
-	let loadingDeletion: boolean = false;
-	async function deleteList() {
-		if (!user) return;
-
-		loadingDeletion = true;
-		await deleteRecipeCollection(user, collectionId);
-		loadingDeletion = false;
-	}
-
-	async function leaveList() {
-		if (!user) return;
-
-		loadingDeletion = true;
-		await leaveRecipeCollection(user, collectionId);
-		loadingDeletion = false;
-	}
 
 	let coverFileInput: HTMLInputElement;
 	function openFileSelection() {
@@ -98,13 +81,23 @@
 	}
 
 	let loadingCoverReplacement: boolean = false;
+	let imgReplaceDropdown: HTMLDetailsElement;
 	async function replaceCoverImage(event: Event) {
+		imgReplaceDropdown.open = false;
+
 		const file = (event.target as HTMLInputElement).files?.[0];
 		if (!file || !user) return;
 
 		loadingCoverReplacement = true;
 		await editRecipeCollectionCoverImage(user, collectionId, file);
 		loadingCoverReplacement = false;
+	}
+
+	let defaultCoversModal: HTMLDialogElement;
+	function openDefaultCoversModal() {
+		imgReplaceDropdown.open = false;
+
+		defaultCoversModal.showModal();
 	}
 
 	let loadingVisibilityChange: boolean = false;
@@ -115,6 +108,8 @@
 		await toggleRecipeCollectionVisibility(user, collectionId, !recipeCollection.private);
 		loadingVisibilityChange = false;
 	}
+
+	let loadingDeletion: boolean = false;
 </script>
 
 <div class="flex flex-col gap-6">
@@ -144,35 +139,76 @@
 						accept="image/*"
 						on:change={replaceCoverImage}
 					/>
-					<button
-						class="btn btn-primary btn-circle"
-						disabled={loadingCoverReplacement}
-						on:click={openFileSelection}
-					>
-						{#if loadingCoverReplacement}
-							<span class="loading loading-spinner loading-md" />
-						{:else}
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								stroke-width="1.5"
-								stroke="currentColor"
-								class="w-6 h-6"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
-								/>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
-								/>
-							</svg>
-						{/if}
-					</button>
+					<details class="dropdown dropdown-end" bind:this={imgReplaceDropdown}>
+						<summary
+							class="m-1 btn btn-primary btn-circle"
+							class:btn-disabled={loadingCoverReplacement}
+						>
+							{#if loadingCoverReplacement}
+								<span class="loading loading-spinner loading-md" />
+							{:else}
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									class="w-6 h-6"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z"
+									/>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
+									/>
+								</svg>
+							{/if}
+						</summary>
+						<ul class="mt-2 p-2 shadow menu dropdown-content z-[1] bg-base-200 rounded-box w-42">
+							<li>
+								<button on:click={openFileSelection}>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"
+										/>
+									</svg>
+									Hochladen
+								</button>
+							</li>
+							<li>
+								<button on:click={openDefaultCoversModal}>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="w-5 h-5"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59"
+										/>
+									</svg>
+									Auswählen
+								</button>
+							</li>
+						</ul>
+					</details>
 				</div>
 			{/if}
 		</div>
@@ -405,77 +441,12 @@
 			{/if}
 		</button>
 
-		<dialog bind:this={dialog} class="modal">
-			<div class="modal-box">
-				<h3 class="font-bold text-lg text-center">
-					Willst du diese Rezeptsammlung wirklich {isOwner ? 'löschen' : 'verlassen'}?
-				</h3>
-				<p class="py-4 text-center">Tippe zum Bestätigen {isOwner ? 'LÖSCHEN' : 'VERLASSEN'} ein</p>
-				<div class="form-control w-full max-w-s">
-					<input
-						type="text"
-						placeholder={isOwner ? 'LÖSCHEN' : 'VERLASSEN'}
-						bind:value={confirmation}
-						class="input input-bordered input-error w-full max-w-s"
-						required
-					/>
-				</div>
-				<div class="modal-action">
-					<form method="dialog" class="w-full flex flex-col gap-4">
-						<button
-							class="btn btn-block"
-							on:click={() => {
-								confirmation = '';
-							}}
-						>
-							Abbrechen
-						</button>
-						<button
-							class="btn btn-error btn-block"
-							disabled={loadingDeletion ||
-								confirmation.toLowerCase() !== (isOwner ? 'löschen' : 'verlassen')}
-							on:click={isOwner ? deleteList : leaveList}
-						>
-							{#if !loadingDeletion}
-								{#if isOwner}
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="currentColor"
-										class="w-6 h-6"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-										/>
-									</svg>
-								{:else}
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke-width="1.5"
-										stroke="currentColor"
-										class="w-6 h-6"
-									>
-										<path
-											stroke-linecap="round"
-											stroke-linejoin="round"
-											d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
-										/>
-									</svg>
-								{/if}
-								Rezeptsammlung {isOwner ? 'löschen' : 'verlassen'}
-							{:else}
-								<span class="loading loading-spinner loading-md" />
-							{/if}
-						</button>
-					</form>
-				</div>
-			</div>
-		</dialog>
+		<DefaultCoversModal
+			bind:modal={defaultCoversModal}
+			bind:loadingCoverReplacement
+			{collectionId}
+			{recipeCollection}
+		/>
+		<DeleteCollectionModal bind:dialog {isOwner} {collectionId} bind:loadingDeletion />
 	</div>
 </div>

@@ -2,6 +2,7 @@ import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
 import type { RecipeCollection } from '../../../models/RecipeCollections';
+import { defaultCovers } from '$lib/defaultCollectionCovers';
 
 export function generateRandomInviteCode() {
 	let code = '';
@@ -32,7 +33,8 @@ export async function getDefaultCollection(
 		name: collectionName,
 		id: collectionId,
 		inviteCode: generateRandomInviteCode(),
-		private: false
+		private: false,
+		cover: defaultCovers[Math.floor(Math.random() * defaultCovers.length)]
 	};
 	return defaultCollection;
 }

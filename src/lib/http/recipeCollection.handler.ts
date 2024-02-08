@@ -101,7 +101,6 @@ async function joinRecipeCollectionWithInviteCode(user: User, inviteCode: string
 
 async function editRecipeCollectionName(user: User, collectionId: string, collectionName: string) {
 	const token = await user.getIdToken();
-	console.log(token);
 	return axios
 		.patch(
 			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/name?newCollectionName=${collectionName}`,
@@ -125,7 +124,6 @@ async function editRecipeCollectionName(user: User, collectionId: string, collec
 			});
 		})
 		.catch((error) => {
-			console.log(error);
 			createNewAlert({
 				message:
 					'Beim Umbenennen der Rezeptsammlung ist ein Fehler aufgetreten!' +
@@ -153,6 +151,37 @@ async function editRecipeCollectionCoverImage(user: User, collectionId: string, 
 			headers: {
 				Authorization: token,
 				'Content-Type': 'multipart/form-data'
+			}
+		})
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
+			const photoURL = res.data;
+			recipeCollectionsStore.update((value) => {
+				value[collectionId].cover = photoURL;
+				return value;
+			});
+			createNewAlert({
+				message: 'Das Cover der Rezeptsammlung wurde erfolgreich geändert!',
+				type: 'success'
+			});
+		})
+		.catch((error) => {
+			createNewAlert({
+				message:
+					'Beim Ändern des Covers ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
+				type: 'error'
+			});
+		});
+}
+
+async function editRecipeCollectionCoverUrl(user: User, collectionId: string, coverUrl: string) {
+	const token = await user.getIdToken();
+	return axios
+		.patch(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/cover?coverUrl=${coverUrl}`, null, {
+			headers: {
+				Authorization: token
 			}
 		})
 		.then(async (res) => {
@@ -282,6 +311,7 @@ export {
 	createNewRecipeCollection,
 	deleteRecipeCollection,
 	editRecipeCollectionCoverImage,
+	editRecipeCollectionCoverUrl,
 	editRecipeCollectionName,
 	getUserRecipeCollections,
 	joinRecipeCollectionWithInviteCode,

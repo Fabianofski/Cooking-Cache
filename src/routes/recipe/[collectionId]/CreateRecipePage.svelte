@@ -35,10 +35,7 @@
 		creatorId: ''
 	};
 
-	let user: User;
-	currentUser.subscribe((value) => {
-		if (value) user = value;
-	});
+	let user: User = $currentUser;
 
 	function formIsInvalid(recipe: Recipe) {
 		return recipe.title === '' || recipe.tagline === '' || recipe.description[0] === '';
