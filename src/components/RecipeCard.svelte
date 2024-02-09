@@ -11,9 +11,13 @@
 	let owner: Participant | undefined;
 	currentUser.subscribe((value) => {
 		user = value;
-		const recipeCollection = $recipeCollectionsStore[recipe.collectionId];
-		const ownerId = recipeCollection?.ownerId;
-		owner = recipeCollection?.participants?.find((participant) => participant.uid === ownerId);
+	});
+
+	recipeCollectionsStore.subscribe((value) => {
+		const recipeCollection = value[recipe.collectionId];
+		owner = recipeCollection?.participants?.find(
+			(participant) => participant.uid === recipe.creatorId
+		);
 	});
 
 	function truncateString(str: string, length: number) {
@@ -51,14 +55,14 @@
 						referrerpolicy="no-referrer"
 					/>
 					<p>
-						{truncateString(owner.displayName || '', 25)}
+						{truncateString(owner.displayName || 'Ersteller', 25)}
 						{owner.uid === user?.uid ? '(Du)' : ''}
 					</p>
 				</div>
 			{/if}
 
 			<div class="flex gap-2 w-full">
-				<div class="flex items-center">
+				<div class="flex items-center" data-testid="difficulty">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -75,7 +79,7 @@
 					</svg>
 					{difficultyLabels[recipe.difficulty]}
 				</div>
-				<div class="flex items-center">
+				<div class="flex items-center" data-testid="cookingTime">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
