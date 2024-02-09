@@ -21,7 +21,6 @@
 	export let recipe: Recipe = {
 		image: '',
 		title: '',
-		tagline: '',
 		tags: [],
 		ingredients: { Default: [{ amount: undefined, name: '', unit: '' }] },
 		url: '',
@@ -36,7 +35,7 @@
 	};
 
 	function formIsInvalid(recipe: Recipe) {
-		return recipe.title === '' || recipe.tagline === '' || recipe.description[0] === '';
+		return recipe.title === '' || recipe.description[0] === '';
 	}
 
 	let loading = false;

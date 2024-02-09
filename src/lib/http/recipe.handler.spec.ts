@@ -31,7 +31,6 @@ describe('RecipeHandler', () => {
 		recipe = {
 			image: 'recipe-image.jpg',
 			title: 'Title',
-			tagline: 'A tasty dish',
 			tags: ['tag1', 'tag2', 'tag3'],
 			url: 'https://example.com/recipe',
 			createdTime: '2022-01-01',

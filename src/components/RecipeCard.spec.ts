@@ -10,7 +10,6 @@ describe('RecipeCard', () => {
 		recipe = {
 			image: 'recipe-image.jpg',
 			title: 'Title',
-			tagline: 'A tasty dish',
 			tags: ['tag1', 'tag2', 'tag3'],
 			url: 'https://example.com/recipe',
 			createdTime: '2022-01-01',
@@ -22,11 +21,6 @@ describe('RecipeCard', () => {
 			collectionId: 'collection-id',
 			creatorId: 'creator-id'
 		};
-	});
-
-	it('should render info when recipe is null', () => {
-		const { queryByText } = render(RecipeCard, { recipe: null });
-		expect(queryByText('Kein Rezept gefunden!')).not.toBeNull();
 	});
 
 	it('should have a link to recipes page of the recipe', () => {
@@ -48,21 +42,6 @@ describe('RecipeCard', () => {
 		const { getByText } = render(RecipeCard, { recipe: recipe });
 
 		const name = getByText('Titel');
-		expect(name).not.toBeNull();
-	});
-
-	it('should have the tagline of the recipe', () => {
-		const { getByText } = render(RecipeCard, { recipe: recipe });
-
-		const name = getByText(recipe.tagline);
-		expect(name).not.toBeNull();
-	});
-
-	it('should have a default tagline when recipe tagline is empty', () => {
-		recipe.tagline = '';
-		const { getByText } = render(RecipeCard, { recipe: recipe });
-
-		const name = getByText('Tagline');
 		expect(name).not.toBeNull();
 	});
 

@@ -16,7 +16,6 @@ describe('RecipeCollectionCard', () => {
 		recipe = {
 			image: '',
 			title: '',
-			tagline: '',
 			url: '',
 			createdTime: '',
 			updatedTime: '',
