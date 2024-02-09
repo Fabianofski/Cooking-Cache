@@ -4,7 +4,6 @@ export interface Recipe {
 	image: string;
 
 	title: string;
-	tagline: string;
 	url: string;
 
 	tags?: string[];
@@ -21,3 +20,11 @@ export interface Recipe {
 	collectionId: string;
 	creatorId: string;
 }
+
+export let difficultyLabels: {
+	[key: string]: string;
+} = {
+	easy: 'Leicht',
+	medium: 'Mittel',
+	hard: 'Schwer'
+};

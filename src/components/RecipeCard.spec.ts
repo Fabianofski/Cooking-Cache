@@ -2,15 +2,27 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import RecipeCard from './RecipeCard.svelte';
 import { render } from '@testing-library/svelte';
 import type { Recipe } from '../models/Recipe';
+import { testUser } from '$lib/dummyUser';
+import type { Participant, RecipeCollection } from '../models/RecipeCollections';
+import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
+import { currentUser } from '../stores/store';
 
 describe('RecipeCard', () => {
 	let recipe: Recipe;
+	let otherUser: Participant;
+	let recipeCollection: RecipeCollection;
 
 	beforeEach(() => {
+		otherUser = {
+			uid: '1234567890',
+			displayName: 'Other User',
+			photoURL: 'https://www.test.com/test.jpg',
+			email: 'test@test.com'
+		};
+
 		recipe = {
 			image: 'recipe-image.jpg',
 			title: 'Title',
-			tagline: 'A tasty dish',
 			tags: ['tag1', 'tag2', 'tag3'],
 			url: 'https://example.com/recipe',
 			createdTime: '2022-01-01',
@@ -19,14 +31,31 @@ describe('RecipeCard', () => {
 			ingredients: {},
 			description: ['Step 1', 'Step 2', 'Step 3'],
 			id: 'recipe-id',
-			collectionId: 'collection-id',
+			collectionId: '0987654321',
 			creatorId: 'creator-id'
 		};
-	});
 
-	it('should render info when recipe is null', () => {
-		const { queryByText } = render(RecipeCard, { recipe: null });
-		expect(queryByText('Kein Rezept gefunden!')).not.toBeNull();
+		recipeCollection = {
+			ownerId: otherUser.uid,
+			name: 'Test Recipe Collection',
+			id: '0987654321',
+			inviteCode: '12345',
+			private: false,
+			cover: 'https://www.test.com/test.jpg',
+			recipes: [recipe, recipe, recipe],
+			participants: [
+				{
+					uid: testUser.uid,
+					displayName: testUser.displayName,
+					photoURL: testUser.photoURL,
+					email: testUser.email
+				},
+				otherUser
+			]
+		};
+
+		recipeCollectionsStore.set({ [recipeCollection.id]: recipeCollection });
+		currentUser.set(testUser);
 	});
 
 	it('should have a link to recipes page of the recipe', () => {
@@ -51,21 +80,6 @@ describe('RecipeCard', () => {
 		expect(name).not.toBeNull();
 	});
 
-	it('should have the tagline of the recipe', () => {
-		const { getByText } = render(RecipeCard, { recipe: recipe });
-
-		const name = getByText(recipe.tagline);
-		expect(name).not.toBeNull();
-	});
-
-	it('should have a default tagline when recipe tagline is empty', () => {
-		recipe.tagline = '';
-		const { getByText } = render(RecipeCard, { recipe: recipe });
-
-		const name = getByText('Tagline');
-		expect(name).not.toBeNull();
-	});
-
 	it('should show the cover image if it exists', () => {
 		const { getByTestId } = render(RecipeCard, { recipe: recipe });
 
@@ -81,27 +95,49 @@ describe('RecipeCard', () => {
 		expect(cover.getAttribute('src')).toBe('/default-cover.jpg');
 	});
 
-	it('should show the correct number of tags', () => {
-		const { getAllByTestId } = render(RecipeCard, { recipe: recipe });
-
-		const tags = getAllByTestId('tag');
-		expect(tags.length).toBe(recipe.tags!.length);
+	it('should show the name of the owner with (Du) when current user is owner', () => {
+		recipe.creatorId = testUser.uid;
+		const { getByText } = render(RecipeCard, { recipe: recipe });
+		const owner = getByText(testUser.displayName! + ' (Du)');
+		expect(owner).not.toBeNull();
 	});
 
-	it('should show the text of all tags', () => {
+	it('should show the name of the owner without (Du) when current user is not owner', () => {
+		recipe.creatorId = otherUser.uid;
 		const { queryByText } = render(RecipeCard, { recipe: recipe });
-
-		recipe.tags?.forEach((tag) => {
-			const tagElement = queryByText(tag);
-			expect(tagElement).not.toBeNull();
-		});
+		const owner = queryByText(otherUser.displayName!);
+		const du = queryByText(otherUser.displayName! + ' (Du)');
+		expect(owner).not.toBeNull();
+		expect(du).toBeNull();
 	});
 
-	it('should show only tags that are not empty', () => {
-		recipe.tags?.push('');
-		const { getAllByTestId } = render(RecipeCard, { recipe: recipe });
+	it('should show default name when owner has no displayname', () => {
+		recipe.creatorId = otherUser.uid;
+		otherUser.displayName = undefined;
+		const { getByText } = render(RecipeCard, { recipe: recipe });
+		const owner = getByText('Ersteller');
+		expect(owner).not.toBeNull();
+	});
 
-		const tags = getAllByTestId('tag');
-		expect(tags.length).toBe(recipe.tags!.length - 1);
+	it.each([
+		['easy', 'Leicht'],
+		['medium', 'Mittel'],
+		['hard', 'Schwer']
+	])('should show the difficulty of recipe', (difficulty, localizedDifficulty) => {
+		// @ts-ignore
+		recipe.difficulty = difficulty;
+
+		const { getByTestId } = render(RecipeCard, { recipe: recipe });
+
+		const difficultyElement = getByTestId('difficulty');
+		expect(difficultyElement.textContent?.trim()).toBe(localizedDifficulty);
+	});
+
+	it('should show the cooking time of recipe', () => {
+		recipe.cookingTime = 60;
+		const { getByTestId } = render(RecipeCard, { recipe: recipe });
+
+		const cookingTime = getByTestId('cookingTime');
+		expect(cookingTime.textContent?.trim()).toBe('60 Minuten');
 	});
 });

@@ -33,19 +33,6 @@
 	</div>
 </div>
 
-<div class="form-control w-full col-span-full">
-	<label class="label" for="">
-		<span class="label-text">Cover</span>
-	</label>
-	<input
-		accept="image/png, image/jpeg"
-		bind:this={fileInput}
-		bind:files
-		type="file"
-		class="file-input w-full"
-	/>
-</div>
-
 <div class="form-control w-full">
 	<label class="label" for="">
 		<span class="label-text">Titel*</span>
@@ -61,12 +48,13 @@
 
 <div class="form-control w-full">
 	<label class="label" for="">
-		<span class="label-text">Tagline*</span>
+		<span class="label-text">Cover</span>
 	</label>
 	<input
-		type="text"
-		placeholder="Da best in da west.."
-		class="input input-bordered w-full"
-		bind:value={recipe.tagline}
+		accept="image/png, image/jpeg"
+		bind:this={fileInput}
+		bind:files
+		type="file"
+		class="file-input w-full"
 	/>
 </div>
