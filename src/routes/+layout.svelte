@@ -9,11 +9,19 @@
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore } from '../stores/store';
+	import { navigating } from '$app/stores';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
 		NavigationBar.setColor({ color: '#161c24' });
 	}
+
+	let scrollBar: HTMLDivElement;
+	navigating.subscribe((value) => {
+		if (value) {
+			scrollBar.scrollTo(0, 0);
+		}
+	});
 
 	auth.onAuthStateChanged(async (value) => {
 		loadingStateStore.set('LOADING');
@@ -46,6 +54,7 @@
 	<Alerts />
 	<div class="h-svh py-16 flex flex-col flex-1">
 		<div
+			bind:this={scrollBar}
 			class="flex flex-col flex-1 justify-start items-center overflow-y-scroll overscroll-contain"
 		>
 			<div class="flex flex-col flex-1 max-w-3xl w-full relative px-2 py-4">
