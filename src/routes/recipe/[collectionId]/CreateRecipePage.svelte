@@ -10,6 +10,7 @@
 	import Header from '../../../components/Header.svelte';
 	import ImportStep from './wizard/ImportStep.svelte';
 	import { Capacitor } from '@capacitor/core';
+	import axios from 'axios';
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
@@ -53,8 +54,10 @@
 		}
 
 		loadingImport = true;
-		const response = await fetch(`/api/recipe/import?url=${recipe.url}`);
-		const data = await response.json();
+		const response = await axios.get<Recipe>(`/api/recipe/import?url=${recipe.url}`);
+		const data = response.data;
+
+		data.collectionId = collectionId;
 
 		importedRecipes[recipe.url] = data;
 		recipe = data;
