@@ -7,7 +7,7 @@ export async function GET({ url }) {
 
 	if (!importURL) return new Response('400 Bad Request', { status: 400 });
 
-	const recipe: Recipe = extractChefkochRecipe(importURL);
+	const recipe: Recipe = await extractChefkochRecipe(importURL);
 
 	return json(recipe);
 }
