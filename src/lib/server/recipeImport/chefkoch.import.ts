@@ -11,7 +11,7 @@ export async function extractChefkochRecipe(url: string): Promise<Recipe> {
 	const chefkochRecipe: ChefkochRecipe = response.data;
 
 	const recipe: Recipe = {
-		image: chefkochRecipe.previewImageUrlTemplate,
+		image: chefkochRecipe.previewImageUrlTemplate.replace('<format>', 'crop-360x240'),
 		title: chefkochRecipe.title,
 		url: chefkochRecipe.siteUrl,
 		createdTime: chefkochRecipe.createdAt,
@@ -49,7 +49,7 @@ function getIngredients(ingredientGroups: ChefkochRecipe['ingredientGroups']): {
 	const ingredients: { [key: string]: Ingredient[] } = {};
 
 	ingredientGroups.forEach((group) => {
-		if (group.header.trim() === '') group.header = 'default';
+		if (group.header.trim() === '') group.header = 'Default';
 		group.header = group.header.trim().replace(':', '');
 		ingredients[group.header] = [];
 

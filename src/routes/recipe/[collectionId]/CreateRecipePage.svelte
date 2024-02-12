@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { addRecipeToCollection } from '$lib/http/recipe.handler';
-	import type { User } from 'firebase/auth';
 	import type { Recipe } from '../../../models/Recipe';
 	import { currentUser } from '../../../stores/store';
 	import RecipePage from './[id]/RecipePage.svelte';
@@ -36,6 +35,32 @@
 
 	function formIsInvalid(recipe: Recipe) {
 		return recipe.title === '' || recipe.description[0] === '';
+	}
+
+	let importRecipe: boolean = false;
+	let loadingImport: boolean = false;
+	let importedRecipes: { [key: string]: Recipe } = {};
+	async function importRecipeFromUrl() {
+		if (recipe.url === '' || !importRecipe) {
+			selectedStep++;
+			return;
+		}
+
+		if (importedRecipes[recipe.url]) {
+			recipe = importedRecipes[recipe.url];
+			selectedStep++;
+			return;
+		}
+
+		loadingImport = true;
+		const response = await fetch(`/api/recipe/import?url=${recipe.url}`);
+		const data = await response.json();
+
+		importedRecipes[recipe.url] = data;
+		recipe = data;
+
+		loadingImport = false;
+		selectedStep++;
 	}
 
 	let loading = false;
@@ -85,7 +110,7 @@
 
 <div class="grid grid-cols-fluid items-center gap-2 pb-20">
 	{#if steps[selectedStep] === 'Import'}
-		<ImportStep bind:recipe />
+		<ImportStep bind:recipe bind:importRecipe />
 	{:else if steps[selectedStep] === 'Allgemein'}
 		<GeneralStep bind:recipe bind:files />
 	{:else if steps[selectedStep] === 'Tags'}
@@ -108,7 +133,20 @@
 				Zurück
 			</button>
 		{/if}
-		{#if selectedStep < steps.length - 1}
+
+		{#if steps[selectedStep] === 'Import'}
+			<button
+				class="btn btn-primary flex-1"
+				on:click={importRecipeFromUrl}
+				disabled={loadingImport}
+			>
+				{#if !loadingImport}
+					Weiter
+				{:else}
+					<span class="loading loading-spinner loading-md" />
+				{/if}
+			</button>
+		{:else if selectedStep < steps.length - 1}
 			<button
 				class="btn btn-primary flex-1"
 				on:click={() => (selectedStep += 1)}

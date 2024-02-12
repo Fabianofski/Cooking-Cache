@@ -38,7 +38,7 @@
 				<input
 					bind:this={inputs[index]}
 					class="input input-bordered h-12 w-full"
-					placeholder={'Schritt 1'}
+					placeholder={`Schritt ${index + 1}`}
 					bind:value={recipe.description[index]}
 					on:input={() => {
 						stepInputChanged(index);

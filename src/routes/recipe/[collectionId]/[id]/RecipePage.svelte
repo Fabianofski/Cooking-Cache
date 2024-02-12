@@ -88,9 +88,12 @@
 		</div>
 		{#if recipe.tags}
 			<div class="card-actions">
-				{#each recipe.tags.filter((x) => x !== '') as tag}
+				{#each recipe.tags.filter((x) => x !== '').slice(0, 4) as tag}
 					<div class="badge badge-outline">{tag}</div>
 				{/each}
+				{#if recipe.tags.length > 4}
+					<div class="badge badge-neutral">+{recipe.tags.length - 4}</div>
+				{/if}
 			</div>
 		{/if}
 
