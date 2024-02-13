@@ -47,6 +47,7 @@
 		"@capacitor/status-bar": "^5.0.6",
 		"@mauricewegner/capacitor-navigation-bar": "^2.0.3",
 		"axios": "^1.6.5",
+		"cheerio": "^1.0.0-rc.12",
 		"dotenv": "^16.3.1",
 		"firebase": "^10.8.0",
 		"firebase-admin": "^11.10.1",
