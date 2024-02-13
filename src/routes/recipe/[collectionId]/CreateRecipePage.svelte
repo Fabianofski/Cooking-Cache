@@ -42,7 +42,7 @@
 	let loadingImport: boolean = false;
 	let importedRecipes: { [key: string]: Recipe } = {};
 	async function importRecipeFromUrl() {
-		if (recipe.url === '' || !importRecipe) {
+		if (recipe.url === '' || !importRecipe || mode !== 'CREATE') {
 			selectedStep++;
 			return;
 		}
@@ -113,7 +113,7 @@
 
 <div class="grid grid-cols-fluid items-center gap-2 pb-20">
 	{#if steps[selectedStep] === 'Import'}
-		<ImportStep bind:recipe bind:importRecipe />
+		<ImportStep bind:recipe bind:importRecipe {mode} />
 	{:else if steps[selectedStep] === 'Allgemein'}
 		<GeneralStep bind:recipe bind:files />
 	{:else if steps[selectedStep] === 'Tags'}
