@@ -1,6 +1,8 @@
 import axios from 'axios';
 import type { Recipe } from '../../../models/Recipe';
 import { YOUTUBE_API_KEY } from '$env/static/private';
+import { extractIngredientsFromText } from './ingredient.extractor';
+import type Ingredient from '../../../models/Ingredient';
 
 export async function extractYoutubeRecipe(url: string): Promise<Recipe> {
 	const recipe: Recipe = {
@@ -29,9 +31,15 @@ export async function extractYoutubeRecipe(url: string): Promise<Recipe> {
 	if (response.data.items.length === 0) return recipe;
 	const snippet = response.data.items[0].snippet;
 
+	const description: string[] = snippet.description
+		.split('\n')
+		.filter((line: string) => line !== '');
+	const ingredients: Ingredient[] = extractIngredientsFromText(snippet.description);
+
 	recipe.title = snippet.title;
 	recipe.image = snippet.thumbnails.high.url;
-	recipe.description = snippet.description.split('\n').filter((line: string) => line !== '');
+	recipe.description = description;
+	recipe.ingredients = { Default: ingredients };
 	recipe.createdTime = snippet.publishedAt;
 	recipe.updatedTime = snippet.publishedAt;
 

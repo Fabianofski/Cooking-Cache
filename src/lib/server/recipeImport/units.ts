@@ -1,15 +1,29 @@
 const units: string[] = [
 	'teaspoon',
 	'tablespoon',
-	'cup',
-	'ounce',
-	'pound',
-
+	'Kilogramm',
 	'Teelöffel',
 	'Esslöffel',
-	'Tasse',
+	'Milliliter',
+	'Medium',
 	'Gramm',
-	'Kilogramm'
+	'gram',
+	'clove',
+	'pinch',
+	'Tasse',
+	'Prise',
+	'Zehe',
+	'Pfund',
+	'Unze',
+	'ounce',
+	'pound',
+	'tbsp',
+	'tsp',
+	'cup',
+	'EL',
+	'ml',
+	'kg',
+	'g'
 ];
 
 export default units;
