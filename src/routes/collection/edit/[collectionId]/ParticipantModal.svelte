@@ -1,0 +1,39 @@
+<script lang="ts">
+	import type { Participant } from "../../../../models/RecipeCollections";
+
+    export let participant: Participant | undefined;
+    export let modal: HTMLDialogElement;
+    export let collectionId: string;
+
+    let loadingRemoval = false;
+
+    function removeParticipant() {
+        loadingRemoval = true;
+        // remove participant from collection
+        loadingRemoval = false;
+        modal.close();
+    }
+</script>
+
+
+<dialog class="modal" bind:this={modal}>
+	<div class="modal-box flex flex-col gap-4 max-w-[40rem]">
+		<h3 class="text-md">
+			{participant?.displayName}
+		</h3>
+        <button
+            class="btn btn-outline btn-error btn-block"
+            disabled={loadingRemoval}
+            on:click={removeParticipant}
+        >
+            {#if !loadingRemoval}
+                <span>Teilnehmer aus der Rezeptsammlung entfernen</span>
+            {:else}
+                <span class="loading loading-spinner loading-md" />
+            {/if}
+        </button>
+		<form method="dialog">
+			<button disabled={loadingRemoval} class="btn btn-ghost btn-block">Abbrechen</button>
+		</form>
+	</div>
+</dialog>
