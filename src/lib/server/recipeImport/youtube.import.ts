@@ -3,6 +3,7 @@ import type { Recipe } from '../../../models/Recipe';
 import { YOUTUBE_API_KEY } from '$env/static/private';
 import { extractIngredientsFromText } from './ingredient.extractor';
 import type Ingredient from '../../../models/Ingredient';
+import { extractTagsFromText } from './tag.extractor';
 
 export async function extractYoutubeRecipe(url: string): Promise<Recipe> {
 	const recipe: Recipe = {
@@ -42,6 +43,7 @@ export async function extractYoutubeRecipe(url: string): Promise<Recipe> {
 	recipe.ingredients = { Default: ingredients };
 	recipe.createdTime = snippet.publishedAt;
 	recipe.updatedTime = snippet.publishedAt;
+    recipe.tags = extractTagsFromText(snippet.description);
 
 	return recipe;
 }
