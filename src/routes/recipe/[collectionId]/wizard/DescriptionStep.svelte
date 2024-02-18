@@ -44,7 +44,17 @@
 						stepInputChanged(index);
 					}}
 				/>
-			</div>
-		{/each}
+                <button class="btn btn-square btn-ghost" on:click={() => {
+                        recipe.description.splice(index, 1);
+                        recipe.description = [...recipe.description];
+                    }}
+                    disabled={recipe.description.length === 1 || index === recipe.description.length - 1}
+                    >	
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+         {/each}
 	</div>
 </div>
