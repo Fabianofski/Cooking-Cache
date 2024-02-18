@@ -3,6 +3,8 @@
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
+	export let importRecipe: boolean;
+	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 
 	let inputFocus: HTMLElement;
 	onMount(() => {
@@ -22,9 +24,11 @@
 		bind:value={recipe.url}
 	/>
 </div>
-<div class="form-control col-span-full">
-	<label class="label cursor-pointer justify-start gap-4">
-		<input type="checkbox" class="checkbox" />
-		<span class="label-text">Rezept automatisch importieren</span>
-	</label>
-</div>
+{#if mode === 'CREATE'}
+	<div class="form-control col-span-full">
+		<label class="label cursor-pointer justify-start gap-4">
+			<input type="checkbox" class="checkbox" bind:checked={importRecipe} />
+			<span class="label-text">Rezept automatisch importieren</span>
+		</label>
+	</div>
+{/if}

@@ -5,8 +5,9 @@ import type { Recipe } from '../../../../../models/Recipe.js';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
 import { uploadFileToStorage } from '$lib/server/firebase.utils.js';
 
-export async function POST({ request }) {
+export async function POST({ request, params }) {
 	const token = request.headers.get('Authorization');
+	const collectionId = params.collectionId;
 
 	try {
 		if (token === null) throw new Error('No token provided');
@@ -15,9 +16,9 @@ export async function POST({ request }) {
 		try {
 			const formData = await request.formData();
 			const recipe = JSON.parse(formData.get('recipe') as string) as Recipe;
-			if (!recipe) return new Response('400 Bad Request', { status: 400 });
+			if (!recipe || !collectionId) return new Response('400 Bad Request', { status: 400 });
 
-			const data = await database.ref(`collections/${recipe.collectionId}`).get();
+			const data = await database.ref(`collections/${collectionId}`).get();
 			const collection: RecipeCollection = data.val() || {};
 			if (!collection) return new Response('404 Not Found', { status: 404 });
 
@@ -29,10 +30,10 @@ export async function POST({ request }) {
 			if (cover)
 				recipe.image = await uploadFileToStorage(
 					cover,
-					`collections/${recipe.collectionId}/recipes/${recipe.id}`
+					`collections/${collectionId}/recipes/${recipe.id}`
 				);
 
-			await database.ref(`collections/${recipe.collectionId}/recipes/${recipe.id}`).set(recipe);
+			await database.ref(`collections/${collectionId}/recipes/${recipe.id}`).set(recipe);
 			return json(recipe);
 		} catch (err) {
 			console.error(err);
@@ -68,7 +69,7 @@ export async function DELETE({ request, params, url }) {
 
 			await database.ref(`collections/${collectionId}/recipes/${recipeId}`).remove();
 
-			const reference = bucket.file(`collections/${recipe.collectionId}/recipes/${recipe.id}`);
+			const reference = bucket.file(`collections/${collectionId}/recipes/${recipe.id}`);
 			await reference.delete().catch((err) => {
 				if (err.code !== 404) console.error(err);
 			});

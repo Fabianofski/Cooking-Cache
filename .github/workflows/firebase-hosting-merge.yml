@@ -16,6 +16,7 @@ jobs:
       CLIENT_EMAIL: '${{ secrets.CLIENT_EMAIL }}'
       DATABASE_URL: '${{ secrets.DATABASE_URL }}'
       STORAGE_URL: '${{ secrets.STORAGE_URL }}'
+      YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
       PUBLIC_BASE_URL: ''
     steps:
       - uses: actions/checkout@v3

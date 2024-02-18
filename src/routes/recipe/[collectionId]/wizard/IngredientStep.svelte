@@ -151,6 +151,31 @@
 								bind:value={recipe.ingredients[category][i].name}
 							/>
 						</td>
+                        <td class="p-0">
+                            <button
+                                class="btn btn-ghost btn-sm"
+                                on:click={() => {
+                                    recipe.ingredients[category].splice(i, 1);
+                                    recipe.ingredients = { ...recipe.ingredients };
+                                }}
+                                disabled={recipe.ingredients[category].length === 1}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    class="w-5 h-5"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </td>
 					</tr>
 				{/each}
 				<tr>
