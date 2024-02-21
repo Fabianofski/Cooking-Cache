@@ -7,11 +7,12 @@
 	import type { User } from 'firebase/auth';
 	import Header from '../../../../components/Header.svelte';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler.js';
-	import type { RecipeCollection } from '../../../../models/RecipeCollections.js';
+	import type { Participant, RecipeCollection } from '../../../../models/RecipeCollections.js';
 	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore.js';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../../../stores/store.js';
 	import DefaultCoversModal from './DefaultCoversModal.svelte';
 	import DeleteCollectionModal from './DeleteCollectionModal.svelte';
+	import ParticipantModal from './ParticipantModal.svelte';
 
 	export let data;
 	const collectionId = data.collectionId;
@@ -110,6 +111,14 @@
 	}
 
 	let loadingDeletion: boolean = false;
+
+    let participantModal: HTMLDialogElement;
+    let participant: Participant;
+    function openParticipantModal(selectedParticipant: Participant) {
+        if (!isOwner || !selectedParticipant || user?.uid === selectedParticipant.uid) return;
+        participant = selectedParticipant;
+        participantModal.showModal();
+    }
 </script>
 
 <div class="flex flex-col gap-6">
@@ -295,11 +304,14 @@
 				</div>
 			{/each}
 		{:else}
-			<table>
+			<table class="table">
 				<tbody>
 					{#each recipeCollection?.participants || [] as participant}
-						<tr>
-							<td>
+						<tr 
+                            class="cursor-pointer hover" 
+                            on:click={() => openParticipantModal(participant)}
+                        >
+ 							<td>
 								<img
 									class="w-10 h-10 rounded-full"
 									src={participant.photoURL || '/default-profile.jpg'}
@@ -448,5 +460,6 @@
 			{recipeCollection}
 		/>
 		<DeleteCollectionModal bind:dialog {isOwner} {collectionId} bind:loadingDeletion />
-	</div>
+	    <ParticipantModal bind:modal={participantModal} {participant} {collectionId} />
+    </div>
 </div>
