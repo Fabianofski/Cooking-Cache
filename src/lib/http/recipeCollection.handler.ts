@@ -276,6 +276,36 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 		});
 }
 
+ async function removeFromRecipeCollection(user: User, collectionId: string, participantId: string) {
+	const token = await user.getIdToken();
+	return axios
+		.delete(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave?participantId=${participantId}`, {
+			headers: {
+				Authorization: token
+			}
+		})
+		.then(async (res) => {
+			if (res.status !== 200) return Promise.reject(res);
+
+			recipeCollectionsStore.update((value) => {
+				value[collectionId].participants = value[collectionId].participants?.filter((p) => p.uid !== participantId);
+				return value;
+			});
+			createNewAlert({
+				message: 'Der Nutzer wurde erfolgreich aus der Rezeptsammlung entfernt!',
+				type: 'success'
+			});
+		})
+		.catch((error) => {
+			createNewAlert({
+				message:
+					'Beim Entfernen des Nutzers ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
+				type: 'error'
+			});
+		});
+}
+
 async function deleteRecipeCollection(user: User, collectionId: string) {
 	const token = await user.getIdToken();
 
@@ -316,5 +346,6 @@ export {
 	getUserRecipeCollections,
 	joinRecipeCollectionWithInviteCode,
 	leaveRecipeCollection,
+    removeFromRecipeCollection,
 	toggleRecipeCollectionVisibility
 };

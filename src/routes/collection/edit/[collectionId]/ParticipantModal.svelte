@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { Participant } from "../../../../models/RecipeCollections";
+	import { removeFromRecipeCollection } from "$lib/http/recipeCollection.handler";
+	import { currentUser } from "../../../../stores/store";
 
     export let participant: Participant | undefined;
     export let modal: HTMLDialogElement;
@@ -7,9 +9,11 @@
 
     let loadingRemoval = false;
 
-    function removeParticipant() {
+    async function removeParticipant() {
+        if (!$currentUser || !participant) return;
+
         loadingRemoval = true;
-        // remove participant from collection
+        await removeFromRecipeCollection($currentUser, collectionId, participant.uid)
         loadingRemoval = false;
         modal.close();
     }
