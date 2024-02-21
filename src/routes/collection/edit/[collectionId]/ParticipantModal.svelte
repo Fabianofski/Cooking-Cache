@@ -21,17 +21,20 @@
 
 
 <dialog class="modal" bind:this={modal}>
-	<div class="modal-box flex flex-col gap-4 max-w-[40rem]">
-		<h3 class="text-md">
-			{participant?.displayName}
-		</h3>
+	<div class="modal-box flex flex-col gap-4 max-w-[30rem] px-12">
+        <div class="flex gap-4 px-12 justify-between items-center">
+            <img class="rounded-full w-20 h-20" src={participant?.photoURL} alt={participant?.displayName} />    
+            <h3 class="text-lg font-bold">
+                {participant?.displayName}
+            </h3>
+        </div>
         <button
             class="btn btn-outline btn-error btn-block"
             disabled={loadingRemoval}
             on:click={removeParticipant}
         >
             {#if !loadingRemoval}
-                <span>Teilnehmer aus der Rezeptsammlung entfernen</span>
+                <span>Teilnehmer entfernen</span>
             {:else}
                 <span class="loading loading-spinner loading-md" />
             {/if}
