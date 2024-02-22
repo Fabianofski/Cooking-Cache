@@ -10,6 +10,8 @@
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore } from '../stores/store';
 	import { navigating } from '$app/stores';
+	import { onMount } from 'svelte';
+    import { App } from '@capacitor/app';   
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -36,6 +38,12 @@
 		await getUserRecipeCollections(value);
 		loadingStateStore.set('FINISHED');
 	});
+
+    onMount(() => {
+        App.addListener('backButton', async () => {
+            window.history.back();
+        });
+    })
 </script>
 
 <div class="h-svh flex flex-col justify-between" id="top" data-theme="myTheme">
