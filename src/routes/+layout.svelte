@@ -26,21 +26,21 @@
 		}
 	});
 
-	auth.onAuthStateChanged(async (value) => {
-		loadingStateStore.set('LOADING');
-		currentUser.set(value);
-
-		if (value === null) {
-			loadingStateStore.set('NOUSER');
-			recipeCollectionsStore.set({});
-			return;
-		}
-
-		await getUserRecipeCollections(value);
-		loadingStateStore.set('FINISHED');
-	});
-
     onMount(() => {
+        auth.onAuthStateChanged(async (value) => {
+            loadingStateStore.set('LOADING');
+            currentUser.set(value);
+
+            if (value === null) {
+                loadingStateStore.set('NOUSER');
+                recipeCollectionsStore.set({});
+                return;
+            }
+
+            await getUserRecipeCollections(value);
+            loadingStateStore.set('FINISHED');
+        });
+
         App.addListener('backButton', async () => {
             window.history.back();
         });
