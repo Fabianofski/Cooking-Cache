@@ -10,13 +10,11 @@
 		reauthenticateWithPopup,
 		signOut,
 		updatePassword,
-		signInWithCredential,
 		GoogleAuthProvider,
 		type User
 	} from 'firebase/auth';
-	import { onMount } from 'svelte';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
-	import { currentUser, loadingStateStore, type LoadingState } from '../../stores/store';
+	import { currentUser, loadingStateStore } from '../../stores/store';
 	import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 	import { Capacitor } from '@capacitor/core';
 
@@ -30,14 +28,6 @@
 		user = value;
 		userHasEmailProvider =
 			user?.providerData.find((x) => x.providerId === 'password') !== undefined;
-	});
-
-	let loadingState: LoadingState;
-	onMount(async () => {
-		loadingStateStore.subscribe((value) => {
-			loadingState = value;
-			if (loadingState === 'NOUSER') goto('/login');
-		});
 	});
 
 	let loadingPasswordChange = false;
@@ -152,7 +142,6 @@
 							message: 'Dein Konto wurde erfolgreich gelöscht!',
 							type: 'success'
 						});
-						goto('login');
 					})
 					.catch((err) => {
 						loadingDeletion = false;
@@ -176,7 +165,7 @@
 	<div class="flex px-4 justify-evenly gap-4 items-center">
 		<div class="avatar">
 			<div class="w-36 rounded-full">
-				{#if loadingState !== 'FINISHED'}
+				{#if $loadingStateStore !== 'FINISHED'}
 					<div class="skeleton w-full h-full" />
 				{:else if user && user.photoURL}
 					<img src={user.photoURL} alt="Profile" referrerpolicy="no-referrer" />
@@ -187,7 +176,7 @@
 		</div>
 
 		<h1 class="align-middle text-center text-2xl font-bold">
-			{#if loadingState !== 'FINISHED'}
+			{#if $loadingStateStore !== 'FINISHED'}
 				<div class="skeleton w-48 h-6" />
 			{:else}
 				{user?.displayName}
@@ -204,7 +193,7 @@
 			<tbody>
 				<tr>
 					<th>E-Mail</th>
-					{#if loadingState !== 'FINISHED'}
+					{#if $loadingStateStore !== 'FINISHED'}
 						<td>
 							<div class="skeleton w-48 h-4" />
 						</td>
@@ -214,7 +203,7 @@
 				</tr>
 				<tr>
 					<th>Anzeigename</th>
-					{#if loadingState !== 'FINISHED'}
+					{#if $loadingStateStore !== 'FINISHED'}
 						<td>
 							<div class="skeleton w-48 h-4" />
 						</td>
@@ -224,7 +213,7 @@
 				</tr>
 				<tr>
 					<th>Telefonnummer</th>
-					{#if loadingState !== 'FINISHED'}
+					{#if $loadingStateStore !== 'FINISHED'}
 						<td>
 							<div class="skeleton w-48 h-4" />
 						</td>
@@ -245,7 +234,7 @@
 				<div class="form-control w-full max-w-s">
 					<input
 						type="password"
-						disabled={loadingState !== 'FINISHED'}
+						disabled={$loadingStateStore !== 'FINISHED'}
 						placeholder="Altes Passwort"
 						bind:value={oldPassword}
 						class="input input-bordered w-full max-w-s"
@@ -257,7 +246,7 @@
 			<div class="form-control w-full max-w-s">
 				<input
 					type="password"
-					disabled={loadingState !== 'FINISHED'}
+					disabled={$loadingStateStore !== 'FINISHED'}
 					placeholder="Neues Passwort"
 					bind:value={password}
 					class="input input-bordered w-full max-w-s"
@@ -268,7 +257,7 @@
 			<div class="form-control w-full max-w-s">
 				<input
 					type="password"
-					disabled={loadingState !== 'FINISHED'}
+					disabled={$loadingStateStore !== 'FINISHED'}
 					placeholder="Neues Passwort bestätigen"
 					bind:value={repeatPassword}
 					class="input input-bordered w-full max-w-s"
@@ -279,7 +268,7 @@
 				class="btn btn-primary w-full"
 				on:click={changePassword}
 				disabled={loadingPasswordChange ||
-					loadingState !== 'FINISHED' ||
+					$loadingStateStore !== 'FINISHED' ||
 					formIsInvalid(oldPassword, password, repeatPassword)}
 			>
 				{#if !loadingPasswordChange}
@@ -294,11 +283,10 @@
 
 			<button
 				class="btn"
-				disabled={loadingState !== 'FINISHED'}
+				disabled={$loadingStateStore !== 'FINISHED'}
 				on:click={() => {
 					signOut(auth);
 					FirebaseAuthentication.signOut();
-					goto('/login');
 				}}
 			>
 				<svg
@@ -320,7 +308,7 @@
 
 			<button
 				class="btn btn-outline btn-error"
-				disabled={loadingDeletion || loadingState !== 'FINISHED'}
+				disabled={loadingDeletion || $loadingStateStore !== 'FINISHED'}
 				on:click={() => {
 					dialog.showModal();
 				}}
