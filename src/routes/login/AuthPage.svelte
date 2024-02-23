@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { auth } from '$lib/firebase.client';
 	import {
 		FacebookAuthProvider,
@@ -12,7 +11,6 @@
 		type UserCredential,
 		signInWithCredential,
 		browserPopupRedirectResolver,
-		getRedirectResult,
 		signInWithPopup
 	} from 'firebase/auth';
 	import { createNewAlert } from '../../components/alerts/alert.handler';
@@ -58,7 +56,6 @@
 			message: 'Du wurdest erfolgreich eingeloggt!',
 			type: 'success'
 		});
-		goto('/');
 	}
 
 	function loginWithEmailAndPassword() {
