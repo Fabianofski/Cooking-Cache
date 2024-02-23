@@ -11,6 +11,7 @@
 	import { currentUser, loadingStateStore } from '../stores/store';
 	import { navigating } from '$app/stores';
 	import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
     import { App } from '@capacitor/app';   
 	import AuthPage from './login/AuthPage.svelte';
 
@@ -44,9 +45,19 @@
         App.addListener('backButton', async () => {
             window.history.back();
         });
+
+        App.addListener('appUrlOpen', async (data) => {
+            const slug = data.url.split('cooking-cache.com/')[1];
+            if (slug) goto(slug);
+        });
     })
 </script>
 
+<svelte:head>
+    <meta property="al:android:url" content={$page.url.href}>
+    <meta property="al:android:package" content="com.f4b1.cookingcache">
+    <meta property="al:android:app_name" content="Cooking Cache">
+</svelte:head>
 <div class="h-svh flex flex-col justify-between" id="top" data-theme="myTheme">
 	<div class="w-full flex justify-center bg-base-300 fixed top-0 left-0 z-20">
 		<div class="navbar max-w-3xl w-full">
