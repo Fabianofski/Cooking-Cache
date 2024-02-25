@@ -34,9 +34,10 @@
 	}
 
 	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: string[]) {
-		let patterns = [searchPattern, ...filters];
-		let filteredRecipes: Recipe[] = fullTextFilter(recipes, patterns) as Recipe[];
-		recipesCount = filteredRecipes.length;
+        let filteredRecipes: Recipe[] = fullTextFilter(recipes, searchPattern) as Recipe[];
+		filters.forEach((pattern) => {
+			filteredRecipes = fullTextFilter(filteredRecipes, pattern) as Recipe[];
+		});		recipesCount = filteredRecipes.length;
 		return filteredRecipes;
 	}
 
