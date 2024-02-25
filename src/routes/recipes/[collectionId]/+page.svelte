@@ -26,7 +26,7 @@
 	let filterModal: HTMLDialogElement;
 	let searchPattern: string = '';
 	let filters: string[] = [];
-	let recipesCount: number;
+	let recipesCount: number = 0;
 
 	function onFilterChange(checked: boolean, value: string) {
 		if (!checked && filters.includes(value)) filters = filters.filter((x) => x !== value);
@@ -34,10 +34,8 @@
 	}
 
 	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: string[]) {
-		let filteredRecipes: Recipe[] = fullTextFilter(recipes, searchPattern) as Recipe[];
-		filters.forEach((pattern) => {
-			filteredRecipes = fullTextFilter(filteredRecipes, pattern) as Recipe[];
-		});
+		let patterns = [searchPattern, ...filters];
+        let filteredRecipes: Recipe[] = fullTextFilter(recipes, patterns) as Recipe[];
 		recipesCount = filteredRecipes.length;
 		return filteredRecipes;
 	}
