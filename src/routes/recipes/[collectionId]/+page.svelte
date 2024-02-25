@@ -69,7 +69,7 @@
 
 	<div class="w-full flex flex-col gap-2">
 		<div class="join flex">
-			<div class="w-3/5 relative bg-red-700">
+			<div class="w-3/5 relative">
 				<input
 					class="w-full input input-bordered join-item pl-8"
 					placeholder="Search"
@@ -108,7 +108,7 @@
 				Filter {filters.length > 0 ? `(${filters.length})` : ''}
 			</button>
 		</div>
-		<div class="flex justify-between">
+		<div class="flex justify-between items-end">
 			<div>
 				{#each filters as filter}
 					<button class="badge badge-neutral mx-1" on:click={() => onFilterChange(false, filter)}>
@@ -116,7 +116,7 @@
 					</button>
 				{/each}
 			</div>
-			<div class="flex justify-end items-center">
+			<div class="flex justify-end items-center min-w-64">
 				<label class="swap swap-rotate">
 					<input type="checkbox" bind:checked={reverse} />
 
