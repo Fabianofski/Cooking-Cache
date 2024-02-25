@@ -34,10 +34,11 @@
 	}
 
 	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: string[]) {
-        let filteredRecipes: Recipe[] = fullTextFilter(recipes, searchPattern) as Recipe[];
+		let filteredRecipes: Recipe[] = fullTextFilter(recipes, searchPattern) as Recipe[];
 		filters.forEach((pattern) => {
 			filteredRecipes = fullTextFilter(filteredRecipes, pattern) as Recipe[];
-		});		recipesCount = filteredRecipes.length;
+		});
+		recipesCount = filteredRecipes.length;
 		return filteredRecipes;
 	}
 
@@ -112,8 +113,22 @@
 		<div class="flex justify-between items-end">
 			<div>
 				{#each filters as filter}
-					<button class="badge badge-neutral mx-1" on:click={() => onFilterChange(false, filter)}>
-						{filter} x
+					<button class="badge badge-primary mx-1" on:click={() => onFilterChange(false, filter)}>
+						{filter}
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="ml-1 w-4 h-4"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+							/>
+						</svg>
 					</button>
 				{/each}
 			</div>
@@ -229,7 +244,25 @@
 									onFilterChange(e.target?.checked, filterItem);
 								}}
 							/>
-							<div class="swap-on"><div class="badge badge-neutral">{filterItem} x</div></div>
+							<div class="swap-on">
+								<div class="badge badge-neutral">
+									{filterItem}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke-width="1.5"
+										stroke="currentColor"
+										class="ml-1 w-4 h-4"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+										/>
+									</svg>
+								</div>
+							</div>
 							<div class="swap-off"><div class="badge badge-outline">{filterItem}</div></div>
 						</label>
 					{/each}
