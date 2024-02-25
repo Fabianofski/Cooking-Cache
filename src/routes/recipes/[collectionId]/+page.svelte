@@ -35,7 +35,7 @@
 
 	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: string[]) {
 		let patterns = [searchPattern, ...filters];
-        let filteredRecipes: Recipe[] = fullTextFilter(recipes, patterns) as Recipe[];
+		let filteredRecipes: Recipe[] = fullTextFilter(recipes, patterns) as Recipe[];
 		recipesCount = filteredRecipes.length;
 		return filteredRecipes;
 	}
@@ -107,6 +107,25 @@
 					{filter} x
 				</button>
 			{/each}
+		</div>
+		<div class="flex justify-end items-center">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke-width="1.5"
+				stroke="currentColor"
+				class="mt-1 w-5 h-5"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"
+				/>
+			</svg>
+			<select class="select select-ghost select-sm w-full max-w-52">
+				<option>Hinzugefügt am</option>
+			</select>
 		</div>
 		<div class="divider -my-2" />
 	</div>
