@@ -2,9 +2,11 @@
 	import Header from '../../../components/Header.svelte';
 	import RecipeCard from '../../../components/RecipeCard.svelte';
 	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
+	import type FilterBadge from '../../../models/Filter';
 	import type { Recipe } from '../../../models/Recipe';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../../stores/store';
+	import FilterItem from './FilterItem.svelte';
 	import FilterModal from './FilterModal.svelte';
 	import { fullTextFilter } from './filter';
 	import { sorters } from './sort';
@@ -26,18 +28,21 @@
 
 	let filterModal: HTMLDialogElement;
 	let searchPattern: string = '';
-	let filters: string[] = [];
+	let filters: FilterBadge[] = [];
 	let recipesCount: number = 0;
 
-	function onFilterChange(checked: boolean, value: string) {
-		if (!checked && filters.includes(value)) filters = filters.filter((x) => x !== value);
-		else if (checked) filters = [...filters, value];
+	function onFilterChange(checked: boolean, value: FilterBadge) {
+		if (!checked) filters = filters.filter((x) => x.filterValue !== value.filterValue);
+		else if (checked) {
+            value.checked = true;
+            filters = [...filters, value];
+        }
 	}
 
-	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: string[]) {
+	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: FilterBadge[]) {
 		let filteredRecipes: Recipe[] = fullTextFilter(recipes, searchPattern) as Recipe[];
-		filters.forEach((pattern) => {
-			filteredRecipes = fullTextFilter(filteredRecipes, pattern) as Recipe[];
+		filters.forEach((filter) => {
+			filteredRecipes = fullTextFilter(filteredRecipes, filter.filterValue) as Recipe[];
 		});
 		recipesCount = filteredRecipes.length;
 		return filteredRecipes;
@@ -51,7 +56,7 @@
 		recipes: Recipe[],
 		page: number,
 		searchPattern: string,
-		filters: string[],
+		filters: FilterBadge[],
 		sorting: string,
 		reverse: boolean
 	): Recipe[] {
@@ -114,23 +119,7 @@
 		<div class="flex justify-between items-end">
 			<div>
 				{#each filters as filter}
-					<button class="badge badge-primary mx-1" on:click={() => onFilterChange(false, filter)}>
-						{filter}
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke-width="1.5"
-							stroke="currentColor"
-							class="ml-1 w-4 h-4"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-							/>
-						</svg>
-					</button>
+                    <FilterItem {filter} {onFilterChange} primary={true}/>
 				{/each}
 			</div>
 			<div class="flex justify-end items-center min-w-64">

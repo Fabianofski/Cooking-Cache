@@ -1,14 +1,15 @@
 <script lang="ts">
+	import type FilterBadge from '../../../models/Filter';
 	import type { Recipe } from '../../../models/Recipe';
 	import type { Participant } from '../../../models/RecipeCollections';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import FilterItem from './FilterItem.svelte';
 
-	export let filters: string[] = [];
+	export let filters: FilterBadge[] = [];
 	export let recipes: Recipe[] = [];
 	export let recipesCount: number = 0;
 	export let filterModal: HTMLDialogElement;
-	export let onFilterChange: (checked: boolean, value: string) => void;
+	export let onFilterChange: (checked: boolean, value: FilterBadge) => void;
 
 	function getDisplayNameByUid(uid: string) {
 		return $recipeCollectionsStore[recipes[0].collectionId].participants?.find(
@@ -33,7 +34,14 @@
 				<div class="divider my-0" />
 				<div>
 					{#each new Set(recipes.flatMap((recipe) => recipe.tags || [])) as filterItem}
-						<FilterItem {filterItem} checked={filters.includes(filterItem)} {onFilterChange} />
+						<FilterItem 
+                            filter={{
+                                displayText: filterItem,
+                                checked: filters.find((filter) => filter.filterValue === filterItem)?.checked || false,
+                                filterValue: filterItem
+                            }}  
+                            {onFilterChange} 
+                        />
 					{/each}
 				</div>
 			</div>
@@ -43,11 +51,13 @@
 				<div>
 					{#each new Set(recipes.flatMap((recipe) => recipe.creatorId || [])) as uid}
 						<FilterItem
-							displayText={getDisplayNameByUid(uid) || ''}
-							filterItem={uid}
-							checked={filters.includes(uid)}
+                            filter={{
+                                displayText: getDisplayNameByUid(uid) || '',
+                                checked: filters.find((filter) => filter.filterValue === uid)?.checked || false,
+                                filterValue: uid,
+                                icon: getPhotoURLByUid(uid) || undefined
+                            }}
 							{onFilterChange}
-							filterIcon={getPhotoURLByUid(uid) || undefined}
 						/>
 					{/each}
 				</div>

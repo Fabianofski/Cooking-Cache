@@ -1,26 +1,28 @@
 <script lang="ts">
-	export let filterItem: string;
-	export let displayText: string = filterItem;
-	export let filterIcon: string | undefined = undefined;
-	export let checked: boolean;
-	export let onFilterChange: (checked: boolean, value: string) => void;
+    import type FilterBadge from "../../../models/Filter";
+
+	export let filter: FilterBadge; 
+	export let onFilterChange: (checked: boolean, value: FilterBadge) => void;
+    export let primary: boolean = false;
+
+    const maxLength = 15;
 </script>
 
 <label class="swap mx-1">
 	<input
 		type="checkbox"
-		{checked}
+		checked={filter.checked}
 		on:input={(e) => {
 			// @ts-ignore
-			onFilterChange(e.target?.checked, filterItem);
+			onFilterChange(e.target?.checked, filter);
 		}}
 	/>
-	<div class="swap-on">
-		<div class="badge badge-neutral">
-			{#if filterIcon}
-				<img src={filterIcon} alt={displayText} class="mr-1 w-4 h-4" />
+	<div class="swap-on flex items-center">
+		<div class="badge" class:badge-primary={primary} class:badge-neutral={!primary}>
+			{#if filter.icon}
+				<img src={filter.icon} alt={filter.displayText} class="mr-1 h-full rounded-full" />
 			{/if}
-			{displayText}
+			{filter.displayText.slice(0, maxLength)}{filter.displayText.length > maxLength ? '...' : ''}
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
@@ -37,12 +39,12 @@
 			</svg>
 		</div>
 	</div>
-	<div class="swap-off">
-		<div class="badge badge-outline">
-			{#if filterIcon}
-				<img src={filterIcon} alt={displayText} class="mr-1 w-4 h-4" />
+	<div class="swap-off flex items-center">
+		<div class="badge badge-outline" class:badge-primary={primary}>
+			{#if filter.icon}
+				<img src={filter.icon} alt={filter.displayText} class="mr-1 h-full rounded-full" />
 			{/if}
-			{displayText}
+			{filter.displayText.slice(0, maxLength)}{filter.displayText.length > maxLength ? '...' : ''}
 		</div>
 	</div>
 </label>
