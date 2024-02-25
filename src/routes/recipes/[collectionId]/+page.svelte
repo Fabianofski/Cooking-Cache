@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { User } from 'firebase/auth';
 	import Header from '../../../components/Header.svelte';
 	import RecipeCard from '../../../components/RecipeCard.svelte';
 	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
@@ -7,7 +6,7 @@
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../../stores/store';
 	import { fullTextFilter } from './filter';
-    import { sorters } from './sort';
+	import { sorters } from './sort';
 
 	export let data;
 
@@ -43,24 +42,24 @@
 
 	let page = 0;
 	let pageSize = 6;
-    let sorting: string = 'created_at';
+	let sorting: string = 'created_at';
+	let reverse: boolean = false;
 	function getRecipesFromPage(
 		recipes: Recipe[],
 		page: number,
 		searchPattern: string,
 		filters: string[],
-        sorting: string
+		sorting: string,
+		reverse: boolean
 	): Recipe[] {
 		const filteredRecipes = filterRecipes(recipes, searchPattern, filters);
 
 		const startIndex = page * pageSize;
 		const endIndex = Math.min(startIndex + pageSize, filteredRecipes.length);
 
-        const sortedAndFilteredRecipes = filteredRecipes.toSorted(sorters[sorting]);
-        console.log(filteredRecipes);
-        console.log(sortedAndFilteredRecipes);
-        console.log(sorting);
-        console.log(sorters[sorting]);
+		const sortedAndFilteredRecipes = filteredRecipes.toSorted(sorters[sorting]);
+		if (reverse) sortedAndFilteredRecipes.reverse();
+
 		return sortedAndFilteredRecipes.slice(startIndex, endIndex);
 	}
 </script>
@@ -109,35 +108,54 @@
 				Filter {filters.length > 0 ? `(${filters.length})` : ''}
 			</button>
 		</div>
-        <div class="flex justify-between">
-            <div>
-                {#each filters as filter}
-                    <button class="badge badge-neutral mx-1" on:click={() => onFilterChange(false, filter)}>
-                        {filter} x
-                    </button>
-                {/each}
-            </div>
-            <div class="flex justify-end items-center">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="mt-1 w-5 h-5"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"
-                    />
-                </svg>
-                <select class="select select-ghost select-sm w-full max-w-52" bind:value={sorting}>
-                    <option value="created_at">Hinzugefügt am</option>
-                    <option value="alphabetical">Alphabetisch</option>
-                </select>
-            </div>
-        </div>
+		<div class="flex justify-between">
+			<div>
+				{#each filters as filter}
+					<button class="badge badge-neutral mx-1" on:click={() => onFilterChange(false, filter)}>
+						{filter} x
+					</button>
+				{/each}
+			</div>
+			<div class="flex justify-end items-center">
+				<label class="swap swap-rotate">
+					<input type="checkbox" bind:checked={reverse} />
+
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="swap-off mt-1 w-5 h-5"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"
+						/>
+					</svg>
+
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="swap-on mt-1 w-5 h-5"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12"
+						/>
+					</svg>
+				</label>
+				<select class="select select-ghost select-sm w-full max-w-52" bind:value={sorting}>
+					<option value="created_at">Hinzugefügt am</option>
+					<option value="alphabetical">Alphabetisch</option>
+				</select>
+			</div>
+		</div>
 		<div class="divider -my-2" />
 	</div>
 
@@ -151,7 +169,7 @@
 					In dieser Sammlung sind noch keine Rezepte vorhanden.
 				</p>
 			{:else}
-				{#each getRecipesFromPage(recipes, page, searchPattern, filters, sorting) as recipe}
+				{#each getRecipesFromPage(recipes, page, searchPattern, filters, sorting, reverse) as recipe}
 					<RecipeCard {recipe} />
 				{/each}
 			{/if}
