@@ -112,13 +112,13 @@
 
 	let loadingDeletion: boolean = false;
 
-    let participantModal: HTMLDialogElement;
-    let participant: Participant;
-    function openParticipantModal(selectedParticipant: Participant) {
-        if (!isOwner || !selectedParticipant || user?.uid === selectedParticipant.uid) return;
-        participant = selectedParticipant;
-        participantModal.showModal();
-    }
+	let participantModal: HTMLDialogElement;
+	let participant: Participant;
+	function openParticipantModal(selectedParticipant: Participant) {
+		if (!isOwner || !selectedParticipant || user?.uid === selectedParticipant.uid) return;
+		participant = selectedParticipant;
+		participantModal.showModal();
+	}
 </script>
 
 <div class="flex flex-col gap-6">
@@ -307,11 +307,8 @@
 			<table class="table">
 				<tbody>
 					{#each recipeCollection?.participants || [] as participant}
-						<tr 
-                            class="cursor-pointer hover" 
-                            on:click={() => openParticipantModal(participant)}
-                        >
- 							<td>
+						<tr class="cursor-pointer hover" on:click={() => openParticipantModal(participant)}>
+							<td>
 								<img
 									class="w-10 h-10 rounded-full"
 									src={participant.photoURL || '/default-profile.jpg'}
@@ -460,6 +457,6 @@
 			{recipeCollection}
 		/>
 		<DeleteCollectionModal bind:dialog {isOwner} {collectionId} bind:loadingDeletion />
-	    <ParticipantModal bind:modal={participantModal} {participant} {collectionId} />
-    </div>
+		<ParticipantModal bind:modal={participantModal} {participant} {collectionId} />
+	</div>
 </div>

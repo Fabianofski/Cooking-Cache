@@ -1,40 +1,40 @@
 {
-  "project_info": {
-    "project_number": "172244835691",
-    "firebase_url": "https://cooking-cache-default-rtdb.firebaseio.com",
-    "project_id": "cooking-cache",
-    "storage_bucket": "cooking-cache.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:172244835691:android:8c96904d282cf5aa45c02e",
-        "android_client_info": {
-          "package_name": "com.f4b1.cookingcache"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "172244835691-smi06092q16adleh8b2qj9afqb2kdkkh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDOJM0ZHIEw3ZG5kTGFomx2k0TSRSpoq3s"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "172244835691-smi06092q16adleh8b2qj9afqb2kdkkh.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+	"project_info": {
+		"project_number": "172244835691",
+		"firebase_url": "https://cooking-cache-default-rtdb.firebaseio.com",
+		"project_id": "cooking-cache",
+		"storage_bucket": "cooking-cache.appspot.com"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:172244835691:android:8c96904d282cf5aa45c02e",
+				"android_client_info": {
+					"package_name": "com.f4b1.cookingcache"
+				}
+			},
+			"oauth_client": [
+				{
+					"client_id": "172244835691-smi06092q16adleh8b2qj9afqb2kdkkh.apps.googleusercontent.com",
+					"client_type": 3
+				}
+			],
+			"api_key": [
+				{
+					"current_key": "AIzaSyDOJM0ZHIEw3ZG5kTGFomx2k0TSRSpoq3s"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": [
+						{
+							"client_id": "172244835691-smi06092q16adleh8b2qj9afqb2kdkkh.apps.googleusercontent.com",
+							"client_type": 3
+						}
+					]
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
 }

@@ -3,12 +3,12 @@ import type { RecipeCollection } from '../../../../../models/RecipeCollections';
 
 export async function DELETE({ request, params, url }) {
 	const token = request.headers.get('Authorization');
-    const participantId = url.searchParams.get('participantId'); 
- 
+	const participantId = url.searchParams.get('participantId');
+
 	try {
 		if (token === null) throw new Error('No token provided');
 		const { uid } = await auth.verifyIdToken(token);
-        const leaverId = participantId ?? uid;
+		const leaverId = participantId ?? uid;
 
 		try {
 			const collectionId = params.collectionId;
@@ -17,8 +17,8 @@ export async function DELETE({ request, params, url }) {
 			let collection: RecipeCollection = data.val();
 
 			if (!collection) return new Response('404 Not Found', { status: 404 });
-            if (participantId && collection.ownerId !== uid) 
-                return new Response('403 Forbidden', { status: 403 });
+			if (participantId && collection.ownerId !== uid)
+				return new Response('403 Forbidden', { status: 403 });
 
 			let participants = collection.participants ?? [];
 			participants = participants.filter((p) => p.uid !== leaverId);

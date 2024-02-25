@@ -8,7 +8,10 @@ function fullTextFilter(
 				if (obj.hasOwnProperty(key)) {
 					const value: any = obj[key];
 
-					if (typeof value === 'string' && stringIncludesPatterns(value.toLowerCase(), searchPatterns)){
+					if (
+						typeof value === 'string' &&
+						stringIncludesPatterns(value.toLowerCase(), searchPatterns)
+					) {
 						return true;
 					} else if (typeof value === 'object' && value !== null) {
 						if (searchInObject(value)) {
@@ -32,16 +35,13 @@ function fullTextFilter(
 	});
 }
 
-function stringIncludesPatterns(
-    text: string,
-    patterns: string[]
-): boolean {
-    for (let i = 0; i < patterns.length; i++) {
-        if (text.includes(patterns[i].toLowerCase())) {
-            return true;
-        }
-    }
-    return false;
+function stringIncludesPatterns(text: string, patterns: string[]): boolean {
+	for (let i = 0; i < patterns.length; i++) {
+		if (text.includes(patterns[i].toLowerCase())) {
+			return true;
+		}
+	}
+	return false;
 }
 
 export { fullTextFilter };

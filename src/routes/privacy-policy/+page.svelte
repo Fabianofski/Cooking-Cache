@@ -186,29 +186,28 @@
 	<h2 class="text-md font-bold text-center my-2" id="m2427">Maßgebliche Rechtsgrundlagen</h2>
 	<p class="text-justify">
 		<strong>Maßgebliche Rechtsgrundlagen nach der DSGVO:</strong>
-		Im Folgenden erhalten Sie eine Übersicht der Rechtsgrundlagen der DSGVO, auf deren Basis wir
-		personenbezogene Daten verarbeiten. Bitte nehmen Sie zur Kenntnis, dass neben den Regelungen der
-		DSGVO nationale Datenschutzvorgaben in Ihrem bzw. unserem Wohn- oder Sitzland gelten können.
-		Sollten ferner im Einzelfall speziellere Rechtsgrundlagen maßgeblich sein, teilen wir Ihnen
-		diese in der Datenschutzerklärung mit.
+		Im Folgenden erhalten Sie eine Übersicht der Rechtsgrundlagen der DSGVO, auf deren Basis wir personenbezogene
+		Daten verarbeiten. Bitte nehmen Sie zur Kenntnis, dass neben den Regelungen der DSGVO nationale Datenschutzvorgaben
+		in Ihrem bzw. unserem Wohn- oder Sitzland gelten können. Sollten ferner im Einzelfall speziellere
+		Rechtsgrundlagen maßgeblich sein, teilen wir Ihnen diese in der Datenschutzerklärung mit.
 	</p>
 	<ul class="list-disc">
 		<li>
 			<strong>Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO)</strong>
-			 - Die betroffene Person hat ihre Einwilligung in die Verarbeitung der sie betreffenden personenbezogenen
+			- Die betroffene Person hat ihre Einwilligung in die Verarbeitung der sie betreffenden personenbezogenen
 			Daten für einen spezifischen Zweck oder mehrere bestimmte Zwecke gegeben.
 		</li>
 		<li>
 			<strong>
 				Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO)
 			</strong>
-			 - Die Verarbeitung ist für die Erfüllung eines Vertrags, dessen Vertragspartei die betroffene
-			Person ist, oder zur Durchführung vorvertraglicher Maßnahmen erforderlich, die auf Anfrage der
-			betroffenen Person erfolgen.
+			- Die Verarbeitung ist für die Erfüllung eines Vertrags, dessen Vertragspartei die betroffene Person
+			ist, oder zur Durchführung vorvertraglicher Maßnahmen erforderlich, die auf Anfrage der betroffenen
+			Person erfolgen.
 		</li>
 		<li>
 			<strong>Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO)</strong>
-			 - Die Verarbeitung ist zur Wahrung der berechtigten Interessen des Verantwortlichen oder eines
+			- Die Verarbeitung ist zur Wahrung der berechtigten Interessen des Verantwortlichen oder eines
 			Dritten erforderlich, sofern nicht die Interessen oder Grundrechte und Grundfreiheiten der betroffenen
 			Person, die den Schutz personenbezogener Daten erfordern, überwiegen.
 		</li>
@@ -216,25 +215,23 @@
 	<p class="text-justify">
 		<strong>Nationale Datenschutzregelungen in Deutschland:</strong>
 		Zusätzlich zu den Datenschutzregelungen der DSGVO gelten nationale Regelungen zum Datenschutz in
-		Deutschland. Hierzu gehört insbesondere das Gesetz zum Schutz vor Missbrauch personenbezogener
-		Daten bei der Datenverarbeitung (Bundesdatenschutzgesetz – BDSG). Das BDSG enthält insbesondere
-		Spezialregelungen zum Recht auf Auskunft, zum Recht auf Löschung, zum Widerspruchsrecht, zur
-		Verarbeitung besonderer Kategorien personenbezogener Daten, zur Verarbeitung für andere Zwecke
-		und zur Übermittlung sowie automatisierten Entscheidungsfindung im Einzelfall einschließlich
-		Profiling. Ferner können Landesdatenschutzgesetze der einzelnen Bundesländer zur Anwendung
-		gelangen.
+		Deutschland. Hierzu gehört insbesondere das Gesetz zum Schutz vor Missbrauch personenbezogener Daten
+		bei der Datenverarbeitung (Bundesdatenschutzgesetz – BDSG). Das BDSG enthält insbesondere Spezialregelungen
+		zum Recht auf Auskunft, zum Recht auf Löschung, zum Widerspruchsrecht, zur Verarbeitung besonderer
+		Kategorien personenbezogener Daten, zur Verarbeitung für andere Zwecke und zur Übermittlung sowie
+		automatisierten Entscheidungsfindung im Einzelfall einschließlich Profiling. Ferner können Landesdatenschutzgesetze
+		der einzelnen Bundesländer zur Anwendung gelangen.
 	</p>
 	<p class="text-justify">
 		<strong>Hinweis auf Geltung DSGVO und Schweizer DSG:</strong>
-		Diese Datenschutzhinweise dienen sowohl der Informationserteilung nach dem schweizerischen
-		Bundesgesetz über den Datenschutz (Schweizer DSG) als auch nach der Datenschutzgrundverordnung
-		(DSGVO). Aus diesem Grund bitten wir Sie zu beachten, dass aufgrund der breiteren räumlichen
-		Anwendung und Verständlichkeit die Begriffe der DSGVO verwendet werden. Insbesondere statt der
-		im Schweizer DSG verwendeten Begriffe „Bearbeitung" von „Personendaten", "überwiegendes
-		Interesse" und "besonders schützenswerte Personendaten" werden die in der DSGVO verwendeten
-		Begriffe „Verarbeitung" von „personenbezogenen Daten" sowie "berechtigtes Interesse" und
-		"besondere Kategorien von Daten" verwendet. Die gesetzliche Bedeutung der Begriffe wird jedoch
-		im Rahmen der Geltung des Schweizer DSG weiterhin nach dem Schweizer DSG bestimmt.
+		Diese Datenschutzhinweise dienen sowohl der Informationserteilung nach dem schweizerischen Bundesgesetz
+		über den Datenschutz (Schweizer DSG) als auch nach der Datenschutzgrundverordnung (DSGVO). Aus diesem
+		Grund bitten wir Sie zu beachten, dass aufgrund der breiteren räumlichen Anwendung und Verständlichkeit
+		die Begriffe der DSGVO verwendet werden. Insbesondere statt der im Schweizer DSG verwendeten Begriffe
+		„Bearbeitung" von „Personendaten", "überwiegendes Interesse" und "besonders schützenswerte Personendaten"
+		werden die in der DSGVO verwendeten Begriffe „Verarbeitung" von „personenbezogenen Daten" sowie "berechtigtes
+		Interesse" und "besondere Kategorien von Daten" verwendet. Die gesetzliche Bedeutung der Begriffe
+		wird jedoch im Rahmen der Geltung des Schweizer DSG weiterhin nach dem Schweizer DSG bestimmt.
 	</p>
 
 	<h2 class="text-md font-bold text-center my-2" id="m27">Sicherheitsmaßnahmen</h2>
@@ -313,7 +310,7 @@
 		>
 			https://www.dataprivacyframework.gov/
 		</a>
-		 (in Englisch) entnehmen. Wir informieren Sie im Rahmen der Datenschutzhinweise, welche von uns eingesetzten
+		(in Englisch) entnehmen. Wir informieren Sie im Rahmen der Datenschutzhinweise, welche von uns eingesetzten
 		Diensteanbieter unter dem Data Privacy Framework zertifiziert sind.
 	</p>
 
@@ -352,34 +349,34 @@
 		</li>
 		<li>
 			<strong>Widerrufsrecht bei Einwilligungen:</strong>
-			 Sie haben das Recht, erteilte Einwilligungen jederzeit zu widerrufen.
+			Sie haben das Recht, erteilte Einwilligungen jederzeit zu widerrufen.
 		</li>
 		<li>
 			<strong>Auskunftsrecht:</strong>
-			 Sie haben das Recht, eine Bestätigung darüber zu verlangen, ob betreffende Daten verarbeitet werden
+			Sie haben das Recht, eine Bestätigung darüber zu verlangen, ob betreffende Daten verarbeitet werden
 			und auf Auskunft über diese Daten sowie auf weitere Informationen und Kopie der Daten entsprechend
 			den gesetzlichen Vorgaben.
 		</li>
 		<li>
 			<strong>Recht auf Berichtigung:</strong>
-			 Sie haben entsprechend den gesetzlichen Vorgaben das Recht, die Vervollständigung der Sie betreffenden
+			Sie haben entsprechend den gesetzlichen Vorgaben das Recht, die Vervollständigung der Sie betreffenden
 			Daten oder die Berichtigung der Sie betreffenden unrichtigen Daten zu verlangen.
 		</li>
 		<li>
 			<strong>Recht auf Löschung und Einschränkung der Verarbeitung:</strong>
-			 Sie haben nach Maßgabe der gesetzlichen Vorgaben das Recht, zu verlangen, dass Sie betreffende
+			Sie haben nach Maßgabe der gesetzlichen Vorgaben das Recht, zu verlangen, dass Sie betreffende
 			Daten unverzüglich gelöscht werden, bzw. alternativ nach Maßgabe der gesetzlichen Vorgaben eine
 			Einschränkung der Verarbeitung der Daten zu verlangen.
 		</li>
 		<li>
 			<strong>Recht auf Datenübertragbarkeit:</strong>
-			 Sie haben das Recht, Sie betreffende Daten, die Sie uns bereitgestellt haben, nach Maßgabe der
+			Sie haben das Recht, Sie betreffende Daten, die Sie uns bereitgestellt haben, nach Maßgabe der
 			gesetzlichen Vorgaben in einem strukturierten, gängigen und maschinenlesbaren Format zu erhalten
 			oder deren Übermittlung an einen anderen Verantwortlichen zu fordern.
 		</li>
 		<li>
 			<strong>Beschwerde bei Aufsichtsbehörde:</strong>
-			 Sie haben unbeschadet eines anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs
+			Sie haben unbeschadet eines anderweitigen verwaltungsrechtlichen oder gerichtlichen Rechtsbehelfs
 			das Recht auf Beschwerde bei einer Aufsichtsbehörde, insbesondere in dem Mitgliedstaat ihres gewöhnlichen
 			Aufenthaltsorts, ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes, wenn Sie der Ansicht
 			sind, dass die Verarbeitung der Sie betreffenden personenbezogenen Daten gegen die Vorgaben der
@@ -398,30 +395,29 @@
 	</p>
 	<p class="text-justify">
 		<strong>Hinweise zur Einwilligung:</strong>
-		Wir setzen Cookies im Einklang mit den gesetzlichen Vorschriften ein. Daher holen wir von den
-		Nutzern eine vorhergehende Einwilligung ein, außer wenn diese gesetzlich nicht gefordert ist.
-		Eine Einwilligung ist insbesondere nicht notwendig, wenn das Speichern und das Auslesen der
-		Informationen, also auch von Cookies, unbedingt erforderlich sind, um dem den Nutzern einen von
-		ihnen ausdrücklich gewünschten Telemediendienst (also unser Onlineangebot) zur Verfügung zu
-		stellen. Zu den unbedingt erforderlichen Cookies gehören in der Regel Cookies mit Funktionen,
-		die der Anzeige und Lauffähigkeit des Onlineangebotes , dem Lastausgleich, der Sicherheit, der
-		Speicherung der Präferenzen und Auswahlmöglichkeiten der Nutzer oder ähnlichen mit der
-		Bereitstellung der Haupt- und Nebenfunktionen des von den Nutzern angeforderten Onlineangebotes
-		zusammenhängenden Zwecken dienen. Die widerrufliche Einwilligung wird gegenüber den Nutzern
-		deutlich kommuniziert und enthält die Informationen zu der jeweiligen Cookie-Nutzung.
+		Wir setzen Cookies im Einklang mit den gesetzlichen Vorschriften ein. Daher holen wir von den Nutzern
+		eine vorhergehende Einwilligung ein, außer wenn diese gesetzlich nicht gefordert ist. Eine Einwilligung
+		ist insbesondere nicht notwendig, wenn das Speichern und das Auslesen der Informationen, also auch
+		von Cookies, unbedingt erforderlich sind, um dem den Nutzern einen von ihnen ausdrücklich gewünschten
+		Telemediendienst (also unser Onlineangebot) zur Verfügung zu stellen. Zu den unbedingt erforderlichen
+		Cookies gehören in der Regel Cookies mit Funktionen, die der Anzeige und Lauffähigkeit des Onlineangebotes
+		, dem Lastausgleich, der Sicherheit, der Speicherung der Präferenzen und Auswahlmöglichkeiten der
+		Nutzer oder ähnlichen mit der Bereitstellung der Haupt- und Nebenfunktionen des von den Nutzern angeforderten
+		Onlineangebotes zusammenhängenden Zwecken dienen. Die widerrufliche Einwilligung wird gegenüber den
+		Nutzern deutlich kommuniziert und enthält die Informationen zu der jeweiligen Cookie-Nutzung.
 	</p>
 	<p class="text-justify">
 		<strong>Hinweise zu datenschutzrechtlichen Rechtsgrundlagen:</strong>
-		Auf welcher datenschutzrechtlichen Rechtsgrundlage wir die personenbezogenen Daten der Nutzer
-		mit Hilfe von Cookies verarbeiten, hängt davon ab, ob wir Nutzer um eine Einwilligung bitten.
-		Falls die Nutzer einwilligen, ist die Rechtsgrundlage der Verarbeitung Ihrer Daten die erklärte
-		Einwilligung. Andernfalls werden die mithilfe von Cookies verarbeiteten Daten auf Grundlage
-		unserer berechtigten Interessen (z. B. an einem betriebswirtschaftlichen Betrieb unseres
-		Onlineangebotes und Verbesserung seiner Nutzbarkeit) verarbeitet oder, wenn dies im Rahmen der
-		Erfüllung unserer vertraglichen Pflichten erfolgt, wenn der Einsatz von Cookies erforderlich
-		ist, um unsere vertraglichen Verpflichtungen zu erfüllen. Zu welchen Zwecken die Cookies von uns
-		verarbeitet werden, darüber klären wir im Laufe dieser Datenschutzerklärung oder im Rahmen von
-		unseren Einwilligungs- und Verarbeitungsprozessen auf.
+		Auf welcher datenschutzrechtlichen Rechtsgrundlage wir die personenbezogenen Daten der Nutzer mit
+		Hilfe von Cookies verarbeiten, hängt davon ab, ob wir Nutzer um eine Einwilligung bitten. Falls die
+		Nutzer einwilligen, ist die Rechtsgrundlage der Verarbeitung Ihrer Daten die erklärte Einwilligung.
+		Andernfalls werden die mithilfe von Cookies verarbeiteten Daten auf Grundlage unserer berechtigten
+		Interessen (z. B. an einem betriebswirtschaftlichen Betrieb unseres Onlineangebotes und Verbesserung
+		seiner Nutzbarkeit) verarbeitet oder, wenn dies im Rahmen der Erfüllung unserer vertraglichen Pflichten
+		erfolgt, wenn der Einsatz von Cookies erforderlich ist, um unsere vertraglichen Verpflichtungen zu
+		erfüllen. Zu welchen Zwecken die Cookies von uns verarbeitet werden, darüber klären wir im Laufe
+		dieser Datenschutzerklärung oder im Rahmen von unseren Einwilligungs- und Verarbeitungsprozessen
+		auf.
 	</p>
 	<p class="text-justify">
 		<strong>Speicherdauer:</strong>
@@ -435,7 +431,7 @@
 		</li>
 		<li>
 			<strong>Permanente Cookies:</strong>
-			 Permanente Cookies bleiben auch nach dem Schließen des Endgerätes gespeichert. So können beispielsweise
+			Permanente Cookies bleiben auch nach dem Schließen des Endgerätes gespeichert. So können beispielsweise
 			der Login-Status gespeichert oder bevorzugte Inhalte direkt angezeigt werden, wenn der Nutzer eine
 			Website erneut besucht. Ebenso können die mit Hilfe von Cookies erhobenen Daten der Nutzer zur
 			Reichweitenmessung verwendet werden. Sofern wir Nutzern keine expliziten Angaben zur Art und Speicherdauer
@@ -446,10 +442,10 @@
 	<p class="text-justify">
 		<strong>Allgemeine Hinweise zum Widerruf und Widerspruch (sog. "Opt-Out"):</strong>
 		Nutzer können die von ihnen abgegebenen Einwilligungen jederzeit widerrufen und der Verarbeitung
-		entsprechend den gesetzlichen Vorgaben widersprechen. Hierzu können Nutzer unter anderem die
-		Verwendung von Cookies in den Einstellungen ihres Browsers einschränken (wobei dadurch auch die
-		Funktionalität unseres Onlineangebotes eingeschränkt sein kann). Ein Widerspruch gegen die
-		Verwendung von Cookies zu Online-Marketing-Zwecken kann auch über die Websites
+		entsprechend den gesetzlichen Vorgaben widersprechen. Hierzu können Nutzer unter anderem die Verwendung
+		von Cookies in den Einstellungen ihres Browsers einschränken (wobei dadurch auch die Funktionalität
+		unseres Onlineangebotes eingeschränkt sein kann). Ein Widerspruch gegen die Verwendung von Cookies
+		zu Online-Marketing-Zwecken kann auch über die Websites
 		<a
 			class="font-bold underline text-white hover:text-primary"
 			href="https://optout.aboutads.info/"
@@ -465,12 +461,12 @@
 		>
 			https://www.youronlinechoices.com/
 		</a>
-		 erklärt werden.
+		erklärt werden.
 	</p>
 	<ul class="list-disc">
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO). Einwilligung (Art. 6 Abs. 1 S. 1 lit.
+			Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO). Einwilligung (Art. 6 Abs. 1 S. 1 lit.
 			a) DSGVO).
 		</li>
 	</ul>
@@ -480,23 +476,21 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitung von Cookie-Daten auf Grundlage einer Einwilligung:</strong>
-			Wir setzen ein Verfahren zum Cookie-Einwilligungs-Management ein, in dessen Rahmen die
-			Einwilligungen der Nutzer in den Einsatz von Cookies, bzw. der im Rahmen des
-			Cookie-Einwilligungs-Management-Verfahrens genannten Verarbeitungen und Anbieter eingeholt
-			sowie von den Nutzern verwaltet und widerrufen werden können. Hierbei wird die
-			Einwilligungserklärung gespeichert, um deren Abfrage nicht erneut wiederholen zu müssen und
-			die Einwilligung entsprechend der gesetzlichen Verpflichtung nachweisen zu können. Die
-			Speicherung kann serverseitig und/oder in einem Cookie (sogenanntes Opt-In-Cookie, bzw.
-			mithilfe vergleichbarer Technologien) erfolgen, um die Einwilligung einem Nutzer, bzw. dessen
-			Gerät zuordnen zu können. Vorbehaltlich individueller Angaben zu den Anbietern von
-			Cookie-Management-Diensten, gelten die folgenden Hinweise: Die Dauer der Speicherung der
-			Einwilligung kann bis zu zwei Jahren betragen. Hierbei wird ein pseudonymer
-			Nutzer-Identifikator gebildet und mit dem Zeitpunkt der Einwilligung, Angaben zur Reichweite
-			der Einwilligung (z. B. welche Kategorien von Cookies und/oder Diensteanbieter) sowie dem
-			Browser, System und verwendeten Endgerät gespeichert;
+			Wir setzen ein Verfahren zum Cookie-Einwilligungs-Management ein, in dessen Rahmen die Einwilligungen
+			der Nutzer in den Einsatz von Cookies, bzw. der im Rahmen des Cookie-Einwilligungs-Management-Verfahrens
+			genannten Verarbeitungen und Anbieter eingeholt sowie von den Nutzern verwaltet und widerrufen
+			werden können. Hierbei wird die Einwilligungserklärung gespeichert, um deren Abfrage nicht erneut
+			wiederholen zu müssen und die Einwilligung entsprechend der gesetzlichen Verpflichtung nachweisen
+			zu können. Die Speicherung kann serverseitig und/oder in einem Cookie (sogenanntes Opt-In-Cookie,
+			bzw. mithilfe vergleichbarer Technologien) erfolgen, um die Einwilligung einem Nutzer, bzw. dessen
+			Gerät zuordnen zu können. Vorbehaltlich individueller Angaben zu den Anbietern von Cookie-Management-Diensten,
+			gelten die folgenden Hinweise: Die Dauer der Speicherung der Einwilligung kann bis zu zwei Jahren
+			betragen. Hierbei wird ein pseudonymer Nutzer-Identifikator gebildet und mit dem Zeitpunkt der
+			Einwilligung, Angaben zur Reichweite der Einwilligung (z. B. welche Kategorien von Cookies und/oder
+			Diensteanbieter) sowie dem Browser, System und verwendeten Endgerät gespeichert;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO).
+				Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO).
 			</span>
 		</li>
 	</ul>
@@ -512,22 +506,22 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
+			Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
 			und Verfahrensdaten (z. .B. IP-Adressen, Zeitangaben, Identifikationsnummern, Einwilligungsstatus).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit; Informationstechnische Infrastruktur
+			Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit; Informationstechnische Infrastruktur
 			(Betrieb und Bereitstellung von Informationssystemen und technischen Geräten (Computer, Server
 			etc.).). Sicherheitsmaßnahmen.
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
+			Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 		</li>
 	</ul>
 	<p class="text-justify">
@@ -536,21 +530,20 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Erhebung von Zugriffsdaten und Logfiles:</strong>
-			Der Zugriff auf unser Onlineangebot wird in Form von so genannten "Server-Logfiles"
-			protokolliert. Zu den Serverlogfiles können die Adresse und Name der abgerufenen Webseiten und
-			Dateien, Datum und Uhrzeit des Abrufs, übertragene Datenmengen, Meldung über erfolgreichen
-			Abruf, Browsertyp nebst Version, das Betriebssystem des Nutzers, Referrer URL (die zuvor
-			besuchte Seite) und im Regelfall IP-Adressen und der anfragende Provider gehören. Die
-			Serverlogfiles können zum einen zu Zwecken der Sicherheit eingesetzt werden, z. B., um eine
-			Überlastung der Server zu vermeiden (insbesondere im Fall von missbräuchlichen Angriffen,
-			sogenannten DDoS-Attacken) und zum anderen, um die Auslastung der Server und ihre Stabilität
-			sicherzustellen;
+			Der Zugriff auf unser Onlineangebot wird in Form von so genannten "Server-Logfiles" protokolliert.
+			Zu den Serverlogfiles können die Adresse und Name der abgerufenen Webseiten und Dateien, Datum
+			und Uhrzeit des Abrufs, übertragene Datenmengen, Meldung über erfolgreichen Abruf, Browsertyp nebst
+			Version, das Betriebssystem des Nutzers, Referrer URL (die zuvor besuchte Seite) und im Regelfall
+			IP-Adressen und der anfragende Provider gehören. Die Serverlogfiles können zum einen zu Zwecken
+			der Sicherheit eingesetzt werden, z. B., um eine Überlastung der Server zu vermeiden (insbesondere
+			im Fall von missbräuchlichen Angriffen, sogenannten DDoS-Attacken) und zum anderen, um die Auslastung
+			der Server und ihre Stabilität sicherzustellen;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 			</span>
 			<strong>Löschung von Daten:</strong>
-			 Logfile-Informationen werden für die Dauer von maximal 30 Tagen gespeichert und danach gelöscht
+			Logfile-Informationen werden für die Dauer von maximal 30 Tagen gespeichert und danach gelöscht
 			oder anonymisiert. Daten, deren weitere Aufbewahrung zu Beweiszwecken erforderlich ist, sind bis
 			zur endgültigen Klärung des jeweiligen Vorfalls von der Löschung ausgenommen.
 		</li>
@@ -579,22 +572,22 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Bestandsdaten (z. B. Namen, Adressen); Kontaktdaten (z. B. E-Mail, Telefonnummern); Inhaltsdaten
+			Bestandsdaten (z. B. Namen, Adressen); Kontaktdaten (z. B. E-Mail, Telefonnummern); Inhaltsdaten
 			(z. B. Eingaben in Onlineformularen); Meta-, Kommunikations- und Verfahrensdaten (z. .B. IP-Adressen,
 			Zeitangaben, Identifikationsnummern, Einwilligungsstatus).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten; Sicherheitsmaßnahmen;
+			Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten; Sicherheitsmaßnahmen;
 			Verwaltung und Beantwortung von Anfragen. Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit.
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO). Berechtigte
+			Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO). Berechtigte
 			Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 		</li>
 	</ul>
@@ -607,26 +600,25 @@
 			Nutzer dürfen statt Klarnamen Pseudonyme als Nutzernamen verwenden;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
+				Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
 			</span>
 		</li>
 		<li>
 			<strong>Einstellung der Sichtbarkeit von Profilen:</strong>
-			Die Nutzer können mittels Einstellungen bestimmen, in welchem Umfang ihre Profile für die
-			Öffentlichkeit oder nur für bestimmte Personengruppen sichtbar, bzw. zugänglich sind;
+			Die Nutzer können mittels Einstellungen bestimmen, in welchem Umfang ihre Profile für die Öffentlichkeit
+			oder nur für bestimmte Personengruppen sichtbar, bzw. zugänglich sind;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
+				Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
 			</span>
 		</li>
 		<li>
 			<strong>Löschung von Daten nach Kündigung:</strong>
-			Wenn Nutzer ihr Nutzerkonto gekündigt haben, werden deren Daten im Hinblick auf das
-			Nutzerkonto, vorbehaltlich einer gesetzlichen Erlaubnis, Pflicht oder Einwilligung der Nutzer,
-			gelöscht;
+			Wenn Nutzer ihr Nutzerkonto gekündigt haben, werden deren Daten im Hinblick auf das Nutzerkonto,
+			vorbehaltlich einer gesetzlichen Erlaubnis, Pflicht oder Einwilligung der Nutzer, gelöscht;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
+				Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
 			</span>
 		</li>
 	</ul>
@@ -640,20 +632,20 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
+			Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
 			und Verfahrensdaten (z. .B. IP-Adressen, Zeitangaben, Identifikationsnummern, Einwilligungsstatus).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten. Sicherheitsmaßnahmen.
+			Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten. Sicherheitsmaßnahmen.
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
+			Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
 		</li>
 	</ul>
 	<p class="text-justify">
@@ -662,12 +654,12 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Einstellung der Sichtbarkeit von Beiträgen:</strong>
-			Die Nutzer können mittels Einstellungen bestimmen, in welchem Umfang die von ihnen erstellten
-			Beiträge und Inhalte für die Öffentlichkeit oder nur für bestimmte Personen oder Gruppen
-			sichtbar, bzw. zugänglich sind;
+			Die Nutzer können mittels Einstellungen bestimmen, in welchem Umfang die von ihnen erstellten Beiträge
+			und Inhalte für die Öffentlichkeit oder nur für bestimmte Personen oder Gruppen sichtbar, bzw.
+			zugänglich sind;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
+				Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
 			</span>
 		</li>
 	</ul>
@@ -715,7 +707,7 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Bestandsdaten (z. B. Namen, Adressen); Kontaktdaten (z. B. E-Mail, Telefonnummern); Nutzungsdaten
+			Bestandsdaten (z. B. Namen, Adressen); Kontaktdaten (z. B. E-Mail, Telefonnummern); Nutzungsdaten
 			(z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations- und Verfahrensdaten
 			(z. B. IP-Adressen, Zeitangaben, Identifikationsnummern, Einwilligungsstatus); Event-Daten (Facebook)
 			("Event-Daten" sind Daten, die z. B. via Facebook-Pixel (via Apps oder auf anderen Wegen) von uns
@@ -730,16 +722,16 @@
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten; Sicherheitsmaßnahmen.
+			Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten; Sicherheitsmaßnahmen.
 			Anmeldeverfahren.
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
+			Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 		</li>
 	</ul>
 	<p class="text-justify">
@@ -753,7 +745,7 @@
 			Apple Inc., Infinite Loop, Cupertino, CA 95014, USA;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -781,7 +773,7 @@
 			Meta Platforms Ireland Limited, Merrion Road, Dublin 4, D04 X2K5, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -829,7 +821,7 @@
 			Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -876,24 +868,24 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Bestandsdaten (z. B. Namen, Adressen); Kontaktdaten (z. B. E-Mail, Telefonnummern); Inhaltsdaten
+			Bestandsdaten (z. B. Namen, Adressen); Kontaktdaten (z. B. E-Mail, Telefonnummern); Inhaltsdaten
 			(z. B. Eingaben in Onlineformularen); Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten,
 			Zugriffszeiten); Meta-, Kommunikations- und Verfahrensdaten (z. .B. IP-Adressen, Zeitangaben, Identifikationsnummern,
 			Einwilligungsstatus).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten; Feedback (z. B. Sammeln
+			Erbringung vertraglicher Leistungen und Erfüllung vertraglicher Pflichten; Feedback (z. B. Sammeln
 			von Feedback via Online-Formular); Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit;
 			Sicherheitsmaßnahmen. Verwaltung und Beantwortung von Anfragen.
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
+			Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 		</li>
 	</ul>
 	<p class="text-justify">
@@ -902,30 +894,28 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Kommentare und Beiträge:</strong>
-			Wenn Nutzer Kommentare oder sonstige Beiträge hinterlassen, können ihre IP-Adressen auf
-			Grundlage unserer berechtigten Interessen gespeichert werden. Das erfolgt zu unserer
-			Sicherheit, falls jemand in Kommentaren und Beiträgen widerrechtliche Inhalte hinterlässt
-			(Beleidigungen, verbotene politische Propaganda etc.). In diesem Fall können wir selbst für
-			den Kommentar oder Beitrag belangt werden und sind daher an der Identität des Verfassers
-			interessiert.
+			Wenn Nutzer Kommentare oder sonstige Beiträge hinterlassen, können ihre IP-Adressen auf Grundlage
+			unserer berechtigten Interessen gespeichert werden. Das erfolgt zu unserer Sicherheit, falls jemand
+			in Kommentaren und Beiträgen widerrechtliche Inhalte hinterlässt (Beleidigungen, verbotene politische
+			Propaganda etc.). In diesem Fall können wir selbst für den Kommentar oder Beitrag belangt werden
+			und sind daher an der Identität des Verfassers interessiert.
 			<br />
 			<br />
-			Des Weiteren behalten wir uns vor, auf Grundlage unserer berechtigten Interessen die Angaben
-			der Nutzer zwecks Spamerkennung zu verarbeiten.
+			Des Weiteren behalten wir uns vor, auf Grundlage unserer berechtigten Interessen die Angaben der
+			Nutzer zwecks Spamerkennung zu verarbeiten.
 			<br />
 			<br />
-			Auf derselben Rechtsgrundlage behalten wir uns vor, im Fall von Umfragen die IP-Adressen der
-			Nutzer für deren Dauer zu speichern und Cookies zu verwenden, um Mehrfachabstimmungen zu
-			vermeiden.
+			Auf derselben Rechtsgrundlage behalten wir uns vor, im Fall von Umfragen die IP-Adressen der Nutzer
+			für deren Dauer zu speichern und Cookies zu verwenden, um Mehrfachabstimmungen zu vermeiden.
 			<br />
 			<br />
-			Die im Rahmen der Kommentare und Beiträge mitgeteilten Informationen zur Person, etwaige
-			Kontakt- sowie Webseiteninformationen als auch die inhaltlichen Angaben werden von uns bis zum
-			Widerspruch der Nutzer dauerhaft gespeichert;
+			Die im Rahmen der Kommentare und Beiträge mitgeteilten Informationen zur Person, etwaige Kontakt-
+			sowie Webseiteninformationen als auch die inhaltlichen Angaben werden von uns bis zum Widerspruch
+			der Nutzer dauerhaft gespeichert;
 			<br />
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 			</span>
 		</li>
 	</ul>
@@ -939,22 +929,22 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Kontaktdaten (z. B. E-Mail, Telefonnummern); Inhaltsdaten (z. B. Eingaben in Onlineformularen);
+			Kontaktdaten (z. B. E-Mail, Telefonnummern); Inhaltsdaten (z. B. Eingaben in Onlineformularen);
 			Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
 			und Verfahrensdaten (z. .B. IP-Adressen, Zeitangaben, Identifikationsnummern, Einwilligungsstatus).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Kommunikationspartner.
+			Kommunikationspartner.
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Kontaktanfragen und Kommunikation; Verwaltung und Beantwortung von Anfragen; Feedback (z. B. Sammeln
+			Kontaktanfragen und Kommunikation; Verwaltung und Beantwortung von Anfragen; Feedback (z. B. Sammeln
 			von Feedback via Online-Formular). Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit.
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO). Vertragserfüllung und vorvertragliche
+			Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO). Vertragserfüllung und vorvertragliche
 			Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO).
 		</li>
 	</ul>
@@ -964,12 +954,12 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Kontaktformular:</strong>
-			Wenn Nutzer über unser Kontaktformular, E-Mail oder andere Kommunikationswege mit uns in
-			Kontakt treten, verarbeiten wir die uns in diesem Zusammenhang mitgeteilten Daten zur
-			Bearbeitung des mitgeteilten Anliegens;
+			Wenn Nutzer über unser Kontaktformular, E-Mail oder andere Kommunikationswege mit uns in Kontakt
+			treten, verarbeiten wir die uns in diesem Zusammenhang mitgeteilten Daten zur Bearbeitung des mitgeteilten
+			Anliegens;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO), Berechtigte
+				Vertragserfüllung und vorvertragliche Anfragen (Art. 6 Abs. 1 S. 1 lit. b) DSGVO), Berechtigte
 				Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 			</span>
 		</li>
@@ -1011,26 +1001,26 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
+			Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
 			und Verfahrensdaten (z. .B. IP-Adressen, Zeitangaben, Identifikationsnummern, Einwilligungsstatus).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Reichweitenmessung (z. B. Zugriffsstatistiken, Erkennung wiederkehrender Besucher); Profile mit
+			Reichweitenmessung (z. B. Zugriffsstatistiken, Erkennung wiederkehrender Besucher); Profile mit
 			nutzerbezogenen Informationen (Erstellen von Nutzerprofilen). Bereitstellung unseres Onlineangebotes
 			und Nutzerfreundlichkeit.
 		</li>
 		<li>
 			<strong>Sicherheitsmaßnahmen:</strong>
-			 IP-Masking (Pseudonymisierung der IP-Adresse).
+			IP-Masking (Pseudonymisierung der IP-Adresse).
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO). Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit.
+			Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO). Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit.
 			f) DSGVO).
 		</li>
 	</ul>
@@ -1041,29 +1031,27 @@
 		<li>
 			<strong>Google Analytics 4:</strong>
 			Wir verwenden Google Analytics zur Messung und Analyse der Nutzung unseres Onlineangebotes auf
-			der Grundlage einer pseudonymen Nutzeridentifikationsnummer. Diese Identifikationsnummer
-			enthält keine eindeutigen Daten, wie Namen oder E-Mail-Adressen. Sie dient dazu,
-			Analyseinformationen einem Endgerät zuzuordnen, um zu erkennen, welche Inhalte die Nutzer
-			innerhalb eines oder verschiedener Nutzungsvorgänge aufgerufen haben, welche Suchbegriffe sie
-			verwendet haben, diese erneut aufgerufen haben oder mit unserem Onlineangebot interagiert
-			haben. Ebenso werden der Zeitpunkt der Nutzung und deren Dauer gespeichert, sowie die Quellen
-			der Nutzer, die auf unser Onlineangebot verweisen und technische Aspekte ihrer Endgeräte und
-			Browser. Dabei werden pseudonyme Profile von Nutzern mit Informationen aus der Nutzung
-			verschiedener Geräte erstellt, wobei Cookies eingesetzt werden können. Google Analytics
-			protokolliert und speichert keine individuellen IP-Adressen für EU-Nutzer. Analytics stellt
-			jedoch grobe geografische Standortdaten bereit, indem es die folgenden Metadaten von
-			IP-Adressen ableitet: Stadt (und der abgeleitete Breiten- und Längengrad der Stadt),
-			Kontinent, Land, Region, Subkontinent (und ID-basierte Gegenstücke). Beim EU-Datenverkehr
-			werden die IP-Adressdaten ausschließlich für diese Ableitung von Geolokalisierungsdaten
-			verwendet, bevor sie sofort gelöscht werden. Sie werden nicht protokolliert, sind nicht
-			zugänglich und werden nicht für weitere Verwendungszwecke genutzt. Wenn Google Analytics
-			Messdaten sammelt, werden alle IP-Abfragen auf EU-basierten Servern durchgeführt, bevor der
-			Verkehr zur Verarbeitung an Analytics-Server weitergeleitet wird;
+			der Grundlage einer pseudonymen Nutzeridentifikationsnummer. Diese Identifikationsnummer enthält
+			keine eindeutigen Daten, wie Namen oder E-Mail-Adressen. Sie dient dazu, Analyseinformationen einem
+			Endgerät zuzuordnen, um zu erkennen, welche Inhalte die Nutzer innerhalb eines oder verschiedener
+			Nutzungsvorgänge aufgerufen haben, welche Suchbegriffe sie verwendet haben, diese erneut aufgerufen
+			haben oder mit unserem Onlineangebot interagiert haben. Ebenso werden der Zeitpunkt der Nutzung
+			und deren Dauer gespeichert, sowie die Quellen der Nutzer, die auf unser Onlineangebot verweisen
+			und technische Aspekte ihrer Endgeräte und Browser. Dabei werden pseudonyme Profile von Nutzern
+			mit Informationen aus der Nutzung verschiedener Geräte erstellt, wobei Cookies eingesetzt werden
+			können. Google Analytics protokolliert und speichert keine individuellen IP-Adressen für EU-Nutzer.
+			Analytics stellt jedoch grobe geografische Standortdaten bereit, indem es die folgenden Metadaten
+			von IP-Adressen ableitet: Stadt (und der abgeleitete Breiten- und Längengrad der Stadt), Kontinent,
+			Land, Region, Subkontinent (und ID-basierte Gegenstücke). Beim EU-Datenverkehr werden die IP-Adressdaten
+			ausschließlich für diese Ableitung von Geolokalisierungsdaten verwendet, bevor sie sofort gelöscht
+			werden. Sie werden nicht protokolliert, sind nicht zugänglich und werden nicht für weitere Verwendungszwecke
+			genutzt. Wenn Google Analytics Messdaten sammelt, werden alle IP-Abfragen auf EU-basierten Servern
+			durchgeführt, bevor der Verkehr zur Verarbeitung an Analytics-Server weitergeleitet wird;
 			<strong>Dienstanbieter:</strong>
 			Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -1129,21 +1117,20 @@
 			>
 				https://business.safety.google/adsservices/
 			</a>
-			 (Arten der Verarbeitung sowie der verarbeiteten Daten).
+			(Arten der Verarbeitung sowie der verarbeiteten Daten).
 		</li>
 		<li>
 			<strong>Google Tag Manager:</strong>
-			Google Tag Manager ist eine Lösung, mit der wir sog. Website-Tags über eine Oberfläche
-			verwalten und so andere Dienste in unser Onlineangebot einbinden können (hierzu wird auf
-			weitere Angaben in dieser Datenschutzerklärung verwiesen). Mit dem Tag Manager selbst (welches
-			die Tags implementiert) werden daher z. B. noch keine Profile der Nutzer erstellt oder Cookies
-			gespeichert. Google erfährt lediglich die IP-Adresse des Nutzers, was notwendig ist, um den
-			Google Tag Manager auszuführen;
+			Google Tag Manager ist eine Lösung, mit der wir sog. Website-Tags über eine Oberfläche verwalten
+			und so andere Dienste in unser Onlineangebot einbinden können (hierzu wird auf weitere Angaben
+			in dieser Datenschutzerklärung verwiesen). Mit dem Tag Manager selbst (welches die Tags implementiert)
+			werden daher z. B. noch keine Profile der Nutzer erstellt oder Cookies gespeichert. Google erfährt
+			lediglich die IP-Adresse des Nutzers, was notwendig ist, um den Google Tag Manager auszuführen;
 			<strong>Dienstanbieter:</strong>
 			Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
+				Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -1238,35 +1225,35 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
+			Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
 			und Verfahrensdaten (z. .B. IP-Adressen, Zeitangaben, Identifikationsnummern, Einwilligungsstatus).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Reichweitenmessung (z. B. Zugriffsstatistiken, Erkennung wiederkehrender Besucher); Tracking (z. B.
+			Reichweitenmessung (z. B. Zugriffsstatistiken, Erkennung wiederkehrender Besucher); Tracking (z. B.
 			interessens-/verhaltensbezogenes Profiling, Nutzung von Cookies); Marketing. Profile mit nutzerbezogenen
 			Informationen (Erstellen von Nutzerprofilen).
 		</li>
 		<li>
 			<strong>Sicherheitsmaßnahmen:</strong>
-			 IP-Masking (Pseudonymisierung der IP-Adresse).
+			IP-Masking (Pseudonymisierung der IP-Adresse).
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO).
+			Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO).
 		</li>
 		<li>
 			<strong>Widerspruchsmöglichkeit (Opt-Out):</strong>
-			Wir verweisen auf die Datenschutzhinweise der jeweiligen Anbieter und die zu den Anbietern
-			angegebenen Widerspruchsmöglichkeiten (sog. "Opt-Out"). Sofern keine explizite
-			Opt-Out-Möglichkeit angegeben wurde, besteht zum einen die Möglichkeit, dass Sie Cookies in
-			den Einstellungen Ihres Browsers abschalten. Hierdurch können jedoch Funktionen unseres
-			Onlineangebotes eingeschränkt werden. Wir empfehlen daher zusätzlich die folgenden
-			Opt-Out-Möglichkeiten, die zusammenfassend auf jeweilige Gebiete gerichtet angeboten werden:
+			Wir verweisen auf die Datenschutzhinweise der jeweiligen Anbieter und die zu den Anbietern angegebenen
+			Widerspruchsmöglichkeiten (sog. "Opt-Out"). Sofern keine explizite Opt-Out-Möglichkeit angegeben
+			wurde, besteht zum einen die Möglichkeit, dass Sie Cookies in den Einstellungen Ihres Browsers
+			abschalten. Hierdurch können jedoch Funktionen unseres Onlineangebotes eingeschränkt werden. Wir
+			empfehlen daher zusätzlich die folgenden Opt-Out-Möglichkeiten, die zusammenfassend auf jeweilige
+			Gebiete gerichtet angeboten werden:
 			<br />
 			<br />
 			a) Europa:
@@ -1317,13 +1304,13 @@
 		<li>
 			<strong>Google Adsense mit personalisierten Anzeigen:</strong>
 			Wir nutzen den Dienst Google Adsense mit personalisierten Anzeigen, mit dessen Hilfe innerhalb
-			unseres Onlineangebotes Anzeigen eingeblendet werden und wir für deren Einblendung oder
-			sonstige Nutzung eine Entlohnung erhalten;
+			unseres Onlineangebotes Anzeigen eingeblendet werden und wir für deren Einblendung oder sonstige
+			Nutzung eine Entlohnung erhalten;
 			<strong>Dienstanbieter:</strong>
 			Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
+				Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -1355,9 +1342,8 @@
 			>
 				https://business.safety.google/adsservices/
 			</a>
-			. Datenverarbeitungsbedingungen für Google Werbeprodukte: Informationen zu den Diensten
-			Datenverarbeitungsbedingungen zwischen Verantwortlichen und Standardvertragsklauseln für
-			Drittlandtransfers von Daten:
+			. Datenverarbeitungsbedingungen für Google Werbeprodukte: Informationen zu den Diensten Datenverarbeitungsbedingungen
+			zwischen Verantwortlichen und Standardvertragsklauseln für Drittlandtransfers von Daten:
 			<a
 				class="font-bold underline text-white hover:text-primary"
 				href="https://business.safety.google/adscontrollerterms"
@@ -1369,14 +1355,14 @@
 		</li>
 		<li>
 			<strong>Google Adsense mit nicht-personalisierten Anzeigen:</strong>
-			Wir nutzen den Dienst Google Adsense mit nicht-personalisierten Anzeigen, mit dessen Hilfe
-			innerhalb unseres Onlineangebotes Anzeigen eingeblendet werden und wir für deren Einblendung
-			oder sonstige Nutzung eine Entlohnung erhalten;
+			Wir nutzen den Dienst Google Adsense mit nicht-personalisierten Anzeigen, mit dessen Hilfe innerhalb
+			unseres Onlineangebotes Anzeigen eingeblendet werden und wir für deren Einblendung oder sonstige
+			Nutzung eine Entlohnung erhalten;
 			<strong>Dienstanbieter:</strong>
 			Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
+				Einwilligung (Art. 6 Abs. 1 S. 1 lit. a) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -1408,8 +1394,8 @@
 			>
 				https://business.safety.google/adsservices/
 			</a>
-			. Google Ads Controller-Controller Data Protection Terms and standard contractual clauses for
-			data transfers to third countries:
+			. Google Ads Controller-Controller Data Protection Terms and standard contractual clauses for data
+			transfers to third countries:
 			<a
 				class="font-bold underline text-white hover:text-primary"
 				href="https://business.safety.google/adscontrollerterms"
@@ -1446,22 +1432,22 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Verarbeitete Datenarten:</strong>
-			 Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
+			Nutzungsdaten (z. B. besuchte Webseiten, Interesse an Inhalten, Zugriffszeiten); Meta-, Kommunikations-
 			und Verfahrensdaten (z. B. IP-Adressen, Zeitangaben, Identifikationsnummern, Einwilligungsstatus);
 			Bestandsdaten (z. B. Namen, Adressen); Kontaktdaten (z. B. E-Mail, Telefonnummern); Inhaltsdaten
 			(z. .B. Eingaben in Onlineformularen).
 		</li>
 		<li>
 			<strong>Betroffene Personen:</strong>
-			 Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
+			Nutzer (z. .B. Webseitenbesucher, Nutzer von Onlinediensten).
 		</li>
 		<li>
 			<strong>Zwecke der Verarbeitung:</strong>
-			 Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit.
+			Bereitstellung unseres Onlineangebotes und Nutzerfreundlichkeit.
 		</li>
 		<li class="">
 			<strong>Rechtsgrundlagen:</strong>
-			 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
+			Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO).
 		</li>
 	</ul>
 	<p class="text-justify">
@@ -1470,43 +1456,40 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Google Fonts (Bezug vom Google Server):</strong>
-			Bezug von Schriften (und Symbolen) zum Zwecke einer technisch sicheren, wartungsfreien und
-			effizienten Nutzung von Schriften und Symbolen im Hinblick auf Aktualität und Ladezeiten,
-			deren einheitliche Darstellung und Berücksichtigung möglicher lizenzrechtlicher
-			Beschränkungen. Dem Anbieter der Schriftarten wird die IP-Adresse des Nutzers mitgeteilt,
-			damit die Schriftarten im Browser des Nutzers zur Verfügung gestellt werden können. Darüber
-			hinaus werden technische Daten (Spracheinstellungen, Bildschirmauflösung, Betriebssystem,
-			verwendete Hardware) übermittelt, die für die Bereitstellung der Schriften in Abhängigkeit von
-			den verwendeten Geräten und der technischen Umgebung notwendig sind. Diese Daten können auf
-			einem Server des Anbieters der Schriftarten in den USA verarbeitet werden - Beim Besuch
-			unseres Onlineangebotes senden die Browser der Nutzer ihre Browser HTTP-Anfragen an die Google
-			Fonts Web API (d. h. eine Softwareschnittstelle für den Abruf der Schriftarten). Die Google
-			Fonts Web API stellt den Nutzern die Cascading Style Sheets (CSS) von Google Fonts und danach
-			die in der CCS angegebenen Schriftarten zur Verfügung. Zu diesen HTTP-Anfragen gehören (1) die
-			vom jeweiligen Nutzer für den Zugriff auf das Internet verwendete IP-Adresse, (2) die
-			angeforderte URL auf dem Google-Server und (3) die HTTP-Header, einschließlich des
-			User-Agents, der die Browser- und Betriebssystemversionen der Websitebesucher beschreibt,
-			sowie die Verweis-URL (d. h. die Webseite, auf der die Google-Schriftart angezeigt werden
-			soll). IP-Adressen werden weder auf Google-Servern protokolliert noch gespeichert und sie
-			werden nicht analysiert. Die Google Fonts Web API protokolliert Details der HTTP-Anfragen
-			(angeforderte URL, User-Agent und Verweis-URL). Der Zugriff auf diese Daten ist eingeschränkt
-			und streng kontrolliert. Die angeforderte URL identifiziert die Schriftfamilien, für die der
-			Nutzer Schriftarten laden möchte. Diese Daten werden protokolliert, damit Google bestimmen
-			kann, wie oft eine bestimmte Schriftfamilie angefordert wird. Bei der Google Fonts Web API
-			muss der User-Agent die Schriftart anpassen, die für den jeweiligen Browsertyp generiert wird.
-			Der User-Agent wird in erster Linie zum Debugging protokolliert und verwendet, um aggregierte
-			Nutzungsstatistiken zu generieren, mit denen die Beliebtheit von Schriftfamilien gemessen
-			wird. Diese zusammengefassten Nutzungsstatistiken werden auf der Seite „Analysen" von Google
-			Fonts veröffentlicht. Schließlich wird die Verweis-URL protokolliert, sodass die Daten für die
-			Wartung der Produktion verwendet und ein aggregierter Bericht zu den Top-Integrationen
-			basierend auf der Anzahl der Schriftartenanfragen generiert werden kann. Google verwendet laut
-			eigener Auskunft keine der von Google Fonts erfassten Informationen, um Profile von Endnutzern
-			zu erstellen oder zielgerichtete Anzeigen zu schalten;
+			Bezug von Schriften (und Symbolen) zum Zwecke einer technisch sicheren, wartungsfreien und effizienten
+			Nutzung von Schriften und Symbolen im Hinblick auf Aktualität und Ladezeiten, deren einheitliche
+			Darstellung und Berücksichtigung möglicher lizenzrechtlicher Beschränkungen. Dem Anbieter der Schriftarten
+			wird die IP-Adresse des Nutzers mitgeteilt, damit die Schriftarten im Browser des Nutzers zur Verfügung
+			gestellt werden können. Darüber hinaus werden technische Daten (Spracheinstellungen, Bildschirmauflösung,
+			Betriebssystem, verwendete Hardware) übermittelt, die für die Bereitstellung der Schriften in Abhängigkeit
+			von den verwendeten Geräten und der technischen Umgebung notwendig sind. Diese Daten können auf
+			einem Server des Anbieters der Schriftarten in den USA verarbeitet werden - Beim Besuch unseres
+			Onlineangebotes senden die Browser der Nutzer ihre Browser HTTP-Anfragen an die Google Fonts Web
+			API (d. h. eine Softwareschnittstelle für den Abruf der Schriftarten). Die Google Fonts Web API
+			stellt den Nutzern die Cascading Style Sheets (CSS) von Google Fonts und danach die in der CCS
+			angegebenen Schriftarten zur Verfügung. Zu diesen HTTP-Anfragen gehören (1) die vom jeweiligen
+			Nutzer für den Zugriff auf das Internet verwendete IP-Adresse, (2) die angeforderte URL auf dem
+			Google-Server und (3) die HTTP-Header, einschließlich des User-Agents, der die Browser- und Betriebssystemversionen
+			der Websitebesucher beschreibt, sowie die Verweis-URL (d. h. die Webseite, auf der die Google-Schriftart
+			angezeigt werden soll). IP-Adressen werden weder auf Google-Servern protokolliert noch gespeichert
+			und sie werden nicht analysiert. Die Google Fonts Web API protokolliert Details der HTTP-Anfragen
+			(angeforderte URL, User-Agent und Verweis-URL). Der Zugriff auf diese Daten ist eingeschränkt und
+			streng kontrolliert. Die angeforderte URL identifiziert die Schriftfamilien, für die der Nutzer
+			Schriftarten laden möchte. Diese Daten werden protokolliert, damit Google bestimmen kann, wie oft
+			eine bestimmte Schriftfamilie angefordert wird. Bei der Google Fonts Web API muss der User-Agent
+			die Schriftart anpassen, die für den jeweiligen Browsertyp generiert wird. Der User-Agent wird
+			in erster Linie zum Debugging protokolliert und verwendet, um aggregierte Nutzungsstatistiken zu
+			generieren, mit denen die Beliebtheit von Schriftfamilien gemessen wird. Diese zusammengefassten
+			Nutzungsstatistiken werden auf der Seite „Analysen" von Google Fonts veröffentlicht. Schließlich
+			wird die Verweis-URL protokolliert, sodass die Daten für die Wartung der Produktion verwendet und
+			ein aggregierter Bericht zu den Top-Integrationen basierend auf der Anzahl der Schriftartenanfragen
+			generiert werden kann. Google verwendet laut eigener Auskunft keine der von Google Fonts erfassten
+			Informationen, um Profile von Endnutzern zu erstellen oder zielgerichtete Anzeigen zu schalten;
 			<strong>Dienstanbieter:</strong>
 			Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -1546,7 +1529,7 @@
 			Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland;
 			<span class="">
 				<strong>Rechtsgrundlagen:</strong>
-				 Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
+				Berechtigte Interessen (Art. 6 Abs. 1 S. 1 lit. f) DSGVO);
 			</span>
 			<strong>Website:</strong>
 			<a
@@ -1615,7 +1598,7 @@
 	<ul class="list-disc">
 		<li>
 			<strong>Personenbezogene Daten:</strong>
-			 "Personenbezogene Daten" sind alle Informationen, die sich auf eine identifizierte oder identifizierbare
+			"Personenbezogene Daten" sind alle Informationen, die sich auf eine identifizierte oder identifizierbare
 			natürliche Person (im Folgenden "betroffene Person") beziehen; als identifizierbar wird eine natürliche
 			Person angesehen, die direkt oder indirekt, insbesondere mittels Zuordnung zu einer Kennung wie
 			einem Namen, zu einer Kennnummer, zu Standortdaten, zu einer Online-Kennung (z. B. Cookie) oder
@@ -1625,7 +1608,7 @@
 		</li>
 		<li>
 			<strong>Profile mit nutzerbezogenen Informationen:</strong>
-			 Die Verarbeitung von "Profilen mit nutzerbezogenen Informationen", bzw. kurz "Profilen" umfasst
+			Die Verarbeitung von "Profilen mit nutzerbezogenen Informationen", bzw. kurz "Profilen" umfasst
 			jede Art der automatisierten Verarbeitung personenbezogener Daten, die darin besteht, dass diese
 			personenbezogenen Daten verwendet werden, um bestimmte persönliche Aspekte, die sich auf eine natürliche
 			Person beziehen (je nach Art der Profilbildung können dazu unterschiedliche Informationen betreffend
@@ -1636,7 +1619,7 @@
 		</li>
 		<li>
 			<strong>Reichweitenmessung:</strong>
-			 Die Reichweitenmessung (auch als Web Analytics bezeichnet) dient der Auswertung der Besucherströme
+			Die Reichweitenmessung (auch als Web Analytics bezeichnet) dient der Auswertung der Besucherströme
 			eines Onlineangebotes und kann das Verhalten oder Interessen der Besucher an bestimmten Informationen,
 			wie z. B. Inhalten von Webseiten, umfassen. Mit Hilfe der Reichweitenanalyse können Betreiber von
 			Onlineangeboten z. B. erkennen, zu welcher Zeit Nutzer ihre Webseiten besuchen und für welche Inhalte
@@ -1647,21 +1630,21 @@
 		</li>
 		<li>
 			<strong>Tracking:</strong>
-			 Vom "Tracking" spricht man, wenn das Verhalten von Nutzern über mehrere Onlineangebote hinweg
-			nachvollzogen werden kann. Im Regelfall werden im Hinblick auf die genutzten Onlineangebote Verhaltens-
-			und Interessensinformationen in Cookies oder auf Servern der Anbieter der Trackingtechnologien
-			gespeichert (sogenanntes Profiling). Diese Informationen können anschließend z. B. eingesetzt werden,
-			um den Nutzern Werbeanzeigen anzuzeigen, die voraussichtlich deren Interessen entsprechen.
+			Vom "Tracking" spricht man, wenn das Verhalten von Nutzern über mehrere Onlineangebote hinweg nachvollzogen
+			werden kann. Im Regelfall werden im Hinblick auf die genutzten Onlineangebote Verhaltens- und Interessensinformationen
+			in Cookies oder auf Servern der Anbieter der Trackingtechnologien gespeichert (sogenanntes Profiling).
+			Diese Informationen können anschließend z. B. eingesetzt werden, um den Nutzern Werbeanzeigen anzuzeigen,
+			die voraussichtlich deren Interessen entsprechen.
 		</li>
 		<li>
 			<strong>Verantwortlicher:</strong>
-			 Als "Verantwortlicher" wird die natürliche oder juristische Person, Behörde, Einrichtung oder
-			andere Stelle, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung
-			von personenbezogenen Daten entscheidet, bezeichnet.
+			Als "Verantwortlicher" wird die natürliche oder juristische Person, Behörde, Einrichtung oder andere
+			Stelle, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen
+			Daten entscheidet, bezeichnet.
 		</li>
 		<li>
 			<strong>Verarbeitung:</strong>
-			 "Verarbeitung" ist jeder mit oder ohne Hilfe automatisierter Verfahren ausgeführte Vorgang oder
+			"Verarbeitung" ist jeder mit oder ohne Hilfe automatisierter Verfahren ausgeführte Vorgang oder
 			jede solche Vorgangsreihe im Zusammenhang mit personenbezogenen Daten. Der Begriff reicht weit
 			und umfasst praktisch jeden Umgang mit Daten, sei es das Erheben, das Auswerten, das Speichern,
 			das Übermitteln oder das Löschen.

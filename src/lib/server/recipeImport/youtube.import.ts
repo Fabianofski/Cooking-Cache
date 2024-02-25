@@ -43,7 +43,7 @@ export async function extractYoutubeRecipe(url: string): Promise<Recipe> {
 	recipe.ingredients = { Default: ingredients };
 	recipe.createdTime = snippet.publishedAt;
 	recipe.updatedTime = snippet.publishedAt;
-    recipe.tags = extractTagsFromText(snippet.description);
+	recipe.tags = extractTagsFromText(snippet.description);
 
 	return recipe;
 }
