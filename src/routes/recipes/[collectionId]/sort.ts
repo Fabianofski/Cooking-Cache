@@ -5,8 +5,8 @@ export const sorters: {
 } = {
 	createdAt: createdAtSorter,
 	alphabetical: alphabeticalSorter,
-    cookingTime: cookingTimeSorter,
-    author: authorSorter,
+	cookingTime: cookingTimeSorter,
+	author: authorSorter
 };
 
 function createdAtSorter(a: Recipe, b: Recipe): number {
@@ -26,15 +26,15 @@ function alphabeticalSorter(a: Recipe, b: Recipe): number {
 }
 
 function cookingTimeSorter(a: Recipe, b: Recipe): number {
-    if (a.cookingTime < b.cookingTime) {
-        return -1;
-    } else if (a.cookingTime > b.cookingTime) {
-        return 1;
-    } else {
-        return 0;
-    }
+	if (a.cookingTime < b.cookingTime) {
+		return -1;
+	} else if (a.cookingTime > b.cookingTime) {
+		return 1;
+	} else {
+		return 0;
+	}
 }
 
 function authorSorter(a: Recipe, b: Recipe): number {
-    return a.creatorId.localeCompare(b.creatorId);
+	return a.creatorId.localeCompare(b.creatorId);
 }
