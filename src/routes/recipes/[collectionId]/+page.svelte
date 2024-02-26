@@ -132,7 +132,7 @@
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="swap-off mt-1 w-5 h-5"
+						class="swap-on mt-1 w-5 h-5"
 					>
 						<path
 							stroke-linecap="round"
@@ -147,7 +147,7 @@
 						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
-						class="swap-on mt-1 w-5 h-5"
+						class="swap-off mt-1 w-5 h-5"
 					>
 						<path
 							stroke-linecap="round"
@@ -158,7 +158,9 @@
 				</label>
 				<select class="select select-ghost select-sm w-full max-w-52" bind:value={sorting}>
 					<option value="createdAt">Hinzugefügt am</option>
-					<option value="alphabetical">Alphabetisch</option>
+					<option value="alphabetical">Rezepttitel</option>
+					<option value="author">Autor</option>
+					<option value="cookingtime">Zubereitungszeit</option>
 				</select>
 			</div>
 		</div>

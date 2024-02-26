@@ -9,8 +9,8 @@ export interface Recipe {
 	tags?: string[];
 	createdTime: string;
 	updatedTime: string;
-	numberOfServings?: number;
-	cookingTime?: number;
+	numberOfServings: number;
+	cookingTime: number;
 	difficulty: 'easy' | 'medium' | 'hard';
 
 	ingredients: { [key: string]: Ingredient[] };

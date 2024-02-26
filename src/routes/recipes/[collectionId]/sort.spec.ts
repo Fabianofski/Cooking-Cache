@@ -73,4 +73,53 @@ describe('sort', () => {
 		const result = sorters.alphabetical(recipeA, recipeB);
 		expect(result).toBe(1);
 	});
+
+    it('should return 1 when author of recipeA is alphabetically after RecipeB', () => {
+		recipeA.creatorId = 'B';
+		recipeB.creatorId = 'A';
+
+		const result = sorters.author(recipeA, recipeB);
+		expect(result).toBe(1);
+	});
+
+    it('should return 0 when author of recipeA is alphabetically same as RecipeB', () => {
+        recipeA.creatorId = 'A';
+        recipeB.creatorId = 'A';
+
+        const result = sorters.author(recipeA, recipeB);
+        expect(result).toBe(0);
+    });
+
+	it('should return -1 when author of recipeA is alphabetically before RecipeB', () => {
+		recipeA.creatorId = 'A';
+		recipeB.creatorId = 'B';
+
+		const result = sorters.author(recipeA, recipeB);
+		expect(result).toBe(-1);
+	});
+
+    it('should return 1 when cookingTime of recipeA is bigger than RecipeB', () => {
+		recipeA.cookingTime = 20;
+		recipeB.cookingTime = 10;
+
+		const result = sorters.cookingTime(recipeA, recipeB);
+		expect(result).toBe(1);
+	});
+
+    it('should return 0 when cookingTime of recipeA is same as RecipeB', () => {
+        recipeA.cookingTime = 10;
+        recipeB.cookingTime = 10;
+
+        const result = sorters.cookingTime(recipeA, recipeB);
+        expect(result).toBe(0);
+    });
+
+	it('should return -1 when cookingTime of recipeA is smaller than RecipeB', () => {
+		recipeA.cookingTime = 10;
+		recipeB.cookingTime = 20;
+
+		const result = sorters.cookingTime(recipeA, recipeB);
+		expect(result).toBe(-1);
+	});
+
 });
