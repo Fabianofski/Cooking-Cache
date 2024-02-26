@@ -34,14 +34,15 @@
 				<div class="divider my-0" />
 				<div>
 					{#each new Set(recipes.flatMap((recipe) => recipe.tags || [])) as filterItem}
-						<FilterItem 
-                            filter={{
-                                displayText: filterItem,
-                                checked: filters.find((filter) => filter.filterValue === filterItem)?.checked || false,
-                                filterValue: filterItem
-                            }}  
-                            {onFilterChange} 
-                        />
+						<FilterItem
+							filter={{
+								displayText: filterItem,
+								checked:
+									filters.find((filter) => filter.filterValue === filterItem)?.checked || false,
+								filterValue: filterItem
+							}}
+							{onFilterChange}
+						/>
 					{/each}
 				</div>
 			</div>
@@ -51,12 +52,12 @@
 				<div>
 					{#each new Set(recipes.flatMap((recipe) => recipe.creatorId || [])) as uid}
 						<FilterItem
-                            filter={{
-                                displayText: getDisplayNameByUid(uid) || '',
-                                checked: filters.find((filter) => filter.filterValue === uid)?.checked || false,
-                                filterValue: uid,
-                                icon: getPhotoURLByUid(uid) || undefined
-                            }}
+							filter={{
+								displayText: getDisplayNameByUid(uid) || '',
+								checked: filters.find((filter) => filter.filterValue === uid)?.checked || false,
+								filterValue: uid,
+								icon: getPhotoURLByUid(uid) || undefined
+							}}
 							{onFilterChange}
 						/>
 					{/each}

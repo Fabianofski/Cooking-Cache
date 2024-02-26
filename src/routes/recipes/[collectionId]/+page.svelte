@@ -34,9 +34,9 @@
 	function onFilterChange(checked: boolean, value: FilterBadge) {
 		if (!checked) filters = filters.filter((x) => x.filterValue !== value.filterValue);
 		else if (checked) {
-            value.checked = true;
-            filters = [...filters, value];
-        }
+			value.checked = true;
+			filters = [...filters, value];
+		}
 	}
 
 	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: FilterBadge[]) {
@@ -50,7 +50,7 @@
 
 	let page = 0;
 	let pageSize = 6;
-	let sorting: string = 'created_at';
+	let sorting: string = 'createdAt';
 	let reverse: boolean = false;
 	function getRecipesFromPage(
 		recipes: Recipe[],
@@ -119,7 +119,7 @@
 		<div class="flex justify-between items-end">
 			<div>
 				{#each filters as filter}
-                    <FilterItem {filter} {onFilterChange} primary={true}/>
+					<FilterItem {filter} {onFilterChange} primary={true} />
 				{/each}
 			</div>
 			<div class="flex justify-end items-center min-w-64">
@@ -157,7 +157,7 @@
 					</svg>
 				</label>
 				<select class="select select-ghost select-sm w-full max-w-52" bind:value={sorting}>
-					<option value="created_at">Hinzugefügt am</option>
+					<option value="createdAt">Hinzugefügt am</option>
 					<option value="alphabetical">Alphabetisch</option>
 				</select>
 			</div>

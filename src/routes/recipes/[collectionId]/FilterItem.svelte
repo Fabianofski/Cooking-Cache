@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type FilterBadge from "../../../models/Filter";
+	import type FilterBadge from '../../../models/Filter';
 
-	export let filter: FilterBadge; 
+	export let filter: FilterBadge;
 	export let onFilterChange: (checked: boolean, value: FilterBadge) => void;
-    export let primary: boolean = false;
+	export let primary: boolean = false;
 
-    const maxLength = 15;
+	const maxLength = 15;
 </script>
 
 <label class="swap mx-1">
