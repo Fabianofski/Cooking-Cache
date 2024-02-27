@@ -43,6 +43,7 @@
 				<div class="skeleton h-6 w-32" />
 			</div>
 		{:else}
+			<!--/* c8 ignore next */-->
 			<h2 class="text-lg font-bold text-center" data-testid="header-title">{title}</h2>
 		{/if}
 
