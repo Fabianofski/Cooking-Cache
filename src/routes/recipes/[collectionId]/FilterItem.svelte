@@ -5,7 +5,7 @@
 	export let onFilterChange: (checked: boolean, value: FilterBadge) => void;
 	export let primary: boolean = false;
 
-	const maxLength = 15;
+	const maxLength = 15 - (filter.preText?.length || 0);
 </script>
 
 <label class="swap mx-1">
@@ -19,6 +19,9 @@
 	/>
 	<div class="swap-on flex items-center">
 		<div class="badge" class:badge-primary={primary} class:badge-neutral={!primary}>
+			{#if filter.preText}
+				<p class="mr-1">{filter.preText}</p>
+			{/if}
 			{#if filter.icon}
 				<img src={filter.icon} alt={filter.displayText} class="mr-1 h-full rounded-full" />
 			{/if}
@@ -41,6 +44,9 @@
 	</div>
 	<div class="swap-off flex items-center">
 		<div class="badge badge-outline" class:badge-primary={primary}>
+			{#if filter.preText}
+				<p class="mr-1">{filter.preText}</p>
+			{/if}
 			{#if filter.icon}
 				<img src={filter.icon} alt={filter.displayText} class="mr-1 h-full rounded-full" />
 			{/if}

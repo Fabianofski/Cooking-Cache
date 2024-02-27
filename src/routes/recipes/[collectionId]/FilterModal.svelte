@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type FilterBadge from '../../../models/Filter';
-	import type { Recipe } from '../../../models/Recipe';
+	import { difficultyLabels, type Recipe } from '../../../models/Recipe';
 	import type { Participant } from '../../../models/RecipeCollections';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import FilterItem from './FilterItem.svelte';
@@ -53,10 +53,29 @@
 					{#each new Set(recipes.flatMap((recipe) => recipe.creatorId || [])) as uid}
 						<FilterItem
 							filter={{
+								preText: 'von:',
 								displayText: getDisplayNameByUid(uid) || '',
 								checked: filters.find((filter) => filter.filterValue === uid)?.checked || false,
 								filterValue: uid,
 								icon: getPhotoURLByUid(uid) || undefined
+							}}
+							{onFilterChange}
+						/>
+					{/each}
+				</div>
+			</div>
+			<div>
+				<h4 class="text-md">Schwierigkeit</h4>
+				<div class="divider my-0" />
+				<div>
+					{#each Object.keys(difficultyLabels) as difficulty}
+						<FilterItem
+							filter={{
+								displayText: difficultyLabels[difficulty] || '',
+								checked:
+									filters.find((filter) => filter.filterValue === difficulty)?.checked || false,
+								filterValue: difficulty,
+								icon: '/difficulty.svg'
 							}}
 							{onFilterChange}
 						/>
