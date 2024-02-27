@@ -1,12 +1,15 @@
 <script lang="ts">
-	import type { User } from 'firebase/auth';
 	import Header from '../../../components/Header.svelte';
 	import RecipeCard from '../../../components/RecipeCard.svelte';
 	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
+	import type FilterBadge from '../../../models/Filter';
 	import type { Recipe } from '../../../models/Recipe';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import { currentUser, loadingStateStore, type LoadingState } from '../../../stores/store';
+	import FilterItem from './FilterItem.svelte';
+	import FilterModal from './FilterModal.svelte';
 	import { fullTextFilter } from './filter';
+	import { sorters } from './sort';
 
 	export let data;
 
@@ -25,18 +28,21 @@
 
 	let filterModal: HTMLDialogElement;
 	let searchPattern: string = '';
-	let filters: string[] = [];
-	let recipesCount: number;
+	let filters: FilterBadge[] = [];
+	let recipesCount: number = 0;
 
-	function onFilterChange(checked: boolean, value: string) {
-		if (!checked && filters.includes(value)) filters = filters.filter((x) => x !== value);
-		else if (checked) filters = [...filters, value];
+	function onFilterChange(checked: boolean, value: FilterBadge) {
+		if (!checked) filters = filters.filter((x) => x.filterValue !== value.filterValue);
+		else if (checked) {
+			value.checked = true;
+			filters = [...filters, value];
+		}
 	}
 
-	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: string[]) {
+	function filterRecipes(recipes: Recipe[], searchPattern: string, filters: FilterBadge[]) {
 		let filteredRecipes: Recipe[] = fullTextFilter(recipes, searchPattern) as Recipe[];
-		filters.forEach((pattern) => {
-			filteredRecipes = fullTextFilter(filteredRecipes, pattern) as Recipe[];
+		filters.forEach((filter) => {
+			filteredRecipes = fullTextFilter(filteredRecipes, filter.filterValue) as Recipe[];
 		});
 		recipesCount = filteredRecipes.length;
 		return filteredRecipes;
@@ -44,18 +50,25 @@
 
 	let page = 0;
 	let pageSize = 6;
+	let sorting: string = 'createdAt';
+	let reverse: boolean = false;
 	function getRecipesFromPage(
 		recipes: Recipe[],
 		page: number,
 		searchPattern: string,
-		filters: string[]
+		filters: FilterBadge[],
+		sorting: string,
+		reverse: boolean
 	): Recipe[] {
 		const filteredRecipes = filterRecipes(recipes, searchPattern, filters);
 
 		const startIndex = page * pageSize;
 		const endIndex = Math.min(startIndex + pageSize, filteredRecipes.length);
 
-		return filteredRecipes.slice(startIndex, endIndex);
+		const sortedAndFilteredRecipes = filteredRecipes.toSorted(sorters[sorting]);
+		if (reverse) sortedAndFilteredRecipes.reverse();
+
+		return sortedAndFilteredRecipes.slice(startIndex, endIndex);
 	}
 </script>
 
@@ -64,7 +77,7 @@
 
 	<div class="w-full flex flex-col gap-2">
 		<div class="join flex">
-			<div class="w-3/5 relative bg-red-700">
+			<div class="w-3/5 relative">
 				<input
 					class="w-full input input-bordered join-item pl-8"
 					placeholder="Search"
@@ -103,12 +116,53 @@
 				Filter {filters.length > 0 ? `(${filters.length})` : ''}
 			</button>
 		</div>
-		<div>
-			{#each filters as filter}
-				<button class="badge badge-neutral mx-1" on:click={() => onFilterChange(false, filter)}>
-					{filter} x
-				</button>
-			{/each}
+		<div class="flex justify-between items-end">
+			<div>
+				{#each filters as filter (filter)}
+					<FilterItem {filter} {onFilterChange} primary={true} />
+				{/each}
+			</div>
+			<div class="flex justify-end items-center min-w-64">
+				<label class="swap swap-rotate">
+					<input type="checkbox" bind:checked={reverse} />
+
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="swap-on mt-1 w-5 h-5"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v12m0 0-3.75-3.75M17.25 21 21 17.25"
+						/>
+					</svg>
+
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke-width="1.5"
+						stroke="currentColor"
+						class="swap-off mt-1 w-5 h-5"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v12"
+						/>
+					</svg>
+				</label>
+				<select class="select select-ghost select-sm w-full max-w-52" bind:value={sorting}>
+					<option value="createdAt">Hinzugefügt am</option>
+					<option value="alphabetical">Rezepttitel</option>
+					<option value="author">Autor</option>
+					<option value="cookingtime">Zubereitungszeit</option>
+				</select>
+			</div>
 		</div>
 		<div class="divider -my-2" />
 	</div>
@@ -123,7 +177,7 @@
 					In dieser Sammlung sind noch keine Rezepte vorhanden.
 				</p>
 			{:else}
-				{#each getRecipesFromPage(recipes, page, searchPattern, filters) as recipe}
+				{#each getRecipesFromPage(recipes, page, searchPattern, filters, sorting, reverse) as recipe}
 					<RecipeCard {recipe} />
 				{/each}
 			{/if}
@@ -163,37 +217,4 @@
 	</a>
 </div>
 
-<dialog bind:this={filterModal} class="modal">
-	<div class="modal-box">
-		<h3 class="font-bold text-lg">Filter</h3>
-
-		<div class="flex flex-col gap-2">
-			<div>
-				<h4 class="text-md">Tags</h4>
-				<div class="divider my-0" />
-				<div>
-					{#each new Set(recipes.flatMap((recipe) => recipe.tags || [])) as filterItem}
-						<label class="swap mx-1">
-							<input
-								type="checkbox"
-								checked={filters.includes(filterItem)}
-								on:input={(e) => {
-									// @ts-ignore
-									onFilterChange(e.target?.checked, filterItem);
-								}}
-							/>
-							<div class="swap-on"><div class="badge badge-neutral">{filterItem} x</div></div>
-							<div class="swap-off"><div class="badge badge-outline">{filterItem}</div></div>
-						</label>
-					{/each}
-				</div>
-			</div>
-		</div>
-
-		<div class="modal-action">
-			<form class="w-full" method="dialog">
-				<button class="btn btn-block">Anwenden ({recipesCount})</button>
-			</form>
-		</div>
-	</div>
-</dialog>
+<FilterModal {filters} {recipes} {recipesCount} bind:filterModal {onFilterChange} />

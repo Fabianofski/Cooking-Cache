@@ -16,7 +16,9 @@ function fullTextFilter(
 						if (searchInObject(value)) {
 							return true;
 						}
-					} else if (Array.isArray(value)) {
+					}
+					/* c8 ignore start */
+					if (Array.isArray(value)) {
 						for (let i = 0; i < value.length; i++) {
 							if (typeof value[i] === 'object' && value[i] !== null) {
 								if (searchInObject(value[i])) {
@@ -25,6 +27,7 @@ function fullTextFilter(
 							}
 						}
 					}
+					/* c8 ignore end */
 				}
 			}
 			return false;

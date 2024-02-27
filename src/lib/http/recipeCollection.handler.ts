@@ -276,19 +276,24 @@ async function leaveRecipeCollection(user: User, collectionId: string) {
 		});
 }
 
- async function removeFromRecipeCollection(user: User, collectionId: string, participantId: string) {
+async function removeFromRecipeCollection(user: User, collectionId: string, participantId: string) {
 	const token = await user.getIdToken();
 	return axios
-		.delete(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave?participantId=${participantId}`, {
-			headers: {
-				Authorization: token
+		.delete(
+			`${PUBLIC_BASE_URL}/api/collection/${collectionId}/leave?participantId=${participantId}`,
+			{
+				headers: {
+					Authorization: token
+				}
 			}
-		})
+		)
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
 			recipeCollectionsStore.update((value) => {
-				value[collectionId].participants = value[collectionId].participants?.filter((p) => p.uid !== participantId);
+				value[collectionId].participants = value[collectionId].participants?.filter(
+					(p) => p.uid !== participantId
+				);
 				return value;
 			});
 			createNewAlert({
@@ -346,6 +351,6 @@ export {
 	getUserRecipeCollections,
 	joinRecipeCollectionWithInviteCode,
 	leaveRecipeCollection,
-    removeFromRecipeCollection,
+	removeFromRecipeCollection,
 	toggleRecipeCollectionVisibility
 };
