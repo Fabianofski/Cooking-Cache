@@ -118,7 +118,7 @@
 		</div>
 		<div class="flex justify-between items-end">
 			<div>
-				{#each filters as filter}
+				{#each filters as filter (filter)}
 					<FilterItem {filter} {onFilterChange} primary={true} />
 				{/each}
 			</div>
