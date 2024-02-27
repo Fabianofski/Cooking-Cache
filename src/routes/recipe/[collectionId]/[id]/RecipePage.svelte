@@ -134,7 +134,6 @@
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
-						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
 						class="w-5 h-5"
@@ -200,6 +199,14 @@
 			</table>
 		{/if}
 	</div>
+
+    <a 
+       href="/"
+       class="px-4 py-2 mt-4 max-w-sm border flex items-center gap-2 bg-[#33454e] border-slate-200 rounded-lg hover:border-slate-400 hover:shadow transition duration-150"
+    >
+        <img class="h-10" alt="Bring" src="/recipe-bring-button.png">
+        <span class="w-full font-bold text-center">Auf die Einkaufsliste setzen</span>
+    </a>
 
 	<div class="divider" />
 	<h2 class="font-bold text-lg">Zubereitung</h2>
