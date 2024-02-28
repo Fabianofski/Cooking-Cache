@@ -19,6 +19,7 @@ export interface Recipe {
 	id: string;
 	collectionId: string;
 	creatorId: string;
+    accessToken?: string;
 }
 
 export let difficultyLabels: {

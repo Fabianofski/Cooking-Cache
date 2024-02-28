@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { deleteRecipeFromCollection } from '$lib/http/recipe.handler';
-	import type { User } from 'firebase/auth';
+	import { deleteRecipeFromCollection, getRecipeWithAccessToken } from '$lib/http/recipe.handler';
+	import { onMount } from 'svelte';
 	import Header from '../../../../components/Header.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
 	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
@@ -13,11 +13,12 @@
 	let recipe: Recipe | undefined;
 	let loading = true;
 	let editPermissions = false;
-	recipeCollectionsStore.subscribe((collections) => {
+	recipeCollectionsStore.subscribe(async (collections) => {
 		if (!collections || !(data.collectionId in collections)) return;
 		loading = false;
 		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
-		editPermissions =
+
+        editPermissions =
 			collections[data.collectionId].ownerId === $currentUser?.uid ||
 			recipe?.creatorId === $currentUser?.uid;
 	});
@@ -34,6 +35,13 @@
 		await deleteRecipeFromCollection($currentUser, recipe);
 		loadingDeletion = false;
 	}
+
+    onMount(async () => {
+        if (!recipe && data.accessToken) {
+            recipe = await getRecipeWithAccessToken(data.collectionId, data.id, data.accessToken);
+            loading = false;
+        }
+    });
 </script>
 
 {#if recipe || loading}
