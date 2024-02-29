@@ -27,9 +27,11 @@
 		}
 	});
 
-    function isViewingRecipeWithAccessToken(currentPage: typeof $page) {
-        return currentPage.url.searchParams.has('key') && currentPage.url.pathname.startsWith('/recipe');
-    }
+	function isViewingRecipeWithAccessToken(currentPage: typeof $page) {
+		return (
+			currentPage.url.searchParams.has('key') && currentPage.url.pathname.startsWith('/recipe')
+		);
+	}
 
 	onMount(() => {
 		auth.onAuthStateChanged(async (value) => {

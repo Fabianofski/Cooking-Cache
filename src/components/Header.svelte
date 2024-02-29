@@ -2,7 +2,12 @@
 	export let title: string;
 	export let loading: boolean = false;
 	export let backLink: string | undefined = undefined;
-	export let options: { callback: () => void; loading?: boolean; title: string; icon: string | undefined }[] = [];
+	export let options: {
+		callback: () => void;
+		loading?: boolean;
+		title: string;
+		icon: string | undefined;
+	}[] = [];
 
 	let justFocussed = false;
 	let dropdown: HTMLElement;
@@ -84,7 +89,7 @@
 									class="btn btn-ghost min-h-0 h-8 w-full flex justify-start"
 									on:click={option.callback}
 									data-testid="option-button"
-                                    disabled={option.loading}
+									disabled={option.loading}
 								>
 									{#if option.icon && !option.loading}<img
 											class="h-5"
@@ -92,9 +97,9 @@
 											alt={option.title + 'Icon'}
 											data-testid="option-icon"
 										/>{/if}
-                                    {#if option.loading}
-                                        <span class="loading loading-spinner loading-sm" />
-                                    {/if}
+									{#if option.loading}
+										<span class="loading loading-spinner loading-sm" />
+									{/if}
 									{option.title}
 								</button>
 								{#if options.length - 1 !== index}
