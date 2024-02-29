@@ -94,4 +94,27 @@ async function getRecipeWithAccessToken(collectionId: string, recipeId: string, 
         });
 }
 
-export { addRecipeToCollection, deleteRecipeFromCollection, getRecipeWithAccessToken };
+async function generateRecipeAccessToken(user: User, collectionId: string, recipeId: string): Promise<string | undefined> {
+	const token = await user.getIdToken();
+    return axios 
+        .get(`${PUBLIC_BASE_URL}/api/collection/${collectionId}/recipe/token?id=${recipeId}`, {
+            headers: {
+                Authorization: token
+            }
+        })
+        .then((res) => {
+            if (res.status !== 200) return Promise.reject(res);
+            return res.data as string;
+        })
+        .catch((error) => {
+            createNewAlert({
+                message:
+                    'Beim Teilen vom Rezept ist ein Fehler aufgetreten!' +
+                    (error.status ? ` (Error ${error.status})` : ''),
+                type: 'error'
+            });
+            return undefined;
+        });
+}
+
+export { addRecipeToCollection, deleteRecipeFromCollection, getRecipeWithAccessToken, generateRecipeAccessToken };
