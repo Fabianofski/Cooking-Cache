@@ -24,10 +24,13 @@
 			recipe?.creatorId === $currentUser?.uid;
 	});
 
+    let sharingLoading = false;
     async function shareRecipe() {
         if (!recipe || !$currentUser) return;
         if (!recipe.accessToken) {
+            sharingLoading = true;
             const newToken = await generateRecipeAccessToken($currentUser, data.collectionId, data.id);
+            sharingLoading = false;
             if (!newToken) return;
             recipe.accessToken = newToken;
         }
@@ -82,6 +85,7 @@
                         {
                             title: 'Rezept teilen',
                             callback: shareRecipe, 
+                            loading: sharingLoading,
                             icon: '/share.svg'
                         },
 						{
