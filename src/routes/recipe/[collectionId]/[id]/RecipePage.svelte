@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 
 	export let recipe: Recipe | undefined;
-	let bringUrl = `${$page.url.host}/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
+	let bringUrl = (recipe: Recipe | undefined) => `${$page.url.host}/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
 
 	let numberOfServings = recipe?.numberOfServings || 4;
 	function getIngredientPerServing(amount: number, numberOfServings: number) {
@@ -28,7 +28,7 @@
 		return ingredients;
 	}
 
-	function getJsonLD() {
+	function getJsonLD(recipe: Recipe | undefined) {
 		const jsonLD = {
 			'@context': 'https://schema.org',
 			'@type': 'Recipe',
@@ -46,7 +46,7 @@
 </script>
 
 <svelte:head>
-	{@html getJsonLD()}
+	{@html getJsonLD(recipe)}
 </svelte:head>
 
 {#if recipe}
@@ -236,11 +236,8 @@
 		{/if}
 	</div>
 
-	<div data-bring-import style="display:none">
-		<a href="https://www.getbring.com">Bring! Einkaufsliste App f&uuml;r iPhone und Android</a>
-	</div>
 	<a
-		href={`https://api.getbring.com/rest/bringrecipes/deeplink?url=${bringUrl}&baseQuantity=${recipe?.numberOfServings}&requestedQuantity=${numberOfServings}&source=web`}
+		href={`https://api.getbring.com/rest/bringrecipes/deeplink?url=${bringUrl(recipe)}&baseQuantity=${recipe?.numberOfServings}&requestedQuantity=${numberOfServings}&source=web`}
 		class="px-4 py-2 mt-4 max-w-sm border flex items-center gap-2 bg-[#33454e] border-slate-200 rounded-lg hover:border-slate-400 hover:shadow transition duration-150"
 	>
 		<img class="h-10" alt="Bring" src="/recipe-bring-button.png" />
