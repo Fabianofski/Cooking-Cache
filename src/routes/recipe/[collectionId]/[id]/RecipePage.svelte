@@ -3,7 +3,8 @@
 	import { page } from '$app/stores';
 
 	export let recipe: Recipe | undefined;
-	let bringUrl = (recipe: Recipe | undefined) => `${$page.url.host}/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
+	let bringUrl = (recipe: Recipe | undefined) =>
+		`${$page.url.host}/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
 
 	let numberOfServings = recipe?.numberOfServings || 4;
 	function getIngredientPerServing(amount: number, numberOfServings: number) {
@@ -33,8 +34,8 @@
 			'@context': 'https://schema.org',
 			'@type': 'Recipe',
 			author: '',
-			cookTime: recipe?.cookingTime,
-			datePublished: recipe?.createdTime,
+			totalTime: `PT${recipe?.cookingTime}M`,
+			datePublished: recipe?.createdTime.split('T')[0],
 			image: recipe?.image,
 			recipeIngredient: convertIngredientsToArray(),
 			name: recipe?.title,
@@ -237,7 +238,9 @@
 	</div>
 
 	<a
-		href={`https://api.getbring.com/rest/bringrecipes/deeplink?url=${bringUrl(recipe)}&baseQuantity=${recipe?.numberOfServings}&requestedQuantity=${numberOfServings}&source=web`}
+		href={`https://api.getbring.com/rest/bringrecipes/deeplink?url=${bringUrl(
+			recipe
+		)}&baseQuantity=${recipe?.numberOfServings}&requestedQuantity=${numberOfServings}&source=web`}
 		class="px-4 py-2 mt-4 max-w-sm border flex items-center gap-2 bg-[#33454e] border-slate-200 rounded-lg hover:border-slate-400 hover:shadow transition duration-150"
 	>
 		<img class="h-10" alt="Bring" src="/recipe-bring-button.png" />
