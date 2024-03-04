@@ -1,10 +1,25 @@
 <script lang="ts">
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
-	import { page } from '$app/stores';
+	import { currentUser } from '../../../../stores/store';
+	import { generateRecipeAccessToken } from '$lib/http/recipe.handler';
 
 	export let recipe: Recipe | undefined;
-	let bringUrl = (recipe: Recipe | undefined) =>
-		`${$page.url.host}/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
+	async function openBringUrl(recipe: Recipe | undefined) {
+		let w = window.open('', '_blank');
+		if (!recipe || !$currentUser) return;
+		if (!recipe.accessToken) {
+			const newToken = await generateRecipeAccessToken(
+				$currentUser,
+				recipe.collectionId,
+				recipe.id
+			);
+			if (!newToken) return;
+			recipe.accessToken = newToken;
+		}
+		const url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
+		const bringUrl = `https://api.getbring.com/rest/bringrecipes/deeplink?url=${url}&requestedQuantity=${numberOfServings}&source=web`;
+		if (w) w.location = bringUrl;
+	}
 
 	let numberOfServings = recipe?.numberOfServings || 4;
 	function getIngredientPerServing(amount: number, numberOfServings: number) {
@@ -33,7 +48,7 @@
 		const jsonLD = {
 			'@context': 'https://schema.org',
 			'@type': 'Recipe',
-			author: '',
+			author: 'Cooking Cache',
 			totalTime: `PT${recipe?.cookingTime}M`,
 			datePublished: recipe?.createdTime.split('T')[0],
 			image: recipe?.image,
@@ -237,15 +252,13 @@
 		{/if}
 	</div>
 
-	<a
-		href={`https://api.getbring.com/rest/bringrecipes/deeplink?url=${bringUrl(
-			recipe
-		)}&baseQuantity=${recipe?.numberOfServings}&requestedQuantity=${numberOfServings}&source=web`}
+	<button
+		on:click={() => openBringUrl(recipe)}
 		class="px-4 py-2 mt-4 max-w-sm border flex items-center gap-2 bg-[#33454e] border-slate-200 rounded-lg hover:border-slate-400 hover:shadow transition duration-150"
 	>
 		<img class="h-10" alt="Bring" src="/recipe-bring-button.png" />
 		<span class="w-full font-bold text-center">Auf die Einkaufsliste setzen</span>
-	</a>
+	</button>
 
 	<div class="divider" />
 	<h2 class="font-bold text-lg">Zubereitung</h2>
