@@ -1,9 +1,27 @@
 <script lang="ts">
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
+	import { currentUser } from '../../../../stores/store';
+	import { generateRecipeAccessToken } from '$lib/http/recipe.handler';
 
 	export let recipe: Recipe | undefined;
-	let numberOfServings = recipe?.numberOfServings || 4;
+	async function openBringUrl(recipe: Recipe | undefined) {
+		let w = window.open('', '_blank');
+		if (!recipe || !$currentUser) return;
+		if (!recipe.accessToken) {
+			const newToken = await generateRecipeAccessToken(
+				$currentUser,
+				recipe.collectionId,
+				recipe.id
+			);
+			if (!newToken) return;
+			recipe.accessToken = newToken;
+		}
+		const url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
+		const bringUrl = `https://api.getbring.com/rest/bringrecipes/deeplink?url=${url}&requestedQuantity=${numberOfServings}&source=web`;
+		if (w) w.location = bringUrl;
+	}
 
+	let numberOfServings = recipe?.numberOfServings || 4;
 	function getIngredientPerServing(amount: number, numberOfServings: number) {
 		if (numberOfServings < 0) numberOfServings = -numberOfServings;
 		if (!numberOfServings) numberOfServings = recipe?.numberOfServings || 4;
@@ -11,7 +29,41 @@
 		const multiplier = numberOfServings / (recipe?.numberOfServings || 4);
 		return Number((multiplier * amount).toFixed(2));
 	}
+
+	function convertIngredientsToArray() {
+		const ingredients = [];
+		for (const category in recipe?.ingredients) {
+			for (const ingredient of recipe?.ingredients[category]) {
+				ingredients.push(
+					`${getIngredientPerServing(ingredient.amount!, numberOfServings)}${
+						ingredient.unit || ''
+					} ${ingredient.name}`
+				);
+			}
+		}
+		return ingredients;
+	}
+
+	function getJsonLD(recipe: Recipe | undefined) {
+		const jsonLD = {
+			'@context': 'https://schema.org',
+			'@type': 'Recipe',
+			author: 'Cooking Cache',
+			totalTime: `PT${recipe?.cookingTime}M`,
+			datePublished: recipe?.createdTime.split('T')[0],
+			image: recipe?.image,
+			recipeIngredient: convertIngredientsToArray(),
+			name: recipe?.title,
+			recipeInstructions: recipe?.description.join('\n'),
+			recipeYield: recipe?.numberOfServings
+		};
+		return `<script type="application/ld+json">${JSON.stringify(jsonLD)}<\/script>`;
+	}
 </script>
+
+<svelte:head>
+	{@html getJsonLD(recipe)}
+</svelte:head>
 
 {#if recipe}
 	<figure class="w-full max-h-72 flex items-center flex-col mt-4">
@@ -49,7 +101,7 @@
 						d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
 					/>
 				</svg>
-				{recipe.cookingTime || '60'} Minuten
+				<p>{recipe.cookingTime || '60'} Minuten</p>
 			</div>
 			<div class="badge badge-neutral h-8">
 				<svg
@@ -134,7 +186,6 @@
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
-						viewBox="0 0 24 24"
 						stroke-width="1.5"
 						stroke="currentColor"
 						class="w-5 h-5"
@@ -200,6 +251,14 @@
 			</table>
 		{/if}
 	</div>
+
+	<button
+		on:click={() => openBringUrl(recipe)}
+		class="px-4 py-2 mt-4 max-w-sm border flex items-center gap-2 bg-[#33454e] border-slate-200 rounded-lg hover:border-slate-400 hover:shadow transition duration-150"
+	>
+		<img class="h-10" alt="Bring" src="/recipe-bring-button.png" />
+		<span class="w-full font-bold text-center">Auf die Einkaufsliste setzen</span>
+	</button>
 
 	<div class="divider" />
 	<h2 class="font-bold text-lg">Zubereitung</h2>

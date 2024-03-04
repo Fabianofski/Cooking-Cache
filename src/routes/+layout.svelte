@@ -27,6 +27,12 @@
 		}
 	});
 
+	function isViewingRecipeWithAccessToken(currentPage: typeof $page) {
+		return (
+			currentPage.url.searchParams.has('key') && currentPage.url.pathname.startsWith('/recipe')
+		);
+	}
+
 	onMount(() => {
 		auth.onAuthStateChanged(async (value) => {
 			loadingStateStore.set('LOADING');
@@ -78,7 +84,7 @@
 			class="flex flex-col flex-1 justify-start items-center overflow-y-scroll overscroll-contain"
 		>
 			<div class="flex flex-col flex-1 max-w-3xl w-full relative px-2 py-4">
-				{#if $loadingStateStore === 'NOUSER'}
+				{#if $loadingStateStore === 'NOUSER' && !isViewingRecipeWithAccessToken($page)}
 					<AuthPage />
 				{:else}
 					<slot />
@@ -87,7 +93,7 @@
 		</div>
 	</div>
 
-	{#if $loadingStateStore !== 'NOUSER'}
+	{#if $loadingStateStore !== 'NOUSER' || isViewingRecipeWithAccessToken($page)}
 		<div class="btm-nav rounded-t-lg bg-base-300 max-w-3xl left-1/2 -translate-x-1/2 z-20">
 			<a class:active={$page.url.pathname === '/'} href="/">
 				<svg

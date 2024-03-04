@@ -1,26 +1,56 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { deleteRecipeFromCollection } from '$lib/http/recipe.handler';
-	import type { User } from 'firebase/auth';
+	import {
+		deleteRecipeFromCollection,
+		generateRecipeAccessToken,
+		getRecipeWithAccessToken
+	} from '$lib/http/recipe.handler';
+	import { onMount } from 'svelte';
 	import Header from '../../../../components/Header.svelte';
 	import type { Recipe } from '../../../../models/Recipe';
 	import { recipeCollectionsStore } from '../../../../stores/recipeCollectionsStore';
 	import { currentUser } from '../../../../stores/store';
 	import RecipePage from './RecipePage.svelte';
+	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 
 	export let data;
 
 	let recipe: Recipe | undefined;
 	let loading = true;
 	let editPermissions = false;
-	recipeCollectionsStore.subscribe((collections) => {
+	recipeCollectionsStore.subscribe(async (collections) => {
 		if (!collections || !(data.collectionId in collections)) return;
 		loading = false;
 		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
+
 		editPermissions =
 			collections[data.collectionId].ownerId === $currentUser?.uid ||
 			recipe?.creatorId === $currentUser?.uid;
 	});
+
+	let sharingLoading = false;
+	async function shareRecipe() {
+		if (!recipe || !$currentUser) return;
+		if (!recipe.accessToken) {
+			sharingLoading = true;
+			const newToken = await generateRecipeAccessToken($currentUser, data.collectionId, data.id);
+			sharingLoading = false;
+			if (!newToken) return;
+			recipe.accessToken = newToken;
+		}
+
+		const url = new URL(window.location.href);
+		url.searchParams.set('key', recipe.accessToken);
+		navigator.clipboard.writeText(url.href);
+
+		createNewAlert({
+			type: 'success',
+			message: 'Der Link zum Rezept wurde in die Zwischenablage kopiert'
+		});
+		try {
+			(document.activeElement as HTMLElement).blur();
+		} catch (e) {}
+	}
 
 	let deletionModal: HTMLDialogElement;
 	function openDeletionModal() {
@@ -34,6 +64,13 @@
 		await deleteRecipeFromCollection($currentUser, recipe);
 		loadingDeletion = false;
 	}
+
+	onMount(async () => {
+		if (!recipe && data.accessToken) {
+			recipe = await getRecipeWithAccessToken(data.collectionId, data.id, data.accessToken);
+			loading = false;
+		}
+	});
 </script>
 
 {#if recipe || loading}
@@ -48,6 +85,12 @@
 							title: 'Rezept bearbeiten',
 							callback: () => goto(`/recipe/${data.collectionId}/${data.id}/edit`),
 							icon: '/edit.svg'
+						},
+						{
+							title: 'Rezept teilen',
+							callback: shareRecipe,
+							loading: sharingLoading,
+							icon: '/share.svg'
 						},
 						{
 							title: 'Rezept Löschen',
