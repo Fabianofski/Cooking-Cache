@@ -1,25 +1,9 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
-	import { currentUser } from '../../../../stores/store';
-	import { generateRecipeAccessToken } from '$lib/http/recipe.handler';
+	import { browser } from '$app/environment';
 
 	export let recipe: Recipe | undefined;
-	async function openBringUrl(recipe: Recipe | undefined) {
-		let w = window.open('', '_blank');
-		if (!recipe || !$currentUser) return;
-		if (!recipe.accessToken) {
-			const newToken = await generateRecipeAccessToken(
-				$currentUser,
-				recipe.collectionId,
-				recipe.id
-			);
-			if (!newToken) return;
-			recipe.accessToken = newToken;
-		}
-		const url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}?key=${recipe?.accessToken}`;
-		const bringUrl = `https://api.getbring.com/rest/bringrecipes/deeplink?url=${url}&requestedQuantity=${numberOfServings}&source=web`;
-		if (w) w.location = bringUrl;
-	}
 
 	let numberOfServings = recipe?.numberOfServings || 4;
 	function getIngredientPerServing(amount: number, numberOfServings: number) {
@@ -59,10 +43,25 @@
 		};
 		return `<script type="application/ld+json">${JSON.stringify(jsonLD)}<\/script>`;
 	}
+
+    $: recipe, createBringButton();
+
+    function createBringButton() {
+        if (!recipe) return;
+        const bringBtn = document.getElementById('bringBtn');
+        if (!bringBtn) return;
+
+        const url = `https://cooking-cache.web.app/api/recipe/bring?collectionId=${recipe?.collectionId}&recipeId=${recipe?.id}&key=${recipe?.accessToken}`;
+        // @ts-ignore
+        window.bringwidgets?.import.render(bringBtn, {
+            url: url, 
+        });
+    }
 </script>
 
 <svelte:head>
 	{@html getJsonLD(recipe)}
+    <script async src="//platform.getbring.com/widgets/import.js"></script>
 </svelte:head>
 
 {#if recipe}
@@ -252,13 +251,7 @@
 		{/if}
 	</div>
 
-	<button
-		on:click={() => openBringUrl(recipe)}
-		class="px-4 py-2 mt-4 max-w-sm border flex items-center gap-2 bg-[#33454e] border-slate-200 rounded-lg hover:border-slate-400 hover:shadow transition duration-150"
-	>
-		<img class="h-10" alt="Bring" src="/recipe-bring-button.png" />
-		<span class="w-full font-bold text-center">Auf die Einkaufsliste setzen</span>
-	</button>
+    <div id="bringBtn"></div>
 
 	<div class="divider" />
 	<h2 class="font-bold text-lg">Zubereitung</h2>
