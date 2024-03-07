@@ -45,6 +45,7 @@
 	}
 
     $: recipe, createBringButton();
+    onMount(createBringButton);
 
     function createBringButton() {
         if (!recipe) return;
@@ -61,7 +62,7 @@
 
 <svelte:head>
 	{@html getJsonLD(recipe)}
-    <script async src="//platform.getbring.com/widgets/import.js"></script>
+    <script async src="https://platform.getbring.com/widgets/import.js" on:load={createBringButton}></script>
 </svelte:head>
 
 {#if recipe}
