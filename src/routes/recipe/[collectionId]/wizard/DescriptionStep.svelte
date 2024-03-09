@@ -29,8 +29,8 @@
 				<p class="p-2 font-bold w-8 text-center">
 					{index + 1}.
 				</p>
-				<input
-					class="input input-bordered h-12 w-full"
+				<textarea
+					class="input input-bordered h-12 w-full min-h-12 max-h-48"
 					placeholder={`Schritt ${index + 1}`}
 					bind:value={recipe.description[index]}
 					on:input={() => {
