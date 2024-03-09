@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
-	import { browser } from '$app/environment';
 
 	export let recipe: Recipe | undefined;
 
@@ -14,55 +13,28 @@
 		return Number((multiplier * amount).toFixed(2));
 	}
 
-	function convertIngredientsToArray() {
-		const ingredients = [];
-		for (const category in recipe?.ingredients) {
-			for (const ingredient of recipe?.ingredients[category]) {
-				ingredients.push(
-					`${getIngredientPerServing(ingredient.amount!, numberOfServings)}${
-						ingredient.unit || ''
-					} ${ingredient.name}`
-				);
-			}
-		}
-		return ingredients;
+	$: recipe, createBringButton();
+	onMount(createBringButton);
+
+	function createBringButton() {
+		if (!recipe) return;
+		const bringBtn = document.getElementById('bringBtn');
+		if (!bringBtn) return;
+
+		const url = `https://cooking-cache.web.app/api/recipe/bring?collectionId=${recipe?.collectionId}&recipeId=${recipe?.id}&key=${recipe?.accessToken}`;
+		// @ts-ignore
+		window.bringwidgets?.import.render(bringBtn, {
+			url: url
+		});
 	}
-
-	function getJsonLD(recipe: Recipe | undefined) {
-		const jsonLD = {
-			'@context': 'https://schema.org',
-			'@type': 'Recipe',
-			author: 'Cooking Cache',
-			totalTime: `PT${recipe?.cookingTime}M`,
-			datePublished: recipe?.createdTime.split('T')[0],
-			image: recipe?.image,
-			recipeIngredient: convertIngredientsToArray(),
-			name: recipe?.title,
-			recipeInstructions: recipe?.description.join('\n'),
-			recipeYield: recipe?.numberOfServings
-		};
-		return `<script type="application/ld+json">${JSON.stringify(jsonLD)}<\/script>`;
-	}
-
-    $: recipe, createBringButton();
-    onMount(createBringButton);
-
-    function createBringButton() {
-        if (!recipe) return;
-        const bringBtn = document.getElementById('bringBtn');
-        if (!bringBtn) return;
-
-        const url = `https://cooking-cache.web.app/api/recipe/bring?collectionId=${recipe?.collectionId}&recipeId=${recipe?.id}&key=${recipe?.accessToken}`;
-        // @ts-ignore
-        window.bringwidgets?.import.render(bringBtn, {
-            url: url, 
-        });
-    }
 </script>
 
 <svelte:head>
-	{@html getJsonLD(recipe)}
-    <script async src="https://platform.getbring.com/widgets/import.js" on:load={createBringButton}></script>
+	<script
+		async
+		src="https://platform.getbring.com/widgets/import.js"
+		on:load={createBringButton}
+	></script>
 </svelte:head>
 
 {#if recipe}
@@ -76,16 +48,9 @@
 {:else}
 	<div class="skeleton h-72 w-full rounded mt-4 self-center" />
 {/if}
-<div class="card-body px-0">
-	<h2 class="card-title">
-		{#if recipe}
-			{recipe.title === '' ? 'Rezept Titel' : recipe.title}
-		{:else}
-			<div class="skeleton h-6 w-16 rounded mt-2" />
-		{/if}
-	</h2>
+<div class="card-body px-0 pt-2">
 	{#if recipe}
-		<div class="flex gap-2 mt-1">
+		<div class="flex gap-2">
 			<div class="badge badge-neutral h-8">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -214,12 +179,12 @@
 						{category}:
 					</h3>
 				{/if}
-				<table class="table">
+				<table class="table px-8">
 					<tbody>
 						{#each recipe.ingredients[category] as ingredient}
 							{#if ingredient.name !== '' && ingredient.amount}
 								<tr class="hover">
-									<td class="w-48">
+									<td class="w-54 pl-16">
 										<strong>
 											{getIngredientPerServing(ingredient.amount, numberOfServings)}
 										</strong>
@@ -252,43 +217,34 @@
 		{/if}
 	</div>
 
-    <div id="bringBtn"></div>
+	<div class="flex justify-center">
+		<div class="w-full max-w-xs" id="bringBtn" />
+	</div>
 
 	<div class="divider" />
 	<h2 class="font-bold text-lg">Zubereitung</h2>
 
-	<div class="overflow-x-auto rounded-sm">
-		<table class="table rounded-none">
-			<thead>
-				<tr>
-					<th>Schritt</th>
-					<th>Beschreibung</th>
-					<th>Abgehakt</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#if recipe}
-					{#each recipe?.description.filter((x) => x.trim() != '') || [] as step, index}
-						<tr class="hover">
-							<td class="font-bold w-8 text-center">{index + 1}.</td>
-							<td class="text-justify w-full">{step}</td>
-							<td>
-								<div class="flex justify-center align-middle">
-									<input type="checkbox" class="checkbox" />
-								</div>
-							</td>
-						</tr>
-					{/each}
-				{:else}
-					{#each Array(3) as _}
-						<tr>
-							<td class="skeleton rounded-sm p-6" />
-							<td class="skeleton rounded-sm p-6" />
-							<td class="skeleton rounded-sm p-6" />
-						</tr>
-					{/each}
-				{/if}
-			</tbody>
-		</table>
+	<div class="px-4">
+		{#if recipe}
+			{#each recipe?.description.filter((x) => x.trim() != '') || [] as step, index}
+				<div class="flex mb-2">
+					<span class="text-xl w-8">{index + 1}.</span>
+					<span class="self-center text-justify text-sm w-full">{step}</span>
+				</div>
+			{/each}
+		{:else}
+			{#each Array(3) as _}
+				<span class="skeleton rounded-sm p-6" />
+				<span class="skeleton rounded-sm p-6" />
+				<span class="skeleton rounded-sm p-6" />
+			{/each}
+		{/if}
 	</div>
 </div>
+
+<style>
+	:global(.bring-import-link-dark) {
+		width: 100%;
+		max-width: none !important;
+	}
+</style>
