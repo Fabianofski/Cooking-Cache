@@ -53,7 +53,7 @@
 		});
 
 		App.addListener('appUrlOpen', async (data) => {
-			const slug = data.url.split('cooking-cache.com/')[1];
+			const slug = data.url.split('cooking-cache.web.app/')[1];
 			if (slug) goto(slug);
 		});
 	});
