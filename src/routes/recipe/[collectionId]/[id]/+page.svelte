@@ -41,7 +41,7 @@
 
 		const url = new URL(window.location.href);
 		url.searchParams.set('key', recipe.accessToken);
-		navigator.clipboard.writeText(url.href);
+		navigator.clipboard.writeText('https://cooking-cache.web.app' + url.pathname);
 
 		createNewAlert({
 			type: 'success',
