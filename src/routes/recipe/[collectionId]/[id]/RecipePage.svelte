@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
-	import { browser } from '$app/environment';
 
 	export let recipe: Recipe | undefined;
 
@@ -14,55 +13,28 @@
 		return Number((multiplier * amount).toFixed(2));
 	}
 
-	function convertIngredientsToArray() {
-		const ingredients = [];
-		for (const category in recipe?.ingredients) {
-			for (const ingredient of recipe?.ingredients[category]) {
-				ingredients.push(
-					`${getIngredientPerServing(ingredient.amount!, numberOfServings)}${
-						ingredient.unit || ''
-					} ${ingredient.name}`
-				);
-			}
-		}
-		return ingredients;
+	$: recipe, createBringButton();
+	onMount(createBringButton);
+
+	function createBringButton() {
+		if (!recipe) return;
+		const bringBtn = document.getElementById('bringBtn');
+		if (!bringBtn) return;
+
+		const url = `https://cooking-cache.web.app/api/recipe/bring?collectionId=${recipe?.collectionId}&recipeId=${recipe?.id}&key=${recipe?.accessToken}`;
+		// @ts-ignore
+		window.bringwidgets?.import.render(bringBtn, {
+			url: url
+		});
 	}
-
-	function getJsonLD(recipe: Recipe | undefined) {
-		const jsonLD = {
-			'@context': 'https://schema.org',
-			'@type': 'Recipe',
-			author: 'Cooking Cache',
-			totalTime: `PT${recipe?.cookingTime}M`,
-			datePublished: recipe?.createdTime.split('T')[0],
-			image: recipe?.image,
-			recipeIngredient: convertIngredientsToArray(),
-			name: recipe?.title,
-			recipeInstructions: recipe?.description.join('\n'),
-			recipeYield: recipe?.numberOfServings
-		};
-		return `<script type="application/ld+json">${JSON.stringify(jsonLD)}<\/script>`;
-	}
-
-    $: recipe, createBringButton();
-    onMount(createBringButton);
-
-    function createBringButton() {
-        if (!recipe) return;
-        const bringBtn = document.getElementById('bringBtn');
-        if (!bringBtn) return;
-
-        const url = `https://cooking-cache.web.app/api/recipe/bring?collectionId=${recipe?.collectionId}&recipeId=${recipe?.id}&key=${recipe?.accessToken}`;
-        // @ts-ignore
-        window.bringwidgets?.import.render(bringBtn, {
-            url: url, 
-        });
-    }
 </script>
 
 <svelte:head>
-	{@html getJsonLD(recipe)}
-    <script async src="https://platform.getbring.com/widgets/import.js" on:load={createBringButton}></script>
+	<script
+		async
+		src="https://platform.getbring.com/widgets/import.js"
+		on:load={createBringButton}
+	></script>
 </svelte:head>
 
 {#if recipe}
@@ -252,7 +224,7 @@
 		{/if}
 	</div>
 
-    <div id="bringBtn"></div>
+	<div id="bringBtn" />
 
 	<div class="divider" />
 	<h2 class="font-bold text-lg">Zubereitung</h2>
