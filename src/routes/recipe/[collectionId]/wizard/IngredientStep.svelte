@@ -57,10 +57,8 @@
 	}
 </script>
 
+<h2 class="text-md font-bold mt-2 col-span-full">Zutaten:</h2>
 <div class="form-control w-full col-span-full">
-	<label class="label" for="">
-		<span class="label-text">Zutaten*</span>
-	</label>
 	{#each Object.keys(recipe.ingredients) as category}
 		{#if category !== 'Default'}
 			<div class="flex items-center gap-1">
@@ -82,7 +80,7 @@
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
-							viewBox="0 0 24 24"
+							viewBox="0 0 32 32"
 							stroke-width="1.5"
 							stroke="currentColor"
 							class="w-5 h-5"
@@ -99,7 +97,7 @@
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
-							viewBox="0 0 24 24"
+							viewBox="0 0 32 32"
 							stroke-width="1.5"
 							stroke="currentColor"
 							class="w-5 h-5"
@@ -129,7 +127,7 @@
 							<input
 								type="number"
 								placeholder="1"
-								class="input input-sm input-bordered w-full"
+								class="input input-bordered input-sm w-full"
 								required
 								bind:value={recipe.ingredients[category][i].amount}
 							/>
@@ -163,7 +161,7 @@
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									fill="none"
-									viewBox="0 0 24 24"
+									viewBox="0 0 32 32"
 									stroke="currentColor"
 									class="w-5 h-5"
 								>
@@ -215,4 +213,51 @@
 	>
 		+
 	</button>
+</div>
+
+<h2 class="text-md font-bold mt-2 col-span-full">Nährwerte pro Portion:</h2>
+
+<div class="join">
+    <input
+        type="number"
+        placeholder="0 kcal"
+        class="input input-bordered input-sm w-full join-item"
+        bind:value={recipe.nutrition.calories}
+    />
+    <div class="join-item w-32 bg-base-300 px-6 flex items-center">
+        Kalorien 
+    </div>
+</div>
+<div class="join">
+    <input
+        type="number"
+        placeholder="0 g"
+        class="input input-bordered input-sm w-full join-item"
+        bind:value={recipe.nutrition.protein}
+    />
+    <div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">
+        Proteine 
+    </div>
+</div>
+<div class="join">
+    <input
+        type="number"
+        placeholder="0 g"
+        class="join-item input input-bordered input-sm w-full"
+        bind:value={recipe.nutrition.carbs}
+    />
+    <div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">
+        Carbs 
+    </div>
+</div>
+<div class="join">
+    <input
+        type="number"
+        placeholder="0 g"
+        class="input input-bordered input-sm w-full join-item"
+        bind:value={recipe.nutrition.fat}
+    />
+    <div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">
+        Fette 
+    </div>
 </div>

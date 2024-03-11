@@ -26,9 +26,11 @@
 		url: '',
 		createdTime: new Date().toISOString(),
 		updatedTime: new Date().toISOString(),
+		cookingTime: 20,
 		difficulty: 'medium',
 		numberOfServings: 4,
 		description: [],
+		nutrition: {},
 		id: '',
 		collectionId: collectionId,
 		creatorId: ''

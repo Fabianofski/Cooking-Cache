@@ -15,6 +15,12 @@ export interface Recipe {
 
 	ingredients: { [key: string]: Ingredient[] };
 	description: string[];
+    nutrition: {
+        calories?: number;
+        protein?: number;
+        fat?: number;
+        carbs?: number;
+    };
 
 	id: string;
 	collectionId: string;
