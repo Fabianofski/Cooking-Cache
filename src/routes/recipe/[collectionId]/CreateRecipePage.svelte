@@ -30,7 +30,6 @@
 		difficulty: 'medium',
 		numberOfServings: 4,
 		description: [],
-		nutrition: {},
 		id: '',
 		collectionId: collectionId,
 		creatorId: ''
