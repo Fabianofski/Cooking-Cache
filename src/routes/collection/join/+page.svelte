@@ -36,6 +36,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Tritt {recipeCollection?.name} bei! | Cooking Cache</title>
+</svelte:head>
+
 {#if !loading && !recipeCollection}
 	<div class="flex flex-col gap-16 items-center">
 		<h2 class="text-9xl">🙁</h2>

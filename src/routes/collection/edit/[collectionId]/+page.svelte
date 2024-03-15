@@ -131,6 +131,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{recipeCollection?.name} Einstellungen | Cooking Cache</title>
+</svelte:head>
+
 <div class="flex flex-col gap-6">
 	<Header
 		title={`Einstellungen: ${collectionName}`}

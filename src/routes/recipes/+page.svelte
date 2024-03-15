@@ -31,6 +31,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Rezeptsammlungen | Cooking Cache</title>
+</svelte:head>
+
 <Header title={'Rezeptsammlungen'} loading={false} />
 
 <div class="grid grid-cols-fluid gap-4 mt-4">

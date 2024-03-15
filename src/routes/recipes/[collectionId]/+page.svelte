@@ -72,6 +72,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{collectionName} | Cooking Cache</title>
+</svelte:head>
+
 <div class="flex-1 flex gap-4 flex-col items-center">
 	<Header backLink="/recipes" title={collectionName} loading={loadingState !== 'FINISHED'} />
 
