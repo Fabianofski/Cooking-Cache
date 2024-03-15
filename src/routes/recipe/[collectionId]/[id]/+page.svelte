@@ -12,6 +12,8 @@
 	import { currentUser } from '../../../../stores/store';
 	import RecipePage from './RecipePage.svelte';
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
+	import { Capacitor } from '@capacitor/core';
+	import { Share } from '@capacitor/share';
 
 	export let data;
 
@@ -41,12 +43,22 @@
 
 		const url = new URL(window.location.href);
 		url.searchParams.set('key', recipe.accessToken);
-		navigator.clipboard.writeText('https://cooking-cache.web.app' + url.pathname);
+		const finalUrl = 'https://cooking-cache.web.app' + url.pathname;
 
-		createNewAlert({
-			type: 'success',
-			message: 'Der Link zum Rezept wurde in die Zwischenablage kopiert'
-		});
+		if (Capacitor.isNativePlatform()) {
+			await Share.share({
+				title: recipe.title,
+				text: 'Schau dir das Rezept an!\n',
+				url: finalUrl
+			});
+		} else {
+			navigator.clipboard.writeText(finalUrl);
+			createNewAlert({
+				type: 'success',
+				message: 'Der Link zum Rezept wurde in die Zwischenablage kopiert'
+			});
+		}
+
 		try {
 			(document.activeElement as HTMLElement).blur();
 		} catch (e) {}
