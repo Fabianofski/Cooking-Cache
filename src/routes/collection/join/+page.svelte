@@ -1,30 +1,15 @@
 <script lang="ts">
 	import { joinRecipeCollectionWithInviteCode } from '$lib/http/recipeCollection.handler.js';
-	import { onMount } from 'svelte';
 	import type { Participant, RecipeCollection } from '../../../models/RecipeCollections.js';
 	import { currentUser } from '../../../stores/store.js';
 
 	export let data;
 
-	let recipeCollection: RecipeCollection | null;
-	let loading: boolean = true;
-	let owner: Participant | undefined;
-	onMount(() => {
-		fetch(`/api/collection/join?i=${data.inviteCode}`)
-			.then((res) => {
-				if (res.status !== 200) return Promise.reject(res);
-
-				res.json().then((data) => {
-					recipeCollection = data;
-					owner = recipeCollection?.participants?.find((p) => p.uid === data.ownerId);
-				});
-				loading = false;
-			})
-			.catch((err) => {
-				console.log(err);
-				loading = false;
-			});
-	});
+	let recipeCollection: RecipeCollection | null = data.recipeCollection;
+	let loading: boolean = false;
+	let owner: Participant | undefined = recipeCollection?.participants?.find(
+		(p) => p.uid === recipeCollection?.ownerId
+	);
 
 	let loadingJoin = false;
 	async function joinCollection() {
@@ -37,7 +22,13 @@
 </script>
 
 <svelte:head>
-	<title>Tritt {recipeCollection?.name} bei! | Cooking Cache</title>
+	<title>Tritt {recipeCollection?.name || 'meiner Rezeptsammlung'} bei! | Cooking Cache</title>
+	<meta property="og:title" content="{recipeCollection?.name} | Cooking Cache" />
+	<meta
+		property="og:description"
+		content="Tritt der Rezeptsammlung {recipeCollection?.name} bei und entdecke leckere Rezepte!"
+	/>
+	<meta property="og:image" content={recipeCollection?.cover || '/default-cover.jpg'} />
 </svelte:head>
 
 {#if !loading && !recipeCollection}

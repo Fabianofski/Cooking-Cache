@@ -2,27 +2,6 @@ import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection, RecipeCollections } from '../../../../models/RecipeCollections.js';
 
-export async function GET({ url }) {
-	let inviteCode = url.searchParams.get('i');
-
-	if (!inviteCode) return new Response('400 Bad Request', { status: 400 });
-
-	const data = await database
-		.ref(`collections`)
-		.orderByChild('inviteCode')
-		.equalTo(inviteCode)
-		.get();
-	let snapshot = (data.val() || {}) as RecipeCollections;
-	let collection: RecipeCollection | undefined = Object.values(snapshot).at(0);
-	if (!collection) return new Response('404 Not Found', { status: 404 });
-
-	if (collection.private) return new Response('403 Forbidden', { status: 403 });
-
-	collection.recipes = Object.values(collection.recipes || {});
-
-	return json(collection);
-}
-
 export async function POST({ url, request }) {
 	let inviteCode = url.searchParams.get('i');
 
