@@ -16,7 +16,7 @@ export async function load({ url }) {
 	} catch (e: any) {
 		console.error(e);
 		return {
-			recipeCollection: null,
+			recipeCollection: undefined,
 			inviteCode
 		};
 	}

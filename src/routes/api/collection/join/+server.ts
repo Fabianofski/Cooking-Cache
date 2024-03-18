@@ -1,6 +1,17 @@
 import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import type { RecipeCollection, RecipeCollections } from '../../../../models/RecipeCollections.js';
+import { getRecipeCollectionByInviteCode } from '../collection.handler.js';
+
+export async function GET({ url }) {
+	let inviteCode = url.searchParams.get('i');
+
+	if (!inviteCode) return new Response('400 Bad Request', { status: 400 });
+
+    const collection = await getRecipeCollectionByInviteCode(inviteCode);
+
+	return json(collection);
+}
 
 export async function POST({ url, request }) {
 	let inviteCode = url.searchParams.get('i');
