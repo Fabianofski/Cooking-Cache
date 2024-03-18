@@ -161,6 +161,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Profil | Cooking Cache</title>
+</svelte:head>
+
 <div class="flex flex-col gap-8">
 	<div class="flex px-4 justify-evenly gap-4 items-center">
 		<div class="avatar">

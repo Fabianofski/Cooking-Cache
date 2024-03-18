@@ -1,7 +1,7 @@
 import { auth, database } from '$lib/server/firebase.admin';
 import { json } from '@sveltejs/kit';
 import { v4 as uuidv4 } from 'uuid';
-import type { RecipeCollection } from '../../../models/RecipeCollections';
+import type { RecipeCollection, RecipeCollections } from '../../../models/RecipeCollections';
 import { defaultCovers } from '$lib/defaultCollectionCovers';
 
 export function generateRandomInviteCode() {
@@ -11,6 +11,25 @@ export function generateRandomInviteCode() {
 		code += characters.charAt(Math.floor(Math.random() * characters.length));
 	}
 	return code;
+}
+
+export async function getRecipeCollectionByInviteCode(
+	inviteCode: string
+): Promise<RecipeCollection> {
+	const data = await database
+		.ref(`collections`)
+		.orderByChild('inviteCode')
+		.equalTo(inviteCode)
+		.get();
+	let snapshot = (data.val() || {}) as RecipeCollections;
+	let collection: RecipeCollection | undefined = Object.values(snapshot).at(0);
+	if (!collection) throw new Error('404 Not Found');
+
+	if (collection.private) throw new Error('403 Forbidden');
+
+	collection.recipes = Object.values(collection.recipes || {});
+
+	return collection;
 }
 
 export async function getDefaultCollection(

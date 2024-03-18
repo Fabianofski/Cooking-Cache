@@ -85,6 +85,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{recipe?.title} | Cooking Cache</title>
+</svelte:head>
+
 {#if recipe || loading}
 	<div>
 		<Header

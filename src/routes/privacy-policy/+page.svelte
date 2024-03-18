@@ -1,3 +1,7 @@
+<svelte:head>
+	<title>Datenschutz | Cooking Cache</title>
+</svelte:head>
+
 <div class="card bg-base-200 shadow-xl p-8">
 	<h1 class="text-lg font-bold text-center">Datenschutzerklärung</h1>
 	<h2 class="text-md font-bold text-center my-2" id="m4158">Präambel</h2>

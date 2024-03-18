@@ -13,6 +13,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Bearbeiten: {recipe?.title} | Cooking Cache</title>
+</svelte:head>
+
 {#if recipe && !loading}
 	<CreateRecipePage collectionId={data.collectionId} mode="EDIT" {recipe} />
 {/if}

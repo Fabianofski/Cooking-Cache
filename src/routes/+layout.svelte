@@ -53,7 +53,8 @@
 		});
 
 		App.addListener('appUrlOpen', async (data) => {
-			const slug = data.url.split('cooking-cache.web.app/')[1];
+			let slug = data.url.split('cooking-cache.web.app/')[1];
+            if (slug.includes('collection/join')) slug = slug.replace('/join', '/join/mobile');
 			if (slug) goto(slug);
 		});
 	});

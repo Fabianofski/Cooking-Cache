@@ -107,6 +107,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Login | Cooking Cache</title>
+</svelte:head>
+
 <div class="flex flex-col gap-4">
 	<h1 class="text-2xl font-extrabold text-center mb-2">
 		{loggingIn ? 'Willkomen zurück!🙌' : 'Werde Mitglied!🥂'}
