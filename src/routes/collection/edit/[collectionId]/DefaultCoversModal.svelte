@@ -6,13 +6,12 @@
 
 	export let modal: HTMLDialogElement;
 	export let loadingCoverReplacement: boolean;
-	export let collectionId: string;
 	export let recipeCollection: RecipeCollection;
 
 	async function replaceCover(cover: string) {
 		if (!$currentUser) return;
 		loadingCoverReplacement = true;
-		await editRecipeCollectionCoverUrl($currentUser, collectionId, cover);
+		await editRecipeCollectionCoverUrl($currentUser, recipeCollection.id, cover);
 		loadingCoverReplacement = false;
 		modal.close();
 	}
