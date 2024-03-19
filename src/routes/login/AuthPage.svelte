@@ -94,6 +94,13 @@
 	}
 
 	function signUpWithEmailAndPassword() {
+		if (password !== repeatPassword) {
+			createNewAlert({
+				message: 'Die Passwörter stimmen nicht überein!',
+				type: 'error'
+			});
+			return;
+		}
 		loading = true;
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(async (userCredential) => {
