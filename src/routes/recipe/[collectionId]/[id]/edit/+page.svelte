@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getCollectionFromShortId } from '$lib/id.handler';
 	import type { Recipe } from '../../../../../models/Recipe';
 	import { recipeCollectionsStore } from '../../../../../stores/recipeCollectionsStore';
 	import CreateRecipePage from '../../CreateRecipePage.svelte';
@@ -7,9 +8,10 @@
 	let recipe: Recipe | undefined;
 	let loading = true;
 	recipeCollectionsStore.subscribe((collections) => {
-		if (!collections || !(data.collectionId in collections)) return;
+		const collection = getCollectionFromShortId(data.collectionId, collections);
+		if (!collection) return;
 		loading = false;
-		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
+		recipe = collection.recipes.find((recipe) => recipe.id === data.id);
 	});
 </script>
 
@@ -18,5 +20,5 @@
 </svelte:head>
 
 {#if recipe && !loading}
-	<CreateRecipePage collectionId={data.collectionId} mode="EDIT" {recipe} />
+	<CreateRecipePage shortId={data.collectionId} mode="EDIT" {recipe} />
 {/if}
