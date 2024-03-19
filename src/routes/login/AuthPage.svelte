@@ -17,6 +17,7 @@
 	import { currentUser } from '../../stores/store';
 	import { Capacitor } from '@capacitor/core';
 	import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
+	import { firebaseAuthErrors } from './firebaseAuthErrors';
 
 	let loggingIn = true;
 	let optIn = false;
@@ -42,9 +43,10 @@
 			);
 	}
 
-	function errorHandling(error: any) {
+	function errorHandling(error: { code: string; message: string }) {
+		const firebaseErrorMessage = firebaseAuthErrors[error.code] || error.message;
 		createNewAlert({
-			message: error.message,
+			message: firebaseErrorMessage,
 			type: 'error'
 		});
 		loading = false;
@@ -92,6 +94,13 @@
 	}
 
 	function signUpWithEmailAndPassword() {
+		if (password !== repeatPassword) {
+			createNewAlert({
+				message: 'Die Passwörter stimmen nicht überein!',
+				type: 'error'
+			});
+			return;
+		}
 		loading = true;
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(async (userCredential) => {
