@@ -63,7 +63,7 @@ describe('RecipeCollectionCard', () => {
 		const { getByTestId } = render(RecipeCollectionCard, { recipeCollection: recipeCollection });
 
 		const link = getByTestId('collection-link');
-		expect(link.getAttribute('href')).toBe(`/recipes/testrecipecollection`);
+		expect(link.getAttribute('href')).toBe(`/recipes/test-recipe-collection`);
 	});
 
 	it('should have the name of the collection', () => {

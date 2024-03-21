@@ -25,8 +25,8 @@ function generateShortCollectionId(
 }
 
 function generateShortId(value: any, values: any[], column: string) {
-	const valuesWithSameName = values.filter((collection) => collection.name === value[column]);
-	const name = value[column].replaceAll(' ', '').replaceAll('-', '').toLowerCase();
+	const valuesWithSameName = values.filter((x) => x[column] === value[column]);
+	const name = value[column].replaceAll(' ', '-').replaceAll('_', '').toLowerCase();
 	if (valuesWithSameName.length === 1) {
 		return name;
 	} else {
@@ -38,7 +38,7 @@ function generateShortId(value: any, values: any[], column: string) {
 			idLength++;
 			uniqueId = value.id.slice(0, idLength);
 		}
-		return `${name}-${uniqueId}`;
+		return `${name}_${uniqueId}`;
 	}
 }
 
@@ -61,11 +61,11 @@ function getCollectionFromShortId(shortId: string, recipeCollections: RecipeColl
 }
 
 function getValueFromShortId(shortId: string, values: any[], column: string) {
-	const name = shortId.split('-')[0];
-	const id = shortId.replaceAll(name + '-', '');
+	const name = shortId.split('_')[0];
+	const id = shortId.replaceAll(name + '_', '');
 	const value = values.find((x) => {
 		const idIsEqual = id !== '' || x.id.slice(0, id.length) === id;
-		const valueName = x[column].replaceAll(' ', '').replaceAll('-', '').toLowerCase();
+		const valueName = x[column].replaceAll(' ', '-').replaceAll('_', '').toLowerCase();
 		return valueName === name && idIsEqual;
 	});
 	return value;
