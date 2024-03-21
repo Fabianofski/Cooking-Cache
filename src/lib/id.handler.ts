@@ -1,9 +1,10 @@
 import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
 
 function generateShortCollectionId(
-	recipeCollection: RecipeCollection,
+	recipeCollection: RecipeCollection | undefined,
 	recipeCollections: RecipeCollections
 ) {
+	if (!recipeCollection) return '';
 	const collectionsWithSameName = Object.values(recipeCollections).filter(
 		(collection) => collection.name === recipeCollection.name
 	);

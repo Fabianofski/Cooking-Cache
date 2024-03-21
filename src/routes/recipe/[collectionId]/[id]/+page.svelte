@@ -41,7 +41,7 @@
 		if (!recipe || !$currentUser) return;
 		if (!recipe.accessToken) {
 			sharingLoading = true;
-			const newToken = await generateRecipeAccessToken($currentUser, data.collectionId, data.id);
+			const newToken = await generateRecipeAccessToken($currentUser, recipeCollection.id, data.id);
 			sharingLoading = false;
 			if (!newToken) return;
 			recipe.accessToken = newToken;
@@ -49,7 +49,8 @@
 
 		const url = new URL(window.location.href);
 		url.searchParams.set('key', recipe.accessToken);
-		const finalUrl = 'https://cooking-cache.web.app' + url.pathname;
+		const finalUrl =
+			'https://cooking-cache.web.app' + url.pathname + '?' + url.searchParams.toString();
 
 		if (Capacitor.isNativePlatform()) {
 			await Share.share({
@@ -126,7 +127,14 @@
 							icon: '/delete.svg'
 						}
 				  ]
-				: []}
+				: [
+						{
+							title: 'Rezept teilen',
+							callback: shareRecipe,
+							loading: sharingLoading,
+							icon: '/share.svg'
+						}
+				  ]}
 		/>
 		<RecipePage {recipe} />
 	</div>
