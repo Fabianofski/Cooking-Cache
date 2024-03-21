@@ -1,41 +1,79 @@
+import type { Recipe } from '../models/Recipe';
 import type { RecipeCollection, RecipeCollections } from '../models/RecipeCollections';
+
+function generateShortRecipeId(recipe: Recipe | undefined, recipes: Recipe[]) {
+	if (!recipe) return '';
+	try {
+		return generateShortId(recipe, recipes, 'title');
+	} catch (error) {
+		console.error(error);
+		return '';
+	}
+}
 
 function generateShortCollectionId(
 	recipeCollection: RecipeCollection | undefined,
 	recipeCollections: RecipeCollections
 ) {
 	if (!recipeCollection) return '';
-	const collectionsWithSameName = Object.values(recipeCollections).filter(
-		(collection) => collection.name === recipeCollection.name
-	);
-	const name = recipeCollection.name.replaceAll(' ', '').replaceAll('-', '').toLowerCase();
-	if (collectionsWithSameName.length === 1) {
+	try {
+		return generateShortId(recipeCollection, Object.values(recipeCollections), 'name');
+	} catch (error) {
+		console.error(error);
+		return '';
+	}
+}
+
+function generateShortId(value: any, values: any[], column: string) {
+	const valuesWithSameName = values.filter((collection) => collection.name === value[column]);
+	const name = value[column].replaceAll(' ', '').replaceAll('-', '').toLowerCase();
+	if (valuesWithSameName.length === 1) {
 		return name;
 	} else {
 		let idLength = 3;
-		let uniqueId = recipeCollection.id.slice(0, idLength);
+		let uniqueId = value.id.slice(0, idLength);
 		while (
-			Object.values(recipeCollections).filter(
-				(collection) => collection.id.slice(0, idLength) === uniqueId
-			).length > 1
+			values.filter((collection) => collection.id.slice(0, idLength) === uniqueId).length > 1
 		) {
 			idLength++;
-			uniqueId = recipeCollection.id.slice(0, idLength);
+			uniqueId = value.id.slice(0, idLength);
 		}
 		return `${name}-${uniqueId}`;
 	}
 }
 
-function getCollectionFromShortId(shortId: string, recipeCollections: RecipeCollections) {
-	shortId = shortId.toLowerCase();
-	const name = shortId.split('-')[0];
-	const id = shortId.replaceAll(name + '-', '');
-	const collection: RecipeCollection | undefined = Object.values(recipeCollections).find((x) => {
-		const idIsEqual = id !== '' || x.id.slice(0, id.length) === id;
-		const collectionName = x.name.replaceAll(' ', '').replaceAll('-', '').toLowerCase();
-		return collectionName === name && idIsEqual;
-	});
-	return collection;
+function getRecipeFromShortId(shortId: string, recipes: Recipe[]) {
+	try {
+		return getValueFromShortId(shortId, recipes, 'title');
+	} catch (error) {
+		console.error(error);
+		return undefined;
+	}
 }
 
-export { generateShortCollectionId, getCollectionFromShortId };
+function getCollectionFromShortId(shortId: string, recipeCollections: RecipeCollections) {
+	try {
+		return getValueFromShortId(shortId, Object.values(recipeCollections), 'name');
+	} catch (error) {
+		console.error(error);
+		return undefined;
+	}
+}
+
+function getValueFromShortId(shortId: string, values: any[], column: string) {
+	const name = shortId.split('-')[0];
+	const id = shortId.replaceAll(name + '-', '');
+	const value = values.find((x) => {
+		const idIsEqual = id !== '' || x.id.slice(0, id.length) === id;
+		const valueName = x[column].replaceAll(' ', '').replaceAll('-', '').toLowerCase();
+		return valueName === name && idIsEqual;
+	});
+	return value;
+}
+
+export {
+	generateShortCollectionId,
+	getCollectionFromShortId,
+	generateShortRecipeId,
+	getRecipeFromShortId
+};

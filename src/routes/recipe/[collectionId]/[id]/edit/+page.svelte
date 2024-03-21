@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { getCollectionFromShortId } from '$lib/id.handler';
+	import { getCollectionFromShortId, getRecipeFromShortId } from '$lib/id.handler';
 	import type { Recipe } from '../../../../../models/Recipe';
+	import type { RecipeCollection } from '../../../../../models/RecipeCollections';
 	import { recipeCollectionsStore } from '../../../../../stores/recipeCollectionsStore';
 	import CreateRecipePage from '../../CreateRecipePage.svelte';
 
@@ -8,10 +9,10 @@
 	let recipe: Recipe | undefined;
 	let loading = true;
 	recipeCollectionsStore.subscribe((collections) => {
-		const collection = getCollectionFromShortId(data.collectionId, collections);
+		const collection: RecipeCollection = getCollectionFromShortId(data.collectionId, collections);
 		if (!collection) return;
 		loading = false;
-		recipe = collection.recipes.find((recipe) => recipe.id === data.id);
+		recipe = getRecipeFromShortId(data.id, collection.recipes);
 	});
 </script>
 

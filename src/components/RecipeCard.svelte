@@ -4,7 +4,7 @@
 	import { currentUser } from '../stores/store';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 	import type { Participant, RecipeCollection } from '../models/RecipeCollections';
-	import { generateShortCollectionId } from '$lib/id.handler';
+	import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 
 	export let recipe: Recipe;
 	let recipeCollection: RecipeCollection;
@@ -32,9 +32,10 @@
 
 <a
 	class="w-full"
-	href={`/recipe/${generateShortCollectionId(recipeCollection, $recipeCollectionsStore)}/${
-		recipe.id
-	}`}
+	href={`/recipe/${generateShortCollectionId(
+		recipeCollection,
+		$recipeCollectionsStore
+	)}/${generateShortRecipeId(recipe, recipeCollection.recipes)}`}
 	data-testid="recipe-link"
 >
 	<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">

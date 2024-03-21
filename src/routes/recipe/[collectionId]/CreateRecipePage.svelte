@@ -11,7 +11,7 @@
 	import ImportStep from './wizard/ImportStep.svelte';
 	import { Capacitor } from '@capacitor/core';
 	import axios from 'axios';
-	import { getCollectionFromShortId } from '$lib/id.handler';
+	import { generateShortRecipeId, getCollectionFromShortId } from '$lib/id.handler';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 
 	let files: FileList | null = null;
@@ -105,7 +105,12 @@
 
 <Header
 	title={mode === 'CREATE' ? 'Neues Rezept hinzufügen' : 'Rezept bearbeiten'}
-	backLink={mode === 'CREATE' ? `/recipes/${shortId}` : `/recipe/${shortId}/${recipe.id}`}
+	backLink={mode === 'CREATE'
+		? `/recipes/${shortId}`
+		: `/recipe/${shortId}/${generateShortRecipeId(
+				recipe,
+				$recipeCollectionsStore[recipe.collectionId].recipes
+		  )}`}
 />
 
 <ul class="steps my-6">

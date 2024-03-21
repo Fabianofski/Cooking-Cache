@@ -14,7 +14,11 @@
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import { Capacitor } from '@capacitor/core';
 	import { Share } from '@capacitor/share';
-	import { generateShortCollectionId, getCollectionFromShortId } from '$lib/id.handler';
+	import {
+		generateShortCollectionId,
+		getCollectionFromShortId,
+		getRecipeFromShortId
+	} from '$lib/id.handler';
 	import type { RecipeCollection } from '../../../../models/RecipeCollections';
 
 	export let data;
@@ -30,7 +34,7 @@
 		loading = false;
 
 		recipeCollection = collection;
-		recipe = recipeCollection.recipes.find((recipe) => recipe.id === data.id);
+		recipe = getRecipeFromShortId(data.id, recipeCollection.recipes);
 
 		editPermissions =
 			recipeCollection.ownerId === $currentUser?.uid || recipe?.creatorId === $currentUser?.uid;
