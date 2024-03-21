@@ -7,7 +7,7 @@ function generateShortCollectionId(
 	const collectionsWithSameName = Object.values(recipeCollections).filter(
 		(collection) => collection.name === recipeCollection.name
 	);
-	const name = recipeCollection.name.replace(' ', '').replace('-', '').toLowerCase();
+	const name = recipeCollection.name.replaceAll(' ', '').replaceAll('-', '').toLowerCase();
 	if (collectionsWithSameName.length === 1) {
 		return name;
 	} else {
@@ -28,10 +28,11 @@ function generateShortCollectionId(
 function getCollectionFromShortId(shortId: string, recipeCollections: RecipeCollections) {
 	shortId = shortId.toLowerCase();
 	const name = shortId.split('-')[0];
-	const id = shortId.replace(name + '-', '');
+	const id = shortId.replaceAll(name + '-', '');
 	const collection: RecipeCollection | undefined = Object.values(recipeCollections).find((x) => {
 		const idIsEqual = id !== '' || x.id.slice(0, id.length) === id;
-		return x.name.toLowerCase() === name && idIsEqual;
+		const collectionName = x.name.replaceAll(' ', '').replaceAll('-', '').toLowerCase();
+		return collectionName === name && idIsEqual;
 	});
 	return collection;
 }

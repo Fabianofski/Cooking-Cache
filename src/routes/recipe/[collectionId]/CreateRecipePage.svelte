@@ -11,7 +11,7 @@
 	import ImportStep from './wizard/ImportStep.svelte';
 	import { Capacitor } from '@capacitor/core';
 	import axios from 'axios';
-	import { generateShortCollectionIdById, getCollectionFromShortId } from '$lib/id.handler';
+	import { getCollectionFromShortId } from '$lib/id.handler';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 
 	let files: FileList | null = null;
