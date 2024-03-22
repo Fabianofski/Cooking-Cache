@@ -14,20 +14,30 @@
 	import { createNewAlert } from '../../../../components/alerts/alert.handler';
 	import { Capacitor } from '@capacitor/core';
 	import { Share } from '@capacitor/share';
+	import {
+		generateShortCollectionId,
+		getCollectionFromShortId,
+		getRecipeFromShortId
+	} from '$lib/id.handler';
+	import type { RecipeCollection } from '../../../../models/RecipeCollections';
 
 	export let data;
 
 	let recipe: Recipe | undefined;
+	let recipeCollection: RecipeCollection;
+
 	let loading = true;
 	let editPermissions = false;
-	recipeCollectionsStore.subscribe(async (collections) => {
-		if (!collections || !(data.collectionId in collections)) return;
+	recipeCollectionsStore.subscribe((collections) => {
+		const collection = getCollectionFromShortId(data.collectionId, collections);
+		if (!collection) return;
 		loading = false;
-		recipe = collections[data.collectionId].recipes.find((recipe) => recipe.id === data.id);
+
+		recipeCollection = collection;
+		recipe = getRecipeFromShortId(data.id, recipeCollection.recipes);
 
 		editPermissions =
-			collections[data.collectionId].ownerId === $currentUser?.uid ||
-			recipe?.creatorId === $currentUser?.uid;
+			recipeCollection.ownerId === $currentUser?.uid || recipe?.creatorId === $currentUser?.uid;
 	});
 
 	let sharingLoading = false;
@@ -35,7 +45,7 @@
 		if (!recipe || !$currentUser) return;
 		if (!recipe.accessToken) {
 			sharingLoading = true;
-			const newToken = await generateRecipeAccessToken($currentUser, data.collectionId, data.id);
+			const newToken = await generateRecipeAccessToken($currentUser, recipeCollection.id, data.id);
 			sharingLoading = false;
 			if (!newToken) return;
 			recipe.accessToken = newToken;
@@ -43,7 +53,8 @@
 
 		const url = new URL(window.location.href);
 		url.searchParams.set('key', recipe.accessToken);
-		const finalUrl = 'https://cooking-cache.web.app' + url.pathname;
+		const finalUrl =
+			'https://cooking-cache.web.app' + url.pathname + '?' + url.searchParams.toString();
 
 		if (Capacitor.isNativePlatform()) {
 			await Share.share({
@@ -92,14 +103,20 @@
 {#if recipe || loading}
 	<div>
 		<Header
-			backLink={`/recipes/${data.collectionId}`}
+			backLink={`/recipes/${generateShortCollectionId(recipeCollection, $recipeCollectionsStore)}`}
 			title={recipe?.title || ''}
 			{loading}
 			options={editPermissions
 				? [
 						{
 							title: 'Rezept bearbeiten',
-							callback: () => goto(`/recipe/${data.collectionId}/${data.id}/edit`),
+							callback: () =>
+								goto(
+									`/recipe/${generateShortCollectionId(
+										recipeCollection,
+										$recipeCollectionsStore
+									)}/${data.id}/edit`
+								),
 							icon: '/edit.svg'
 						},
 						{
@@ -114,7 +131,14 @@
 							icon: '/delete.svg'
 						}
 				  ]
-				: []}
+				: [
+						{
+							title: 'Rezept teilen',
+							callback: shareRecipe,
+							loading: sharingLoading,
+							icon: '/share.svg'
+						}
+				  ]}
 		/>
 		<RecipePage {recipe} />
 	</div>

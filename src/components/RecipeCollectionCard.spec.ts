@@ -24,7 +24,9 @@ describe('RecipeCollectionCard', () => {
 			description: [],
 			id: '',
 			collectionId: '',
-			creatorId: ''
+			creatorId: '',
+			numberOfServings: 4,
+			cookingTime: 20
 		};
 
 		otherUser = {
@@ -61,7 +63,7 @@ describe('RecipeCollectionCard', () => {
 		const { getByTestId } = render(RecipeCollectionCard, { recipeCollection: recipeCollection });
 
 		const link = getByTestId('collection-link');
-		expect(link.getAttribute('href')).toBe(`/recipes/${recipeCollection.id}`);
+		expect(link.getAttribute('href')).toBe(`/recipes/test-recipe-collection`);
 	});
 
 	it('should have the name of the collection', () => {

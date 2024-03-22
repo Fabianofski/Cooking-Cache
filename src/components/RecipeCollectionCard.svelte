@@ -2,6 +2,8 @@
 	import type { User } from 'firebase/auth';
 	import type { Participant, RecipeCollection } from '../models/RecipeCollections';
 	import { currentUser } from '../stores/store';
+	import { generateShortCollectionId } from '$lib/id.handler';
+	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 
 	export let recipeCollection: RecipeCollection | null;
 
@@ -15,7 +17,13 @@
 	});
 </script>
 
-<a class="w-full" href={`/recipes/${recipeCollection?.id}`} data-testid="collection-link">
+<a
+	class="w-full"
+	href={recipeCollection
+		? `/recipes/${generateShortCollectionId(recipeCollection, $recipeCollectionsStore)}`
+		: ''}
+	data-testid="collection-link"
+>
 	<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">
 		<figure class="h-32 overflow-visible relative">
 			<img
@@ -58,7 +66,11 @@
 					</div>
 					<a
 						class="btn-ghost rounded"
-						href={`/collection/edit/${recipeCollection?.id}`}
+						href={`/collection/edit/${
+							recipeCollection
+								? generateShortCollectionId(recipeCollection, $recipeCollectionsStore)
+								: ''
+						}`}
 						data-testid="edit-collection-link"
 					>
 						<svg

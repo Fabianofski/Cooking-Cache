@@ -15,9 +15,10 @@
 	import ParticipantModal from './ParticipantModal.svelte';
 	import { Capacitor } from '@capacitor/core';
 	import { Share } from '@capacitor/share';
+	import { getCollectionFromShortId } from '$lib/id.handler';
 
 	export let data;
-	const collectionId = data.collectionId;
+	const shortId = data.collectionId;
 	let collectionName: string;
 
 	let loadingState: LoadingState;
@@ -34,8 +35,9 @@
 	let inviteLink: string = '';
 	let recipeCollection: RecipeCollection;
 	recipeCollectionsStore.subscribe((value) => {
-		if (collectionId in value) {
-			recipeCollection = value[collectionId];
+		const collection = getCollectionFromShortId(shortId, value);
+		if (collection) {
+			recipeCollection = collection;
 			collectionName = recipeCollection.name;
 			if (recipeCollection.ownerId === user?.uid) isOwner = true;
 			inviteLink = `https://cooking-cache.web.app/collection/join?i=${recipeCollection.inviteCode}`;
@@ -78,7 +80,7 @@
 		loadingRename = true;
 		collectionName = newName;
 
-		await editRecipeCollectionName(user, collectionId, newName);
+		await editRecipeCollectionName(user, recipeCollection?.id, newName);
 
 		loadingRename = false;
 		editingName = false;
@@ -100,7 +102,7 @@
 		if (!file || !user) return;
 
 		loadingCoverReplacement = true;
-		await editRecipeCollectionCoverImage(user, collectionId, file);
+		await editRecipeCollectionCoverImage(user, recipeCollection?.id, file);
 		loadingCoverReplacement = false;
 	}
 
@@ -116,7 +118,7 @@
 		if (!user) return;
 
 		loadingVisibilityChange = true;
-		await toggleRecipeCollectionVisibility(user, collectionId, !recipeCollection.private);
+		await toggleRecipeCollectionVisibility(user, recipeCollection?.id, !recipeCollection.private);
 		loadingVisibilityChange = false;
 	}
 
@@ -484,10 +486,18 @@
 		<DefaultCoversModal
 			bind:modal={defaultCoversModal}
 			bind:loadingCoverReplacement
-			{collectionId}
 			{recipeCollection}
 		/>
-		<DeleteCollectionModal bind:dialog {isOwner} {collectionId} bind:loadingDeletion />
-		<ParticipantModal bind:modal={participantModal} {participant} {collectionId} />
+		<DeleteCollectionModal
+			bind:dialog
+			{isOwner}
+			collectionId={recipeCollection?.id}
+			bind:loadingDeletion
+		/>
+		<ParticipantModal
+			bind:modal={participantModal}
+			{participant}
+			collectionId={recipeCollection?.id}
+		/>
 	</div>
 </div>

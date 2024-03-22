@@ -11,13 +11,17 @@
 	import ImportStep from './wizard/ImportStep.svelte';
 	import { Capacitor } from '@capacitor/core';
 	import axios from 'axios';
+	import { generateShortRecipeId, getCollectionFromShortId } from '$lib/id.handler';
+	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
 	let selectedStep = 0;
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
-	export let collectionId: string;
+	export let shortId: string;
+	let collectionId = getCollectionFromShortId(shortId, $recipeCollectionsStore)?.id || '';
+
 	export let recipe: Recipe = {
 		image: '',
 		title: '',
@@ -93,11 +97,20 @@
 	}
 </script>
 
+<svelte:head>
+	<title>
+		{mode === 'CREATE' ? 'Neues Rezept hinzufügen' : 'Rezept bearbeiten'} | Cooking Cache
+	</title>
+</svelte:head>
+
 <Header
 	title={mode === 'CREATE' ? 'Neues Rezept hinzufügen' : 'Rezept bearbeiten'}
 	backLink={mode === 'CREATE'
-		? `/recipes/${recipe.collectionId}`
-		: `/recipe/${recipe.collectionId}/${recipe.id}`}
+		? `/recipes/${shortId}`
+		: `/recipe/${shortId}/${generateShortRecipeId(
+				recipe,
+				$recipeCollectionsStore[recipe.collectionId].recipes
+		  )}`}
 />
 
 <ul class="steps my-6">

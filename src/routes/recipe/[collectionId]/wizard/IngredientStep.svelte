@@ -2,6 +2,7 @@
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
+	if (!recipe.nutrition) recipe.nutrition = {};
 
 	let editingCategoryName: {
 		[key: string]: {
@@ -217,47 +218,41 @@
 
 <h2 class="text-md font-bold mt-2 col-span-full">Nährwerte pro Portion:</h2>
 
-<div class="join">
-    <input
-        type="number"
-        placeholder="0 kcal"
-        class="input input-bordered input-sm w-full join-item"
-        bind:value={recipe.nutrition.calories}
-    />
-    <div class="join-item w-32 bg-base-300 px-6 flex items-center">
-        Kalorien 
-    </div>
-</div>
-<div class="join">
-    <input
-        type="number"
-        placeholder="0 g"
-        class="input input-bordered input-sm w-full join-item"
-        bind:value={recipe.nutrition.protein}
-    />
-    <div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">
-        Proteine 
-    </div>
-</div>
-<div class="join">
-    <input
-        type="number"
-        placeholder="0 g"
-        class="join-item input input-bordered input-sm w-full"
-        bind:value={recipe.nutrition.carbs}
-    />
-    <div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">
-        Carbs 
-    </div>
-</div>
-<div class="join">
-    <input
-        type="number"
-        placeholder="0 g"
-        class="input input-bordered input-sm w-full join-item"
-        bind:value={recipe.nutrition.fat}
-    />
-    <div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">
-        Fette 
-    </div>
-</div>
+{#if recipe.nutrition}
+	<div class="join">
+		<input
+			type="number"
+			placeholder="0 kcal"
+			class="input input-bordered input-sm w-full join-item"
+			bind:value={recipe.nutrition.calories}
+		/>
+		<div class="join-item w-32 bg-base-300 px-6 flex items-center">Kalorien</div>
+	</div>
+	<div class="join">
+		<input
+			type="number"
+			placeholder="0 g"
+			class="input input-bordered input-sm w-full join-item"
+			bind:value={recipe.nutrition.protein}
+		/>
+		<div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">Proteine</div>
+	</div>
+	<div class="join">
+		<input
+			type="number"
+			placeholder="0 g"
+			class="join-item input input-bordered input-sm w-full"
+			bind:value={recipe.nutrition.carbs}
+		/>
+		<div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">Carbs</div>
+	</div>
+	<div class="join">
+		<input
+			type="number"
+			placeholder="0 g"
+			class="input input-bordered input-sm w-full join-item"
+			bind:value={recipe.nutrition.fat}
+		/>
+		<div class="join-item w-32 whitespace-nowrap bg-base-300 px-6 flex items-center">Fette</div>
+	</div>
+{/if}

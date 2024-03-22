@@ -2,6 +2,7 @@
 	import CreateRecipePage from '../CreateRecipePage.svelte';
 
 	export let data;
+	const shortId = data.collectionId;
 </script>
 
-<CreateRecipePage collectionId={data.collectionId} mode="CREATE" />
+<CreateRecipePage {shortId} mode="CREATE" />

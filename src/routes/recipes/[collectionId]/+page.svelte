@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { getCollectionFromShortId } from '$lib/id.handler';
 	import Header from '../../../components/Header.svelte';
 	import RecipeCard from '../../../components/RecipeCard.svelte';
 	import RecipeSkeleton from '../../../components/RecipeSkeleton.svelte';
@@ -16,9 +17,10 @@
 	let recipes: Recipe[] = [];
 	let collectionName: string;
 	recipeCollectionsStore.subscribe((value) => {
-		if (!(data.collectionId in value)) return;
-		recipes = value[data.collectionId].recipes || [];
-		collectionName = value[data.collectionId].name;
+		const collection = getCollectionFromShortId(data.collectionId, value);
+		if (!collection) return;
+		recipes = collection.recipes || [];
+		collectionName = collection.name;
 	});
 
 	let loadingState: LoadingState;

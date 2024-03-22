@@ -3,9 +3,11 @@
 	import { difficultyLabels, type Recipe } from '../models/Recipe';
 	import { currentUser } from '../stores/store';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
-	import type { Participant } from '../models/RecipeCollections';
+	import type { Participant, RecipeCollection } from '../models/RecipeCollections';
+	import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 
 	export let recipe: Recipe;
+	let recipeCollection: RecipeCollection;
 
 	let user: User | null = null;
 	let owner: Participant | undefined;
@@ -14,7 +16,7 @@
 	});
 
 	recipeCollectionsStore.subscribe((value) => {
-		const recipeCollection = value[recipe.collectionId];
+		recipeCollection = value[recipe.collectionId];
 		owner = recipeCollection?.participants?.find(
 			(participant) => participant.uid === recipe.creatorId
 		);
@@ -28,7 +30,14 @@
 	}
 </script>
 
-<a class="w-full" href={`/recipe/${recipe.collectionId}/${recipe.id}`} data-testid="recipe-link">
+<a
+	class="w-full"
+	href={`/recipe/${generateShortCollectionId(
+		recipeCollection,
+		$recipeCollectionsStore
+	)}/${generateShortRecipeId(recipe, recipeCollection.recipes)}`}
+	data-testid="recipe-link"
+>
 	<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">
 		<figure class="h-32 overflow-visible relative">
 			<img
