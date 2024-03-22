@@ -33,7 +33,8 @@ function generateShortId(value: any, values: any[], column: string) {
 		let idLength = 3;
 		let uniqueId = value.id.slice(0, idLength);
 		while (
-			values.filter((collection) => collection.id.slice(0, idLength) === uniqueId).length > 1
+			values.filter((collection) => collection.id.slice(0, idLength) === uniqueId).length > 1 &&
+			value.id.length > idLength
 		) {
 			idLength++;
 			uniqueId = value.id.slice(0, idLength);

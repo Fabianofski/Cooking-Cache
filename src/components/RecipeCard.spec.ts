@@ -30,7 +30,7 @@ describe('RecipeCard', () => {
 			difficulty: 'easy',
 			ingredients: {},
 			description: ['Step 1', 'Step 2', 'Step 3'],
-			id: 'recipe-id',
+			id: 'recipe-id-1',
 			collectionId: '0987654321',
 			creatorId: 'creator-id',
 			numberOfServings: 4,
@@ -44,7 +44,7 @@ describe('RecipeCard', () => {
 			inviteCode: '12345',
 			private: false,
 			cover: 'https://www.test.com/test.jpg',
-			recipes: [recipe, recipe, recipe],
+			recipes: [recipe, { ...recipe, id: 'recipe-id-2' }, { ...recipe, id: 'recipe-id-3' }],
 			participants: [
 				{
 					uid: testUser.uid,
@@ -64,7 +64,7 @@ describe('RecipeCard', () => {
 		const { getByTestId } = render(RecipeCard, { recipe: recipe });
 
 		const link = getByTestId('recipe-link');
-		expect(link.getAttribute('href')).toBe(`/recipe/test-recipe-collection/title`);
+		expect(link.getAttribute('href')).toBe(`/recipe/test-recipe-collection/title_recipe-id-1`);
 	});
 
 	it('should have the title of the recipe', () => {
