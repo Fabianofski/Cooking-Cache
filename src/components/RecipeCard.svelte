@@ -32,10 +32,10 @@
 
 <a
 	class="w-full"
-	href={`/recipe/${generateShortCollectionId(
+	href={recipeCollection ? `/recipe/${generateShortCollectionId(
 		recipeCollection,
 		$recipeCollectionsStore
-	)}/${generateShortRecipeId(recipe, recipeCollection.recipes)}`}
+	)}/${generateShortRecipeId(recipe, recipeCollection.recipes)}` : "#"}
 	data-testid="recipe-link"
 >
 	<div class="card w-full h-64 bg-base-200 shadow-md shadow-neutral/50">

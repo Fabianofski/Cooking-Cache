@@ -20,7 +20,7 @@
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let shortId: string;
-	let collectionId = getCollectionFromShortId(shortId, $recipeCollectionsStore)?.id || '';
+	let collectionId: string = '';
 
 	export let recipe: Recipe = {
 		image: '',
@@ -35,9 +35,14 @@
 		numberOfServings: 4,
 		description: [],
 		id: '',
-		collectionId: collectionId,
+		collectionId: '',
 		creatorId: ''
 	};
+
+    recipeCollectionsStore.subscribe((value) => {
+        collectionId = getCollectionFromShortId(shortId, value)?.id || '';
+        recipe.collectionId = collectionId;
+    });
 
 	function formIsInvalid(recipe: Recipe) {
 		return recipe.title === '' || recipe.description[0] === '';
