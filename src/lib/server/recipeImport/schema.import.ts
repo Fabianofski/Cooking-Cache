@@ -37,7 +37,13 @@ export async function extractSchemaRecipe(url: string): Promise<Recipe> {
         creatorId: '',
         cookingTime: extractCookingTimeFromSchema(schemaRecipe.prepTime, schemaRecipe.cookTime, schemaRecipe.totalTime),
         numberOfServings: parseInt(schemaRecipe.recipeYield),
-        tags: extractTagsFromSchema(schemaRecipe.keywords)
+        tags: extractTagsFromSchema(schemaRecipe.keywords),
+        nutrition: {
+            calories: parseInt(schemaRecipe.nutrition?.calories) || 0,
+            protein: parseInt(schemaRecipe.nutrition?.proteinContent) || 0,
+            fat: parseInt(schemaRecipe.nutrition?.fatContent) || 0,
+            carbs: parseInt(schemaRecipe.nutrition?.carbohydrateContent) || 0
+        }
     };
 
     return recipe;
@@ -45,7 +51,8 @@ export async function extractSchemaRecipe(url: string): Promise<Recipe> {
 
 function extractImageFromSchema(schemaImage: any): string {
     if (typeof schemaImage === 'object') {
-        return schemaImage[0];
+        if (typeof schemaImage[0] === "object" && "url" in schemaImage[0]) return schemaImage[0].url;
+        else return schemaImage[0];
     } else {
         return schemaImage;
     }
@@ -55,23 +62,34 @@ function extractDescriptionFromSchema(schemaInstructions: any): string[] {
     if (typeof schemaInstructions === 'string') {
         return schemaInstructions.split('\n').filter((line: string) => line !== '');
     } else if (typeof schemaInstructions === "object") {
-        return schemaInstructions.map((instruction: any) => instruction.text);
+        if (schemaInstructions[0].text)
+            return schemaInstructions.map((instruction: any) => instruction.text);
+        else return schemaInstructions;
     } else {
         return schemaInstructions;
     }
 }
 
-function extractCookingTimeFromSchema(schemaPrepTime: string, schemaCookTime: string, schemaTotalTime: string | undefined): number {
-    schemaPrepTime = schemaPrepTime.replace('PT', '').replace('M', '');
-    schemaCookTime = schemaCookTime.replace('PT', '').replace('M', '');
-    
+function extractCookingTimeFromSchema(schemaPrepTime: string | undefined, schemaCookTime: string | undefined, schemaTotalTime: string | undefined): number {
+    const schemaPrepMinutes = convertSchemaTimeToMinutes(schemaPrepTime); 
+    const schemaCookMinutes = convertSchemaTimeToMinutes(schemaCookTime);
+
     if (schemaTotalTime) {
-        schemaTotalTime = schemaTotalTime.replace('PT', '').replace('M', '');
-        return parseInt(schemaTotalTime);
-    } else return parseInt(schemaPrepTime) + parseInt(schemaCookTime);
+        return convertSchemaTimeToMinutes(schemaTotalTime);
+    } else return schemaPrepMinutes + schemaCookMinutes;
+}
+
+function convertSchemaTimeToMinutes(time: string | undefined): number {
+    if (!time) return 0;
+    const match = time.match(/PT(\d+H)?(\d+M)?/);
+    if (!match) return 0;
+    const hours = match[1] ? parseInt(match[1]) : 0;
+    const minutes = match[2] ? parseInt(match[2]) : 0;
+    return hours * 60 + minutes;
 }
 
 function extractTagsFromSchema(schemaKeywords: any): string[] {
+    if (!schemaKeywords) return [];
     if (typeof schemaKeywords === 'string') {
         return schemaKeywords.split(',').map((keyword: string) => keyword.trim());
     } else {

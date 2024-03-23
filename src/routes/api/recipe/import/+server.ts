@@ -19,6 +19,7 @@ export async function GET({ url }) {
 
         return json(recipe);
     } catch (e) {
+        console.error(e);
         return new Response('400 Bad Request', { status: 400 });
     }
 }

@@ -14,5 +14,11 @@ export default interface SchemaRecipe {
     recipeYield: string,
     recipeCategory: string[],
     recipeIngredient: string[],
-    recipeInstructions: string[]
+    recipeInstructions: string[],
+    nutrition: {
+        calories: string,
+        proteinContent: string,
+        fatContent: string,
+        carbohydrateContent: string 
+    }
 }
