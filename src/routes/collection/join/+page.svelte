@@ -1,5 +1,5 @@
 <script lang="ts">
-	import JoinPage from "./JoinPage.svelte";
+	import JoinPage from './JoinPage.svelte';
 
 	export let data;
 </script>

@@ -39,10 +39,10 @@
 		creatorId: ''
 	};
 
-    recipeCollectionsStore.subscribe((value) => {
-        collectionId = getCollectionFromShortId(shortId, value)?.id || '';
-        recipe.collectionId = collectionId;
-    });
+	recipeCollectionsStore.subscribe((value) => {
+		collectionId = getCollectionFromShortId(shortId, value)?.id || '';
+		recipe.collectionId = collectionId;
+	});
 
 	function formIsInvalid(recipe: Recipe) {
 		return recipe.title === '' || recipe.description[0] === '';

@@ -25,12 +25,12 @@ export async function extractChefkochRecipe(url: string): Promise<Recipe> {
 		cookingTime: chefkochRecipe.totalTime,
 		numberOfServings: chefkochRecipe.servings,
 		tags: chefkochRecipe.tags,
-        nutrition: {
-            calories: chefkochRecipe.nutrition?.kCalories || 0,
-            protein: chefkochRecipe.nutrition?.proteinContent || 0,
-            fat: chefkochRecipe.nutrition?.fatContent || 0,
-            carbs: chefkochRecipe.nutrition?.carbohydrateContent || 0
-        }
+		nutrition: {
+			calories: chefkochRecipe.nutrition?.kCalories || 0,
+			protein: chefkochRecipe.nutrition?.proteinContent || 0,
+			fat: chefkochRecipe.nutrition?.fatContent || 0,
+			carbs: chefkochRecipe.nutrition?.carbohydrateContent || 0
+		}
 	};
 
 	return recipe;

@@ -22,10 +22,10 @@ export default interface ChefkochRecipe {
 		}[];
 	}[];
 
-    nutrition?: {
-        kCalories: number;
-        proteinContent: number;
-        fatContent: number;
-        carbohydrateContent: number;
-    }
+	nutrition?: {
+		kCalories: number;
+		proteinContent: number;
+		fatContent: number;
+		carbohydrateContent: number;
+	};
 }

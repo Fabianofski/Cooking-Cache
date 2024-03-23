@@ -8,7 +8,7 @@ export async function GET({ url }) {
 
 	if (!inviteCode) return new Response('400 Bad Request', { status: 400 });
 
-    const collection = await getRecipeCollectionByInviteCode(inviteCode);
+	const collection = await getRecipeCollectionByInviteCode(inviteCode);
 
 	return json(collection);
 }

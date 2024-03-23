@@ -4,12 +4,10 @@
 	import { currentUser } from '../../../stores/store.js';
 
 	export let recipeCollection: RecipeCollection | undefined;
-    export let inviteCode: string | undefined;
+	export let inviteCode: string | undefined;
 	export let loading: boolean = false;
-	let owner: Participant | undefined; 
-    $: owner = recipeCollection?.participants?.find(
-		(p) => p.uid === recipeCollection?.ownerId
-	);
+	let owner: Participant | undefined;
+	$: owner = recipeCollection?.participants?.find((p) => p.uid === recipeCollection?.ownerId);
 
 	let loadingJoin = false;
 	async function joinCollection() {
