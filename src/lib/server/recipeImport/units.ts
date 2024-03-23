@@ -21,6 +21,7 @@ const units: string[] = [
 	'tbsp',
 	'tsp',
 	'cup',
+	'cups',
 	'oz',
 	'EL',
 	'TL',

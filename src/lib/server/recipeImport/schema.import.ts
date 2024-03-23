@@ -4,10 +4,15 @@ import type SchemaRecipe from '../../../models/SchemaRecipe';
 import * as cheerio from 'cheerio';
 import { extractIngredientFromLines } from './ingredient.extractor';
 
+/* c8 ignore start */
 export async function extractSchemaRecipe(url: string): Promise<Recipe> {
 	const response = await axios.get(url);
 	const $ = cheerio.load(response.data);
+	return extractCheerioSchemaRecipe($);
+}
+/* c8 ignore stop */
 
+export function extractCheerioSchemaRecipe($: cheerio.CheerioAPI): Recipe {
 	const script = $('script[type="application/ld+json"]');
 	if (!script) throw new Error('No schema recipe found');
 
@@ -26,7 +31,7 @@ export async function extractSchemaRecipe(url: string): Promise<Recipe> {
 	const recipe: Recipe = {
 		image: extractImageFromSchema(schemaRecipe.image),
 		title: schemaRecipe.name,
-		url: url,
+		url: schemaRecipe.url,
 		createdTime: schemaRecipe.datePublished,
 		updatedTime: schemaRecipe.datePublished,
 		difficulty: 'medium',
@@ -63,14 +68,12 @@ function extractImageFromSchema(schemaImage: any): string {
 }
 
 function extractDescriptionFromSchema(schemaInstructions: any): string[] {
-	if (typeof schemaInstructions === 'string') {
-		return schemaInstructions.split('\n').filter((line: string) => line !== '');
-	} else if (typeof schemaInstructions === 'object') {
+	if (typeof schemaInstructions === 'object') {
 		if (schemaInstructions[0].text)
 			return schemaInstructions.map((instruction: any) => instruction.text);
 		else return schemaInstructions;
 	} else {
-		return schemaInstructions;
+		return schemaInstructions.split('\n').filter((line: string) => line !== '');
 	}
 }
 

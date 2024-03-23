@@ -1,5 +1,6 @@
 export default interface SchemaRecipe {
 	name: string;
+	url: string;
 	description: string;
 	image: string;
 	author: {
