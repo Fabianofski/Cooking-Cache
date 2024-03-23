@@ -225,22 +225,19 @@
 	<div class="divider" />
 
 	<h2 class="font-bold text-lg">Nährwerte pro Portion</h2>
-	<div class="flex gap-4">
+	<div class="flex flex-wrap gap-8">
 		<div class="flex flex-col items-center gap-2">
 			<span class="font-bold">Kalorien</span>
 			<span>{recipe?.nutrition?.calories || '0'} kcal</span>
 		</div>
-		<div class="divider divider-horizontal" />
 		<div class="flex flex-col items-center gap-2">
 			<span class="font-bold">Proteine</span>
 			<span>{recipe?.nutrition?.protein || '0'} g</span>
 		</div>
-		<div class="divider divider-horizontal" />
 		<div class="flex flex-col items-center gap-2">
 			<span class="font-bold">Kohlenhydrate</span>
 			<span>{recipe?.nutrition?.carbs || '0'} g</span>
 		</div>
-		<div class="divider divider-horizontal" />
 		<div class="flex flex-col items-center gap-2">
 			<span class="font-bold">Fette</span>
 			<span>{recipe?.nutrition?.fat || '0'} g</span>

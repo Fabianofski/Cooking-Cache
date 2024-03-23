@@ -10,7 +10,7 @@ export default interface ChefkochRecipe {
 	cookingTime: number;
 	restingTime: number;
 	totalTime: number;
-	difficulty: number;
+	difficulty: number | undefined;
 
 	instructions: string;
 	ingredientGroups: {
@@ -21,4 +21,11 @@ export default interface ChefkochRecipe {
 			unit: string;
 		}[];
 	}[];
+
+	nutrition?: {
+		kCalories: number;
+		proteinContent: number;
+		fatContent: number;
+		carbohydrateContent: number;
+	};
 }

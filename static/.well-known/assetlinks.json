@@ -1,5 +1,12 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target" : { "namespace": "android_app", "package_name": "com.f4b1.cookingcache",
-               "sha256_cert_fingerprints": ["16:63:97:0C:56:8D:7F:39:54:38:67:21:9E:B7:74:A0:2C:6B:9D:C1:DB:D1:92:B9:D5:D3:DB:4C:58:3F:84:AD"] }
-}]
+[
+	{
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "com.f4b1.cookingcache",
+			"sha256_cert_fingerprints": [
+				"16:63:97:0C:56:8D:7F:39:54:38:67:21:9E:B7:74:A0:2C:6B:9D:C1:DB:D1:92:B9:D5:D3:DB:4C:58:3F:84:AD"
+			]
+		}
+	}
+]

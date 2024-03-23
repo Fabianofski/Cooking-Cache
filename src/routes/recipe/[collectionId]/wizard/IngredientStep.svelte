@@ -127,7 +127,7 @@
 						<td class="pl-0 pr-0.5 py-0 w-36">
 							<input
 								type="number"
-								placeholder="1"
+								placeholder="0"
 								class="input input-bordered input-sm w-full"
 								required
 								bind:value={recipe.ingredients[category][i].amount}
@@ -136,7 +136,7 @@
 						<td class="pl-0 pr-0.5 py-0 w-36">
 							<input
 								type="text"
-								placeholder="Packung"
+								placeholder="g"
 								class="input input-sm input-bordered w-full"
 								bind:value={recipe.ingredients[category][i].unit}
 							/>
@@ -144,7 +144,7 @@
 						<td class="pl-0.5 pr-0 py-0">
 							<input
 								type="text"
-								placeholder="Backpulver"
+								placeholder="Mehl"
 								class="input input-sm input-bordered w-full"
 								required
 								bind:value={recipe.ingredients[category][i].name}

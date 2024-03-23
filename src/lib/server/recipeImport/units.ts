@@ -13,6 +13,7 @@ const units: string[] = [
 	'Tasse',
 	'Prise',
 	'Zehe',
+	'Dose',
 	'Pfund',
 	'Unze',
 	'ounce',
@@ -20,7 +21,10 @@ const units: string[] = [
 	'tbsp',
 	'tsp',
 	'cup',
+	'cups',
+	'oz',
 	'EL',
+	'TL',
 	'ml',
 	'kg',
 	'g'
