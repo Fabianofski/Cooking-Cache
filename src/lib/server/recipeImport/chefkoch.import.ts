@@ -9,7 +9,10 @@ export async function extractChefkochRecipe(url: string): Promise<Recipe> {
 		`https://api.chefkoch.de/v2/recipes/${recipeId}`
 	);
 	const chefkochRecipe: ChefkochRecipe = response.data;
+	return extractChefkochRecipeFromData(chefkochRecipe);
+}
 
+export function extractChefkochRecipeFromData(chefkochRecipe: ChefkochRecipe): Recipe {
 	const recipe: Recipe = {
 		image: chefkochRecipe.previewImageUrlTemplate.replace('<format>', 'crop-360x240'),
 		title: chefkochRecipe.title,
@@ -36,7 +39,7 @@ export async function extractChefkochRecipe(url: string): Promise<Recipe> {
 	return recipe;
 }
 
-function getDifficulty(difficulty: number): 'easy' | 'medium' | 'hard' {
+function getDifficulty(difficulty: number | undefined): 'easy' | 'medium' | 'hard' {
 	switch (difficulty) {
 		case 1:
 			return 'easy';

@@ -10,7 +10,7 @@ export default interface ChefkochRecipe {
 	cookingTime: number;
 	restingTime: number;
 	totalTime: number;
-	difficulty: number;
+	difficulty: number | undefined;
 
 	instructions: string;
 	ingredientGroups: {
