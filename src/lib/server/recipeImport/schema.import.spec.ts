@@ -120,6 +120,16 @@ describe('Schema Import', () => {
         });
     });
 
+    it ("should import 0 if cookTime, prepTime and totalTime have wrong format", () => {
+        const $ = cheerio.load(
+            '<script type="application/ld+json">{"@type":"Recipe","name":"Recipe Name","url":"https://example.com/recipe","datePublished":"2021-01-01","prepTime":"10M","cookTime":"1H","totalTime":"1H30M","recipeIngredient":["1 cup sugar","2 cups flour"],"recipeInstructions":"Mix all ingredients","recipeYield":"4","keywords":"tag1, tag2","nutrition":{"calories":"100","proteinContent":"10","fatContent":"5","carbohydrateContent":"20"}}</script>'
+        );
+        const recipe = extractCheerioSchemaRecipe($);
+        expect(recipe).toMatchObject({
+            cookingTime: 0
+        });
+    });
+
     it ("should import the keywords when they are a string", () => {
         const $ = cheerio.load(
             '<script type="application/ld+json">{"@type":"Recipe","name":"Recipe Name","url":"https://example.com/recipe","datePublished":"2021-01-01","prepTime":"PT10M","cookTime":"PT1H","totalTime":"PT1H30M","recipeIngredient":["1 cup sugar","2 cups flour"],"recipeInstructions":"Mix all ingredients","recipeYield":"4","keywords":"tag1, tag2","nutrition":{"calories":"100","proteinContent":"10","fatContent":"5","carbohydrateContent":"20"}}</script>'
@@ -137,6 +147,31 @@ describe('Schema Import', () => {
         const recipe = extractCheerioSchemaRecipe($);
         expect(recipe).toMatchObject({
             tags: ['tag1', 'tag2']
+        });
+    });
+
+    it ("should import no keywords if not available", () => {
+        const $ = cheerio.load(
+            '<script type="application/ld+json">{"@type":"Recipe","name":"Recipe Name","url":"https://example.com/recipe","datePublished":"2021-01-01","prepTime":"PT10M","cookTime":"PT1H","totalTime":"PT1H30M","recipeIngredient":["1 cup sugar","2 cups flour"],"recipeInstructions":"Mix all ingredients","recipeYield":"4","nutrition":{"calories":"100","proteinContent":"10","fatContent":"5","carbohydrateContent":"20"}}</script>'
+        );
+        const recipe = extractCheerioSchemaRecipe($);
+        expect(recipe).toMatchObject({
+            tags: []
+        });
+    });
+
+    it ("should import no nutrition if not available", () => {
+        const $ = cheerio.load(
+            '<script type="application/ld+json">{"@type":"Recipe","name":"Recipe Name","url":"https://example.com/recipe","datePublished":"2021-01-01","prepTime":"PT10M","cookTime":"PT1H","totalTime":"PT1H30M","recipeIngredient":["1 cup sugar","2 cups flour"],"recipeInstructions":"Mix all ingredients","recipeYield":"4","keywords":["tag1", "tag2"]}</script>'
+        );
+        const recipe = extractCheerioSchemaRecipe($);
+        expect(recipe).toMatchObject({
+            nutrition: {
+                calories: 0,
+                protein: 0,
+                fat: 0,
+                carbs: 0
+            }
         });
     });
 

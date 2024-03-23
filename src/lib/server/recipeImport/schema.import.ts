@@ -14,7 +14,6 @@ export async function extractSchemaRecipe(url: string): Promise<Recipe> {
 
 export function extractCheerioSchemaRecipe($: cheerio.CheerioAPI): Recipe {
 	const script = $('script[type="application/ld+json"]');
-	if (!script) throw new Error('No schema recipe found');
 
 	let schemaRecipe: SchemaRecipe | undefined = undefined;
 	for (let element of script) {
