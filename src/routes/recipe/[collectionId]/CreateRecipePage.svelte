@@ -13,6 +13,7 @@
 	import axios from 'axios';
 	import { generateShortRecipeId, getCollectionFromShortId } from '$lib/id.handler';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
+	import { createNewAlert } from '../../../components/alerts/alert.handler';
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
@@ -64,16 +65,30 @@
 		}
 
 		loadingImport = true;
-		const response = await axios.get<Recipe>(`/api/recipe/import?url=${recipe.url}`);
-		const data = response.data;
+		try {
+			const response = await axios.get<Recipe>(`/api/recipe/import?url=${recipe.url}`);
+			const data = response.data;
 
-		data.collectionId = collectionId;
+			data.collectionId = collectionId;
 
-		importedRecipes[recipe.url] = data;
-		recipe = data;
+			importedRecipes[recipe.url] = data;
+			recipe = data;
 
-		loadingImport = false;
-		selectedStep++;
+			loadingImport = false;
+			selectedStep++;
+		} catch (error: any) {
+			if (error.response.status === 400)
+				createNewAlert({
+					type: 'error',
+					message: 'Die angegebene URL enthält kein gültiges Rezept.'
+				});
+			else
+				createNewAlert({
+					type: 'error',
+					message: 'Beim Importieren des Rezepts ist ein Fehler aufgetreten.'
+				});
+			loadingImport = false;
+		}
 	}
 
 	let loading = false;
