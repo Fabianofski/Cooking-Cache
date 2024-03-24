@@ -136,7 +136,7 @@
 						<td class="pl-0 pr-0.5 py-0 w-36">
 							<input
 								type="text"
-								placeholder="g"
+								placeholder="-"
 								class="input input-sm input-bordered w-full"
 								bind:value={recipe.ingredients[category][i].unit}
 							/>
@@ -144,7 +144,7 @@
 						<td class="pl-0.5 pr-0 py-0">
 							<input
 								type="text"
-								placeholder="Mehl"
+								placeholder="Eier"
 								class="input input-sm input-bordered w-full"
 								required
 								bind:value={recipe.ingredients[category][i].name}

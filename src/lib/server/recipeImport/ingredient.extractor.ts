@@ -29,7 +29,7 @@ export function extractIngredientFromLines(lines: string[]): Ingredient[] {
 		unit = unit.substring(1).trim();
 		line = line.replace(unit, '').trim();
 
-		const amount = line.match(/\d+\/\d+|\d+/)?.[0] || '';
+		const amount = line.match(/(\d+(?:[,.]\d+)?)/g)?.[0] || '';
 		line = line.replace(amount, '').trim();
 
 		line = line.replace('of', '');
@@ -39,7 +39,7 @@ export function extractIngredientFromLines(lines: string[]): Ingredient[] {
 
 		ingredients.push({
 			name: name,
-			amount: parseFloat(amount),
+			amount: parseFloat(amount.replace(',', '.')),
 			unit: unit
 		});
 	}
