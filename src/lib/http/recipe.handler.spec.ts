@@ -40,7 +40,9 @@ describe('RecipeHandler', () => {
 			description: ['Step 1', 'Step 2', 'Step 3'],
 			id: 'recipe-id',
 			collectionId: '123',
-			creatorId: 'creator-id'
+			creatorId: 'creator-id',
+            cookingTime: 30,
+            numberOfServings: 4
 		};
 
 		collections = {
@@ -83,7 +85,7 @@ describe('RecipeHandler', () => {
 		formData.append('recipe', JSON.stringify(recipe));
 		await addRecipeToCollection(testUser, formData, '123');
 
-		expect(gotoMock).toHaveBeenCalledWith(`/recipe/123/recipe-id`);
+		expect(gotoMock).toHaveBeenCalledWith(`/recipe/test-recipe-collection/title`);
 	});
 
 	it('should not goto recipe on create if request failed', async () => {
@@ -213,7 +215,7 @@ describe('RecipeHandler', () => {
 
 		await deleteRecipeFromCollection(testUser, recipe);
 
-		expect(gotoMock).toHaveBeenCalledWith(`/recipes/123`);
+		expect(gotoMock).toHaveBeenCalledWith(`/recipes/test-recipe-collection`);
 	});
 
 	it('should not goto recipes page on delete if request failed', async () => {

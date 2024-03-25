@@ -53,23 +53,23 @@ describe('extractIngredients', () => {
 		expect(extractIngredientsFromText(input)).toEqual(expected);
 	});
 
-    it("should extract Ingredients with '.' decimal amount", () => {
-        const input = "1.5 cups of sugar\n1.5 cups of flour\n1.5 cups of milk";
-        const expected = [
-            { name: "sugar", amount: 1.5, unit: "cups" },
-            { name: "flour", amount: 1.5, unit: "cups" },
-            { name: "milk", amount: 1.5, unit: "cups" },
-        ];
-        expect(extractIngredientsFromText(input)).toEqual(expected);
-    });
+	it("should extract Ingredients with '.' decimal amount", () => {
+		const input = '1.5 cups of sugar\n1.5 cups of flour\n1.5 cups of milk';
+		const expected = [
+			{ name: 'sugar', amount: 1.5, unit: 'cups' },
+			{ name: 'flour', amount: 1.5, unit: 'cups' },
+			{ name: 'milk', amount: 1.5, unit: 'cups' }
+		];
+		expect(extractIngredientsFromText(input)).toEqual(expected);
+	});
 
-    it ("should extract Ingredients with ',' decimal amount ", () => {
-        const input = "1,5 cups of sugar\n1,5 cups of flour\n1,5 cups of milk";
-        const expected = [
-            { name: "sugar", amount: 1.5, unit: "cups" },
-            { name: "flour", amount: 1.5, unit: "cups" },
-            { name: "milk", amount: 1.5, unit: "cups" },
-        ];
-        expect(extractIngredientsFromText(input)).toEqual(expected);
-    });
+	it("should extract Ingredients with ',' decimal amount ", () => {
+		const input = '1,5 cups of sugar\n1,5 cups of flour\n1,5 cups of milk';
+		const expected = [
+			{ name: 'sugar', amount: 1.5, unit: 'cups' },
+			{ name: 'flour', amount: 1.5, unit: 'cups' },
+			{ name: 'milk', amount: 1.5, unit: 'cups' }
+		];
+		expect(extractIngredientsFromText(input)).toEqual(expected);
+	});
 });

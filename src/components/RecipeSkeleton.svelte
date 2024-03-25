@@ -1,5 +1,5 @@
-<div class="w-full h-96 bg-base-200 rounded-lg">
-	<figure class="h-64 overflow-x-hidden">
+<div class="w-full h-64 bg-base-200 rounded-lg">
+	<figure class="h-28 overflow-x-hidden">
 		<div class="skeleton h-full w-full" />
 	</figure>
 	<div class="card-body px-4">

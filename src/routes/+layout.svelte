@@ -14,6 +14,7 @@
 	import { goto } from '$app/navigation';
 	import { App } from '@capacitor/app';
 	import AuthPage from './login/AuthPage.svelte';
+	import PullToRefresh from 'pulltorefreshjs';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -57,6 +58,19 @@
 			if (slug.includes('collection/join')) slug = slug.replace('/join', '/join/mobile');
 			if (slug) goto(slug);
 		});
+
+		PullToRefresh.init({
+			mainElement: '#ptr',
+			onRefresh() {
+				location.reload();
+			},
+			instructionsPullToRefresh: 'Zum Aktualisieren ziehen',
+			instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
+			instructionsRefreshing: 'Aktualisiere...',
+            shouldPullToRefresh: () => {
+                return scrollBar.scrollTop === 0;
+            }
+		});
 	});
 </script>
 
@@ -80,6 +94,7 @@
 
 	<Alerts />
 	<div class="h-svh py-16 flex flex-col flex-1">
+		<div id="ptr" />
 		<div
 			bind:this={scrollBar}
 			class="flex flex-col flex-1 justify-start items-center overflow-y-scroll overscroll-contain"
@@ -167,3 +182,9 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	:global(.ptr--icon, .ptr--text) {
+		color: var(--color-primary) !important;
+	}
+</style>
