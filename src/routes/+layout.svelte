@@ -63,7 +63,10 @@
             mainElement: '#ptr',
             onRefresh() {
                 location.reload();
-            }
+            },
+            instructionsPullToRefresh: 'Zum Aktualisieren ziehen',
+            instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
+            instructionsRefreshing: 'Aktualisiere...'
         });
     });
 </script>
@@ -179,6 +182,6 @@
 
 <style>
     :global(.ptr--icon, .ptr--text) {
-        color: white !important;
+        color: var(--color-primary) !important;
     }
 </style>
