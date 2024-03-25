@@ -60,19 +60,18 @@ async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 		.then(async (res) => {
 			if (res.status !== 200) return Promise.reject(res);
 
-			const link = `/recipes/${recipe?.collectionId}`;
 			recipeCollectionsStore.update((value) => {
 				if (recipe)
 					value[recipe.collectionId].recipes = value[recipe.collectionId].recipes.filter(
 						(x) => x.id !== recipe?.id
 					);
+                goto(`/recipes/${generateShortCollectionId(value[recipe.collectionId], value)}`);
 				return value;
 			});
 			createNewAlert({
 				message: 'Das Rezept wurde erfolgreich gelöscht!',
 				type: 'success'
 			});
-			goto(link);
 		})
 		.catch((error) => {
 			createNewAlert({
