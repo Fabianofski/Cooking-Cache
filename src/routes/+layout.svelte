@@ -66,7 +66,10 @@
 			},
 			instructionsPullToRefresh: 'Zum Aktualisieren ziehen',
 			instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
-			instructionsRefreshing: 'Aktualisiere...'
+			instructionsRefreshing: 'Aktualisiere...',
+            shouldPullToRefresh: () => {
+                return scrollBar.scrollTop === 0;
+            }
 		});
 	});
 </script>
