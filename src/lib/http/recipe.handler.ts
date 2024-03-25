@@ -5,6 +5,7 @@ import type { User } from 'firebase/auth';
 import { createNewAlert } from '../../components/alerts/alert.handler';
 import type { Recipe } from '../../models/Recipe';
 import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
+import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 
 async function addRecipeToCollection(user: User, formData: FormData, collectionId: string) {
 	const token = await user.getIdToken();
@@ -23,13 +24,20 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 				if (!value[collectionId]) return value;
 				if (value[collectionId].recipes.find((x) => x.id === recipe.id)) return value;
 				value[collectionId].recipes.push(recipe);
+
+				goto(
+					`/recipe/${generateShortCollectionId(
+						value[recipe.collectionId],
+						value
+					)}/${generateShortRecipeId(recipe, value[recipe.collectionId].recipes)}`
+				);
+
 				return value;
 			});
 			createNewAlert({
 				message: 'Das Rezept wurde erfolgreich gespeichert!',
 				type: 'success'
 			});
-			goto(`/recipe/${recipe.collectionId}/${recipe.id}`);
 		})
 		.catch((error) => {
 			createNewAlert({

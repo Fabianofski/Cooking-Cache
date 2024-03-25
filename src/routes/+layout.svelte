@@ -14,7 +14,7 @@
 	import { goto } from '$app/navigation';
 	import { App } from '@capacitor/app';
 	import AuthPage from './login/AuthPage.svelte';
-    import PullToRefresh from 'pulltorefreshjs';
+	import PullToRefresh from 'pulltorefreshjs';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -59,16 +59,16 @@
 			if (slug) goto(slug);
 		});
 
-        PullToRefresh.init({
-            mainElement: '#ptr',
-            onRefresh() {
-                location.reload();
-            },
-            instructionsPullToRefresh: 'Zum Aktualisieren ziehen',
-            instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
-            instructionsRefreshing: 'Aktualisiere...'
-        });
-    });
+		PullToRefresh.init({
+			mainElement: '#ptr',
+			onRefresh() {
+				location.reload();
+			},
+			instructionsPullToRefresh: 'Zum Aktualisieren ziehen',
+			instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
+			instructionsRefreshing: 'Aktualisiere...'
+		});
+	});
 </script>
 
 <svelte:head>
@@ -91,12 +91,12 @@
 
 	<Alerts />
 	<div class="h-svh py-16 flex flex-col flex-1">
-        <div id="ptr" />
+		<div id="ptr" />
 		<div
 			bind:this={scrollBar}
 			class="flex flex-col flex-1 justify-start items-center overflow-y-scroll overscroll-contain"
 		>
-			<div  class="flex flex-col flex-1 max-w-3xl w-full relative px-2 py-4">
+			<div class="flex flex-col flex-1 max-w-3xl w-full relative px-2 py-4">
 				{#if $loadingStateStore === 'NOUSER' && !isViewingRecipeWithAccessToken($page)}
 					<AuthPage />
 				{:else}
@@ -181,7 +181,7 @@
 </div>
 
 <style>
-    :global(.ptr--icon, .ptr--text) {
-        color: var(--color-primary) !important;
-    }
+	:global(.ptr--icon, .ptr--text) {
+		color: var(--color-primary) !important;
+	}
 </style>
