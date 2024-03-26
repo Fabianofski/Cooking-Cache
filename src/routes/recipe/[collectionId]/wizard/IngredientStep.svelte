@@ -60,26 +60,36 @@
 
 	let draggable: HTMLDivElement | null = null;
 	let draggedIngredient: HTMLDivElement | null = null;
+	let bounds: {
+		top: number;
+		bottom: number;
+	} = { top: 0, bottom: 0 };
 
 	onMount(() => {
 		document.addEventListener('mouseup', onEndDrag);
 		document.addEventListener('mousemove', onDrag);
 	});
 
-	function onStartDrag(e: MouseEvent) {
-		draggable = e.target as HTMLDivElement;
-		draggedIngredient = draggable.parentElement?.parentElement?.parentElement as HTMLDivElement;
+	function onStartDrag(handleId: string, e: MouseEvent) {
+		draggable = document.getElementById(handleId) as HTMLDivElement;
+		draggedIngredient = draggable.parentElement?.parentElement as HTMLDivElement;
+		console.log('start', draggedIngredient, draggable);
 		if (!draggedIngredient) return;
 
 		draggable.style.cursor = 'grabbing';
 		draggedIngredient.style.position = 'fixed';
-		draggedIngredient.style.left = `${e.clientX}px`;
+		draggedIngredient.style.left = `${draggedIngredient.getBoundingClientRect().left}px`;
+		bounds = {
+			top: draggedIngredient.parentElement?.getBoundingClientRect().top || 0,
+			bottom: draggedIngredient.parentElement?.getBoundingClientRect().bottom || 0
+		};
+		onDrag(e);
 	}
 
 	function onDrag(e: MouseEvent) {
 		if (!draggedIngredient) return;
 
-		draggedIngredient.style.top = `${e.clientY}px`;
+		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(e.clientY, bounds.bottom))}px`;
 	}
 
 	function onEndDrag(e: MouseEvent) {
@@ -157,12 +167,23 @@
 				</tr>
 			</thead>
 			<tbody>
+				{#if draggedIngredient}
+					<tr>
+						<td class="p-0 h-8" />
+						<td class="p-0" />
+						<td class="p-0" />
+						<td class="p-0" />
+					</tr>
+				{/if}
 				{#each { length: recipe.ingredients[category].length } as _, i}
 					<tr>
 						<td class="pl-0 pr-0.5 py-0 w-6">
 							<div
+								id={`drag-handle-${category}-${i}`}
 								class="cursor-pointer text-slate-400"
-								on:mousedown={onStartDrag}
+								on:mousedown={(e) => {
+									onStartDrag(`drag-handle-${category}-${i}`, e);
+								}}
 								role="button"
 								tabindex="0"
 							>
