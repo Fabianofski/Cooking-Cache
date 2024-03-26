@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
@@ -55,6 +56,39 @@
 
 		delete recipe.ingredients[category];
 		delete editingCategoryName[category];
+	}
+
+	let draggable: HTMLDivElement | null = null;
+	let draggedIngredient: HTMLDivElement | null = null;
+
+	onMount(() => {
+		document.addEventListener('mouseup', onEndDrag);
+		document.addEventListener('mousemove', onDrag);
+	});
+
+	function onStartDrag(e: MouseEvent) {
+		draggable = e.target as HTMLDivElement;
+		draggedIngredient = draggable.parentElement?.parentElement?.parentElement as HTMLDivElement;
+		if (!draggedIngredient) return;
+
+		draggable.style.cursor = 'grabbing';
+		draggedIngredient.style.position = 'fixed';
+		draggedIngredient.style.left = `${e.clientX}px`;
+	}
+
+	function onDrag(e: MouseEvent) {
+		if (!draggedIngredient) return;
+
+		draggedIngredient.style.top = `${e.clientY}px`;
+	}
+
+	function onEndDrag(e: MouseEvent) {
+		if (!draggedIngredient || !draggable) return;
+
+		draggable.style.cursor = 'pointer';
+		draggedIngredient.style.position = 'static';
+		draggable = null;
+		draggedIngredient = null;
 	}
 </script>
 
@@ -116,6 +150,7 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<th class="pl-0 pt-0.5" />
 					<th class="pl-0 pt-0.5">Menge</th>
 					<th class="pl-0 pt-0.5">Einheit</th>
 					<th class="pl-0 pt-0.5">Zutat</th>
@@ -124,6 +159,29 @@
 			<tbody>
 				{#each { length: recipe.ingredients[category].length } as _, i}
 					<tr>
+						<td class="pl-0 pr-0.5 py-0 w-6">
+							<div
+								class="cursor-pointer text-slate-400"
+								on:mousedown={onStartDrag}
+								role="button"
+								tabindex="0"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									class="w-6 h-6"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M3.75 9h16.5m-16.5 6.75h16.5"
+									/>
+								</svg>
+							</div>
+						</td>
 						<td class="pl-0 pr-0.5 py-0 w-36">
 							<input
 								type="number"
@@ -178,6 +236,7 @@
 					</tr>
 				{/each}
 				<tr>
+					<td class="p-0" />
 					<td class="p-0">
 						<button
 							class="btn btn-neutral btn-sm w-32 my-1"
