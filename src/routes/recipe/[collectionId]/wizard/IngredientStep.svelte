@@ -63,7 +63,7 @@
 	let bounds: {
 		top: number;
 		bottom: number;
-	} = { top: 0, bottom: 0 };
+	} = { top: 0, bottom: 9999999999 };
 	let dragOffset: number = 0;
 
 	onMount(() => {
@@ -85,13 +85,16 @@
 		const rect = draggedIngredient.getBoundingClientRect();
 		dragOffset = e.clientY - rect.top;
 
-		draggable.style.cursor = 'grabbing';
+		document.body.style.cursor = 'grabbing';
 		draggedIngredient.style.position = 'fixed';
 		draggedIngredient.style.left = `${rect.left}px`;
+
+		const ingredientLists = document.getElementsByClassName('ingredient-list');
 		bounds = {
-			top: draggedIngredient.parentElement?.getBoundingClientRect().top || 0,
-			bottom: draggedIngredient.parentElement?.getBoundingClientRect().bottom || 0
+			top: ingredientLists[0].getBoundingClientRect().top || 0,
+			bottom: ingredientLists[ingredientLists.length - 1].getBoundingClientRect().bottom || 0
 		};
+
 		onDrag(e);
 	}
 
@@ -101,8 +104,14 @@
 
 		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(mousePos, bounds.bottom))}px`;
 
-		const ingredientElements = draggedIngredient.parentElement?.children;
-		if (!ingredientElements) return;
+		const ingredientLists = document.getElementsByClassName('ingredient-list');
+		const ingredientElements: HTMLDivElement[] = [];
+		for (let i = 0; i < ingredientLists.length; i++) {
+			const ingredientList = ingredientLists[i] as HTMLTableElement;
+			for (let j = 0; j < ingredientList.children.length; j++) {
+				ingredientElements.push(ingredientList.children[j] as HTMLDivElement);
+			}
+		}
 
 		for (let i = 0; i < ingredientElements.length; i++) {
 			const ingredientElement = ingredientElements[i] as HTMLDivElement;
@@ -126,7 +135,7 @@
 	function onEndDrag(e: MouseEvent) {
 		if (!draggedIngredient || !draggable) return;
 
-		draggable.style.cursor = 'pointer';
+		document.body.style.cursor = 'pointer';
 		draggedIngredient.style.position = 'static';
 		draggable = null;
 		draggedIngredient = null;
@@ -199,7 +208,7 @@
 					<th class="pl-0 pt-0.5">Zutat</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="ingredient-list">
 				{#each { length: recipe.ingredients[category].length } as _, i}
 					{#if currentHandlePosition === i && currentHandleCategory === category}
 						<tr>
