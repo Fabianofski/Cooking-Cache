@@ -70,11 +70,16 @@
 		document.addEventListener('mousemove', onDrag);
 	});
 
-	function onStartDrag(handleId: string, e: MouseEvent) {
+	let currentHandlePosition: number | null = null;
+	let currentHandleCategory: string | null = null;
+	function onStartDrag(handlePos: number, handleCategory: string, e: MouseEvent) {
+		let handleId = `drag-handle-${handleCategory}-${handlePos}`;
 		draggable = document.getElementById(handleId) as HTMLDivElement;
 		draggedIngredient = draggable.parentElement?.parentElement as HTMLDivElement;
-		console.log('start', draggedIngredient, draggable);
 		if (!draggedIngredient) return;
+
+		currentHandlePosition = handlePos;
+		currentHandleCategory = handleCategory;
 
 		draggable.style.cursor = 'grabbing';
 		draggedIngredient.style.position = 'fixed';
@@ -90,6 +95,30 @@
 		if (!draggedIngredient) return;
 
 		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(e.clientY, bounds.bottom))}px`;
+
+		const ingredientElements = draggedIngredient.parentElement?.children;
+		if (!ingredientElements) return;
+
+		for (let i = 0; i < ingredientElements.length; i++) {
+			const ingredientElement = ingredientElements[i] as HTMLDivElement;
+			if (
+				ingredientElement === draggedIngredient ||
+				!ingredientElement.dataset.category ||
+				!ingredientElement.dataset.index
+			)
+				continue;
+
+			const ingredientBounds = ingredientElement.getBoundingClientRect();
+			const center = ingredientBounds.top + ingredientBounds.height / 2;
+			if (e.clientY < center) {
+				currentHandlePosition = parseInt(ingredientElement.dataset.index);
+				currentHandleCategory = ingredientElement.dataset.category;
+				break;
+			} else if (i === ingredientElements.length - 2) {
+				currentHandlePosition = parseInt(ingredientElement.dataset.index) + 1;
+				currentHandleCategory = ingredientElement.dataset.category;
+			}
+		}
 	}
 
 	function onEndDrag(e: MouseEvent) {
@@ -99,6 +128,8 @@
 		draggedIngredient.style.position = 'static';
 		draggable = null;
 		draggedIngredient = null;
+		currentHandlePosition = null;
+		currentHandleCategory = null;
 	}
 </script>
 
@@ -167,22 +198,22 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#if draggedIngredient}
-					<tr>
-						<td class="p-0 h-8" />
-						<td class="p-0" />
-						<td class="p-0" />
-						<td class="p-0" />
-					</tr>
-				{/if}
 				{#each { length: recipe.ingredients[category].length } as _, i}
-					<tr>
+					{#if currentHandlePosition === i && currentHandleCategory === category}
+						<tr>
+							<td class="p-0 h-8" />
+							<td class="p-0" />
+							<td class="p-0" />
+							<td class="p-0" />
+						</tr>
+					{/if}
+					<tr data-index={i} data-category={category}>
 						<td class="pl-0 pr-0.5 py-0 w-6">
 							<div
 								id={`drag-handle-${category}-${i}`}
 								class="cursor-pointer text-slate-400"
 								on:mousedown={(e) => {
-									onStartDrag(`drag-handle-${category}-${i}`, e);
+									onStartDrag(i, category, e);
 								}}
 								role="button"
 								tabindex="0"
@@ -256,6 +287,14 @@
 						</td>
 					</tr>
 				{/each}
+				{#if currentHandleCategory === category && currentHandlePosition === recipe.ingredients[category].length}
+					<tr>
+						<td class="p-0 h-8" />
+						<td class="p-0" />
+						<td class="p-0" />
+						<td class="p-0" />
+					</tr>
+				{/if}
 				<tr>
 					<td class="p-0" />
 					<td class="p-0">
