@@ -64,6 +64,7 @@
 		top: number;
 		bottom: number;
 	} = { top: 0, bottom: 0 };
+	let dragOffset: number = 0;
 
 	onMount(() => {
 		document.addEventListener('mouseup', onEndDrag);
@@ -81,9 +82,12 @@
 		currentHandlePosition = handlePos;
 		currentHandleCategory = handleCategory;
 
+		const rect = draggedIngredient.getBoundingClientRect();
+		dragOffset = e.clientY - rect.top;
+
 		draggable.style.cursor = 'grabbing';
 		draggedIngredient.style.position = 'fixed';
-		draggedIngredient.style.left = `${draggedIngredient.getBoundingClientRect().left}px`;
+		draggedIngredient.style.left = `${rect.left}px`;
 		bounds = {
 			top: draggedIngredient.parentElement?.getBoundingClientRect().top || 0,
 			bottom: draggedIngredient.parentElement?.getBoundingClientRect().bottom || 0
@@ -93,8 +97,9 @@
 
 	function onDrag(e: MouseEvent) {
 		if (!draggedIngredient) return;
+		const mousePos = e.clientY - dragOffset;
 
-		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(e.clientY, bounds.bottom))}px`;
+		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(mousePos, bounds.bottom))}px`;
 
 		const ingredientElements = draggedIngredient.parentElement?.children;
 		if (!ingredientElements) return;
@@ -102,21 +107,18 @@
 		for (let i = 0; i < ingredientElements.length; i++) {
 			const ingredientElement = ingredientElements[i] as HTMLDivElement;
 			if (
-				ingredientElement === draggedIngredient ||
 				!ingredientElement.dataset.category ||
-				!ingredientElement.dataset.index
+				!ingredientElement.dataset.index ||
+				ingredientElement === draggedIngredient
 			)
 				continue;
 
 			const ingredientBounds = ingredientElement.getBoundingClientRect();
 			const center = ingredientBounds.top + ingredientBounds.height / 2;
-			if (e.clientY < center) {
+			if (mousePos < center) {
 				currentHandlePosition = parseInt(ingredientElement.dataset.index);
 				currentHandleCategory = ingredientElement.dataset.category;
 				break;
-			} else if (i === ingredientElements.length - 2) {
-				currentHandlePosition = parseInt(ingredientElement.dataset.index) + 1;
-				currentHandleCategory = ingredientElement.dataset.category;
 			}
 		}
 	}
@@ -287,6 +289,7 @@
 						</td>
 					</tr>
 				{/each}
+				<tr data-index={recipe.ingredients[category].length} data-category={category} />
 				{#if currentHandleCategory === category && currentHandlePosition === recipe.ingredients[category].length}
 					<tr>
 						<td class="p-0 h-8" />
