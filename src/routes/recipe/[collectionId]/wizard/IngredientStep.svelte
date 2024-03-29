@@ -69,11 +69,13 @@
 	onMount(() => {
 		document.addEventListener('mouseup', onEndDrag);
 		document.addEventListener('mousemove', onDrag);
+        document.addEventListener('touchend', onEndDrag);
+        document.addEventListener('touchmove', onDrag);
 	});
 
 	let currentHandlePosition: number | null = null;
 	let currentHandleCategory: string | null = null;
-	function onStartDrag(handlePos: number, handleCategory: string, e: MouseEvent) {
+	function onStartDrag(handlePos: number, handleCategory: string, e: MouseEvent | TouchEvent) {
 		let handleId = `drag-handle-${handleCategory}-${handlePos}`;
 		draggable = document.getElementById(handleId) as HTMLDivElement;
 		draggedIngredient = draggable.parentElement?.parentElement as HTMLDivElement;
@@ -83,7 +85,8 @@
 		currentHandleCategory = handleCategory;
 
 		const rect = draggedIngredient.getBoundingClientRect();
-		dragOffset = e.clientY - rect.top;
+        const clientPos = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
+		dragOffset = clientPos - rect.top;
 
 		document.body.style.cursor = 'grabbing';
         document.body.style.userSelect = 'none';
@@ -100,9 +103,9 @@
 		onDrag(e);
 	}
 
-	function onDrag(e: MouseEvent) {
+	function onDrag(e: MouseEvent | TouchEvent) {
 		if (!draggedIngredient) return;
-		const mousePos = e.clientY - dragOffset;
+		const mousePos = (e instanceof MouseEvent ?  e.clientY : e.touches[0].clientY) - dragOffset;
 
 		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(mousePos, bounds.bottom))}px`;
 
@@ -134,7 +137,7 @@
 		}
 	}
 
-	function onEndDrag(e: MouseEvent) {
+	function onEndDrag() {
 		if (!draggedIngredient || !draggable) return;
 
         let oldIndex = parseInt(draggedIngredient.dataset.index || '');
@@ -238,6 +241,9 @@
 								on:mousedown={(e) => {
 									onStartDrag(i, category, e);
 								}}
+                                on:touchstart={(e) => {
+                                    onStartDrag(i, category, e);
+                                }}
 								role="button"
 								tabindex="0"
 							>
