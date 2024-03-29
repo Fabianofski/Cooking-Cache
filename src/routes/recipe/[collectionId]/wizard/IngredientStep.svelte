@@ -135,7 +135,16 @@
 	function onEndDrag(e: MouseEvent) {
 		if (!draggedIngredient || !draggable) return;
 
-		document.body.style.cursor = 'pointer';
+        let oldIndex = parseInt(draggedIngredient.dataset.index || '');
+        const oldCategory = draggedIngredient.dataset.category;
+        if (oldIndex === null || !oldCategory || !currentHandleCategory || currentHandlePosition === null) return;
+
+        recipe.ingredients[currentHandleCategory].splice(currentHandlePosition, 0, recipe.ingredients[oldCategory][oldIndex]);
+        if (oldCategory === currentHandleCategory && currentHandlePosition < oldIndex) oldIndex++;
+        recipe.ingredients[oldCategory].splice(oldIndex, 1);
+        recipe.ingredients = { ...recipe.ingredients };
+
+		document.body.style.cursor = 'auto';
 		draggedIngredient.style.position = 'static';
 		draggable = null;
 		draggedIngredient = null;
