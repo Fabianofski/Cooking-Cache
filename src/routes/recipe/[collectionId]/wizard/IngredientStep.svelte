@@ -86,7 +86,9 @@
 		dragOffset = e.clientY - rect.top;
 
 		document.body.style.cursor = 'grabbing';
+        document.body.style.userSelect = 'none';
 		draggedIngredient.style.position = 'fixed';
+        draggedIngredient.style.zIndex = '20';
 		draggedIngredient.style.left = `${rect.left}px`;
 
 		const ingredientLists = document.getElementsByClassName('ingredient-list');
@@ -145,6 +147,7 @@
         recipe.ingredients = { ...recipe.ingredients };
 
 		document.body.style.cursor = 'auto';
+        document.body.style.userSelect = 'auto';
 		draggedIngredient.style.position = 'static';
 		draggable = null;
 		draggedIngredient = null;
