@@ -105,7 +105,9 @@
 							d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
 						/>
 					</svg>
-					{recipe.cookingTime || 60} Minuten
+					{recipe.cookingTime >= 60
+						? Math.floor(recipe.cookingTime / 60) + 'h '
+						: ''}{recipe.cookingTime % 60}m
 				</div>
 			</div>
 		</div>

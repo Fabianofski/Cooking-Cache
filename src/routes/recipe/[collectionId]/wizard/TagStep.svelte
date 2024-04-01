@@ -16,6 +16,24 @@
 		recipe.tags = tags;
 	}
 
+	function setCookingTime(e: Event) {
+		if (e.target === null) return;
+		const time = (e.target as HTMLInputElement).value;
+
+        const hoursMatch = time.match(/\d+h/);
+        const hours = parseInt(hoursMatch ? hoursMatch[0] : '0h');
+        const minutesMatch = time.match(/\d+m/);
+        const minutes = parseInt(minutesMatch ? minutesMatch[0] : '0m');
+        recipe.cookingTime = hours * 60 + minutes || 0;
+	}
+
+	function getCookingTime() {
+		if (recipe.cookingTime === undefined) return '';
+		const hours = Math.floor(recipe.cookingTime / 60);
+		const minutes = recipe.cookingTime % 60;
+		return `${hours}h${minutes}m`;
+	}
+
 	let inputFocus: HTMLElement;
 	onMount(() => {
 		if (!Capacitor.isNativePlatform()) inputFocus.focus();
@@ -104,14 +122,13 @@
 		</div>
 
 		<input
-			type="number"
-			placeholder="60"
+			type="text"
+			placeholder="0h20m"
 			min="0"
 			class="join-item input input-bordered w-full"
-			bind:value={recipe.cookingTime}
+			on:input={setCookingTime}
+			value={getCookingTime()}
 		/>
-
-		<span class="join-item flex items-center bg-base-300 px-6">Minuten</span>
 	</div>
 </div>
 

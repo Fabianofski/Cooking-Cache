@@ -67,9 +67,9 @@
 			instructionsPullToRefresh: 'Zum Aktualisieren ziehen',
 			instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
 			instructionsRefreshing: 'Aktualisiere...',
-            shouldPullToRefresh: () => {
-                return scrollBar.scrollTop === 0;
-            }
+			shouldPullToRefresh: () => {
+				return scrollBar.scrollTop === 0;
+			}
 		});
 	});
 </script>

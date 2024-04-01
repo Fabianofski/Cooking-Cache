@@ -41,8 +41,8 @@ describe('RecipeHandler', () => {
 			id: 'recipe-id',
 			collectionId: '123',
 			creatorId: 'creator-id',
-            cookingTime: 30,
-            numberOfServings: 4
+			cookingTime: 30,
+			numberOfServings: 4
 		};
 
 		collections = {

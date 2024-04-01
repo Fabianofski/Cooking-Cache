@@ -136,10 +136,26 @@ describe('RecipeCard', () => {
 	});
 
 	it('should show the cooking time of recipe', () => {
+		recipe.cookingTime = 20;
+		const { getByTestId } = render(RecipeCard, { recipe: recipe });
+
+		const cookingTime = getByTestId('cookingTime');
+		expect(cookingTime.textContent?.trim()).toBe('20m');
+	});
+
+	it('should show the cooking time hours of recipe when is 60 minutes', () => {
 		recipe.cookingTime = 60;
 		const { getByTestId } = render(RecipeCard, { recipe: recipe });
 
 		const cookingTime = getByTestId('cookingTime');
-		expect(cookingTime.textContent?.trim()).toBe('60 Minuten');
+		expect(cookingTime.textContent?.trim()).toBe('1h 0m');
+	});
+
+	it('should show the cooking time hours of recipe when more than 60 minutes', () => {
+		recipe.cookingTime = 80;
+		const { getByTestId } = render(RecipeCard, { recipe: recipe });
+
+		const cookingTime = getByTestId('cookingTime');
+		expect(cookingTime.textContent?.trim()).toBe('1h 20m');
 	});
 });
