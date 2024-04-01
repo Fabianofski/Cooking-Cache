@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
@@ -55,6 +56,107 @@
 
 		delete recipe.ingredients[category];
 		delete editingCategoryName[category];
+	}
+
+	let draggable: HTMLDivElement | null = null;
+	let draggedIngredient: HTMLDivElement | null = null;
+	let bounds: {
+		top: number;
+		bottom: number;
+	} = { top: 0, bottom: 9999999999 };
+	let dragOffset: number = 0;
+
+	onMount(() => {
+		document.addEventListener('mouseup', onEndDrag);
+		document.addEventListener('mousemove', onDrag);
+        document.addEventListener('touchend', onEndDrag);
+        document.addEventListener('touchmove', onDrag);
+	});
+
+	let currentHandlePosition: number | null = null;
+	let currentHandleCategory: string | null = null;
+	function onStartDrag(handlePos: number, handleCategory: string, e: MouseEvent | TouchEvent) {
+		let handleId = `drag-handle-${handleCategory}-${handlePos}`;
+		draggable = document.getElementById(handleId) as HTMLDivElement;
+		draggedIngredient = draggable.parentElement?.parentElement as HTMLDivElement;
+		if (!draggedIngredient) return;
+
+		currentHandlePosition = handlePos;
+		currentHandleCategory = handleCategory;
+
+		const rect = draggedIngredient.getBoundingClientRect();
+        const clientPos = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
+		dragOffset = clientPos - rect.top;
+
+		document.body.style.cursor = 'grabbing';
+        document.body.style.userSelect = 'none';
+		draggedIngredient.style.position = 'fixed';
+        draggedIngredient.style.zIndex = '20';
+		draggedIngredient.style.left = `${rect.left}px`;
+        draggedIngredient.style.width = `${rect.width}px`;
+
+		const ingredientLists = document.getElementsByClassName('ingredient-list');
+		bounds = {
+			top: ingredientLists[0].getBoundingClientRect().top || 0,
+			bottom: ingredientLists[ingredientLists.length - 1].getBoundingClientRect().bottom || 0
+		};
+
+		onDrag(e);
+	}
+
+	function onDrag(e: MouseEvent | TouchEvent) {
+		if (!draggedIngredient) return;
+		const mousePos = (e instanceof MouseEvent ?  e.clientY : e.touches[0].clientY) - dragOffset;
+
+		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(mousePos, bounds.bottom))}px`;
+
+		const ingredientLists = document.getElementsByClassName('ingredient-list');
+		const ingredientElements: HTMLDivElement[] = [];
+		for (let i = 0; i < ingredientLists.length; i++) {
+			const ingredientList = ingredientLists[i] as HTMLTableElement;
+			for (let j = 0; j < ingredientList.children.length; j++) {
+				ingredientElements.push(ingredientList.children[j] as HTMLDivElement);
+			}
+		}
+
+		for (let i = 0; i < ingredientElements.length; i++) {
+			const ingredientElement = ingredientElements[i] as HTMLDivElement;
+			if (
+				!ingredientElement.dataset.category ||
+				!ingredientElement.dataset.index ||
+				ingredientElement === draggedIngredient
+			)
+				continue;
+
+			const ingredientBounds = ingredientElement.getBoundingClientRect();
+			const center = ingredientBounds.top + ingredientBounds.height / 2;
+			if (mousePos < center) {
+				currentHandlePosition = parseInt(ingredientElement.dataset.index);
+				currentHandleCategory = ingredientElement.dataset.category;
+				break;
+			}
+		}
+	}
+
+	function onEndDrag() {
+		if (!draggedIngredient || !draggable) return;
+
+        let oldIndex = parseInt(draggedIngredient.dataset.index || '');
+        const oldCategory = draggedIngredient.dataset.category;
+        if (oldIndex === null || !oldCategory || !currentHandleCategory || currentHandlePosition === null) return;
+
+        recipe.ingredients[currentHandleCategory].splice(currentHandlePosition, 0, recipe.ingredients[oldCategory][oldIndex]);
+        if (oldCategory === currentHandleCategory && currentHandlePosition < oldIndex) oldIndex++;
+        recipe.ingredients[oldCategory].splice(oldIndex, 1);
+        recipe.ingredients = { ...recipe.ingredients };
+
+		document.body.style.cursor = 'auto';
+        document.body.style.userSelect = 'auto';
+		draggedIngredient.style.position = 'static';
+		draggable = null;
+		draggedIngredient = null;
+		currentHandlePosition = null;
+		currentHandleCategory = null;
 	}
 </script>
 
@@ -116,14 +218,52 @@
 		<table class="table">
 			<thead>
 				<tr>
+					<th class="pl-0 pt-0.5" />
 					<th class="pl-0 pt-0.5">Menge</th>
 					<th class="pl-0 pt-0.5">Einheit</th>
 					<th class="pl-0 pt-0.5">Zutat</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="ingredient-list relative">
 				{#each { length: recipe.ingredients[category].length } as _, i}
-					<tr>
+					{#if currentHandlePosition === i && currentHandleCategory === category}
+						<tr>
+							<td class="p-0 h-8" />
+							<td class="p-0" />
+							<td class="p-0" />
+							<td class="p-0" />
+						</tr>
+					{/if}
+					<tr data-index={i} data-category={category}>
+						<td class="pl-0 pr-0.5 py-0 w-6">
+							<div
+								id={`drag-handle-${category}-${i}`}
+								class="cursor-pointer text-slate-400"
+								on:mousedown={(e) => {
+									onStartDrag(i, category, e);
+								}}
+                                on:touchstart={(e) => {
+                                    onStartDrag(i, category, e);
+                                }}
+								role="button"
+								tabindex="0"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke-width="1.5"
+									stroke="currentColor"
+									class="w-6 h-6"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										d="M3.75 9h16.5m-16.5 6.75h16.5"
+									/>
+								</svg>
+							</div>
+						</td>
 						<td class="pl-0 pr-0.5 py-0 w-36">
 							<input
 								type="number"
@@ -141,7 +281,7 @@
 								bind:value={recipe.ingredients[category][i].unit}
 							/>
 						</td>
-						<td class="pl-0.5 pr-0 py-0">
+						<td class="pl-0.5 pr-0 py-0 ">
 							<input
 								type="text"
 								placeholder="Eier"
@@ -177,7 +317,17 @@
 						</td>
 					</tr>
 				{/each}
+				<tr data-index={recipe.ingredients[category].length} data-category={category} />
+				{#if currentHandleCategory === category && currentHandlePosition === recipe.ingredients[category].length}
+					<tr>
+						<td class="p-0 h-8" />
+						<td class="p-0" />
+						<td class="p-0" />
+						<td class="p-0" />
+					</tr>
+				{/if}
 				<tr>
+					<td class="p-0" />
 					<td class="p-0">
 						<button
 							class="btn btn-neutral btn-sm w-32 my-1"
