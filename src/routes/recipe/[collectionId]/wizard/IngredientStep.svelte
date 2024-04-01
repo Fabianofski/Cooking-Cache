@@ -93,6 +93,7 @@
 		draggedIngredient.style.position = 'fixed';
         draggedIngredient.style.zIndex = '20';
 		draggedIngredient.style.left = `${rect.left}px`;
+        draggedIngredient.style.width = `${rect.width}px`;
 
 		const ingredientLists = document.getElementsByClassName('ingredient-list');
 		bounds = {
@@ -223,7 +224,7 @@
 					<th class="pl-0 pt-0.5">Zutat</th>
 				</tr>
 			</thead>
-			<tbody class="ingredient-list">
+			<tbody class="ingredient-list relative">
 				{#each { length: recipe.ingredients[category].length } as _, i}
 					{#if currentHandlePosition === i && currentHandleCategory === category}
 						<tr>
@@ -280,7 +281,7 @@
 								bind:value={recipe.ingredients[category][i].unit}
 							/>
 						</td>
-						<td class="pl-0.5 pr-0 py-0">
+						<td class="pl-0.5 pr-0 py-0 ">
 							<input
 								type="text"
 								placeholder="Eier"
