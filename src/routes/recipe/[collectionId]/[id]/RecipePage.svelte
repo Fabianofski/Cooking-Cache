@@ -67,7 +67,11 @@
 						d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
 					/>
 				</svg>
-				<p>{recipe.cookingTime} Minuten</p>
+				<p>
+					{recipe.cookingTime >= 60
+						? Math.floor(recipe.cookingTime / 60) + 'h '
+						: ''}{recipe.cookingTime % 60}m
+				</p>
 			</div>
 			<div class="badge badge-neutral h-8">
 				<svg

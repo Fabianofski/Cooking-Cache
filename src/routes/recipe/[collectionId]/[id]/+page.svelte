@@ -45,7 +45,11 @@
 		if (!recipe || !$currentUser) return;
 		if (!recipe.accessToken) {
 			sharingLoading = true;
-			const newToken = await generateRecipeAccessToken($currentUser, recipeCollection.id, recipe.id);
+			const newToken = await generateRecipeAccessToken(
+				$currentUser,
+				recipeCollection.id,
+				recipe.id
+			);
 			sharingLoading = false;
 			if (!newToken) return;
 			recipe.accessToken = newToken;

@@ -69,8 +69,8 @@
 	onMount(() => {
 		document.addEventListener('mouseup', onEndDrag);
 		document.addEventListener('mousemove', onDrag);
-        document.addEventListener('touchend', onEndDrag);
-        document.addEventListener('touchmove', onDrag);
+		document.addEventListener('touchend', onEndDrag);
+		document.addEventListener('touchmove', onDrag);
 	});
 
 	let currentHandlePosition: number | null = null;
@@ -85,15 +85,15 @@
 		currentHandleCategory = handleCategory;
 
 		const rect = draggedIngredient.getBoundingClientRect();
-        const clientPos = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
+		const clientPos = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
 		dragOffset = clientPos - rect.top;
 
 		document.body.style.cursor = 'grabbing';
-        document.body.style.userSelect = 'none';
+		document.body.style.userSelect = 'none';
 		draggedIngredient.style.position = 'fixed';
-        draggedIngredient.style.zIndex = '20';
+		draggedIngredient.style.zIndex = '20';
 		draggedIngredient.style.left = `${rect.left}px`;
-        draggedIngredient.style.width = `${rect.width}px`;
+		draggedIngredient.style.width = `${rect.width}px`;
 
 		const ingredientLists = document.getElementsByClassName('ingredient-list');
 		bounds = {
@@ -106,7 +106,7 @@
 
 	function onDrag(e: MouseEvent | TouchEvent) {
 		if (!draggedIngredient) return;
-		const mousePos = (e instanceof MouseEvent ?  e.clientY : e.touches[0].clientY) - dragOffset;
+		const mousePos = (e instanceof MouseEvent ? e.clientY : e.touches[0].clientY) - dragOffset;
 
 		draggedIngredient.style.top = `${Math.max(bounds.top, Math.min(mousePos, bounds.bottom))}px`;
 
@@ -141,17 +141,27 @@
 	function onEndDrag() {
 		if (!draggedIngredient || !draggable) return;
 
-        let oldIndex = parseInt(draggedIngredient.dataset.index || '');
-        const oldCategory = draggedIngredient.dataset.category;
-        if (oldIndex === null || !oldCategory || !currentHandleCategory || currentHandlePosition === null) return;
+		let oldIndex = parseInt(draggedIngredient.dataset.index || '');
+		const oldCategory = draggedIngredient.dataset.category;
+		if (
+			oldIndex === null ||
+			!oldCategory ||
+			!currentHandleCategory ||
+			currentHandlePosition === null
+		)
+			return;
 
-        recipe.ingredients[currentHandleCategory].splice(currentHandlePosition, 0, recipe.ingredients[oldCategory][oldIndex]);
-        if (oldCategory === currentHandleCategory && currentHandlePosition < oldIndex) oldIndex++;
-        recipe.ingredients[oldCategory].splice(oldIndex, 1);
-        recipe.ingredients = { ...recipe.ingredients };
+		recipe.ingredients[currentHandleCategory].splice(
+			currentHandlePosition,
+			0,
+			recipe.ingredients[oldCategory][oldIndex]
+		);
+		if (oldCategory === currentHandleCategory && currentHandlePosition < oldIndex) oldIndex++;
+		recipe.ingredients[oldCategory].splice(oldIndex, 1);
+		recipe.ingredients = { ...recipe.ingredients };
 
 		document.body.style.cursor = 'auto';
-        document.body.style.userSelect = 'auto';
+		document.body.style.userSelect = 'auto';
 		draggedIngredient.style.position = 'static';
 		draggable = null;
 		draggedIngredient = null;
@@ -242,9 +252,9 @@
 								on:mousedown={(e) => {
 									onStartDrag(i, category, e);
 								}}
-                                on:touchstart={(e) => {
-                                    onStartDrag(i, category, e);
-                                }}
+								on:touchstart={(e) => {
+									onStartDrag(i, category, e);
+								}}
 								role="button"
 								tabindex="0"
 							>
@@ -281,7 +291,7 @@
 								bind:value={recipe.ingredients[category][i].unit}
 							/>
 						</td>
-						<td class="pl-0.5 pr-0 py-0 ">
+						<td class="pl-0.5 pr-0 py-0">
 							<input
 								type="text"
 								placeholder="Eier"

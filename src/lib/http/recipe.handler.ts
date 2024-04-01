@@ -65,7 +65,7 @@ async function deleteRecipeFromCollection(user: User, recipe: Recipe) {
 					value[recipe.collectionId].recipes = value[recipe.collectionId].recipes.filter(
 						(x) => x.id !== recipe?.id
 					);
-                goto(`/recipes/${generateShortCollectionId(value[recipe.collectionId], value)}`);
+				goto(`/recipes/${generateShortCollectionId(value[recipe.collectionId], value)}`);
 				return value;
 			});
 			createNewAlert({

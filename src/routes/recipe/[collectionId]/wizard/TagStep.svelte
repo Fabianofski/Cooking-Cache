@@ -16,27 +16,27 @@
 		recipe.tags = tags;
 	}
 
-    function setCookingTime(e: Event) {
-        if (e.target === null) return;
-        const time = (e.target as HTMLInputElement).value;
+	function setCookingTime(e: Event) {
+		if (e.target === null) return;
+		const time = (e.target as HTMLInputElement).value;
 
-        const timeArray = time.split('h');
+		const timeArray = time.split('h');
 
-        try {
-            const hours = parseInt(timeArray[0]);
-            const minutes = parseInt(timeArray[1].replace('m', ''));
-            recipe.cookingTime = hours * 60 + minutes || 0;
-        } catch (e) {
-            recipe.cookingTime = 0;
-        }
-    }
+		try {
+			const hours = parseInt(timeArray[0]);
+			const minutes = parseInt(timeArray[1].replace('m', ''));
+			recipe.cookingTime = hours * 60 + minutes || 0;
+		} catch (e) {
+			recipe.cookingTime = 0;
+		}
+	}
 
-    function getCookingTime() {
-        if (recipe.cookingTime === undefined) return '';
-        const hours = Math.floor(recipe.cookingTime / 60);
-        const minutes = recipe.cookingTime % 60;
-        return `${hours}h${minutes}m`;
-    }
+	function getCookingTime() {
+		if (recipe.cookingTime === undefined) return '';
+		const hours = Math.floor(recipe.cookingTime / 60);
+		const minutes = recipe.cookingTime % 60;
+		return `${hours}h${minutes}m`;
+	}
 
 	let inputFocus: HTMLElement;
 	onMount(() => {
@@ -130,8 +130,8 @@
 			placeholder="0h20m"
 			min="0"
 			class="join-item input input-bordered w-full"
-            on:input={setCookingTime}
-            value={getCookingTime()}
+			on:input={setCookingTime}
+			value={getCookingTime()}
 		/>
 	</div>
 </div>
