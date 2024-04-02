@@ -22,7 +22,7 @@
 		const bringBtn = document.getElementById('bringBtn');
 		if (!bringBtn) return;
 
-		const url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share&key=${recipe?.accessToken}`;
+		const url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`;
 
 		// @ts-ignore
 		window.bringwidgets?.import.render(bringBtn, {
