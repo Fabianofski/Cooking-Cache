@@ -43,12 +43,13 @@
 
 	let bringImportLink: string | undefined = '';
 
-    $: recipe, createBringLink();
+	$: recipe, numberOfServings, createBringLink();
 	async function createBringLink() {
-        if (!recipe) return;
+		if (!recipe) return;
 		bringImportLink = await getBringImportLink(
 			`https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`,
-			recipe?.numberOfServings || 4
+			recipe?.numberOfServings || 4,
+			numberOfServings
 		);
 	}
 </script>
