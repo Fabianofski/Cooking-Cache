@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
+	import { browser } from '$app/environment';
 
 	export let recipe: Recipe | undefined;
 
@@ -17,7 +18,7 @@
 	onMount(createBringButton);
 
 	function createBringButton() {
-		if (!recipe) return;
+		if (!recipe || !browser) return;
 		const bringBtn = document.getElementById('bringBtn');
 		if (!bringBtn) return;
 
@@ -28,6 +29,32 @@
 			url: url
 		});
 	}
+
+	function convertIngredientsToArray(recipe: Recipe) {
+		const ingredients = [];
+		for (const category in recipe.ingredients) {
+			for (const ingredient of recipe.ingredients[category]) {
+				ingredients.push(`${ingredient.amount}${ingredient.unit || ''} ${ingredient.name}`);
+			}
+		}
+		return ingredients;
+	}
+
+	function getJsonLd(recipe: Recipe) {
+		const data = JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'Recipe',
+			author: 'Cooking Cache',
+			totalTime: `PT${recipe.cookingTime}M`,
+			datePublished: recipe.createdTime.split('T')[0],
+			image: recipe.image,
+			recipeIngredient: convertIngredientsToArray(recipe),
+			name: recipe.title,
+			recipeInstructions: recipe.description.join('\n'),
+			recipeYield: recipe.numberOfServings
+		});
+		return `<script type="application/ld+json">${data}<\/script>`;
+	}
 </script>
 
 <svelte:head>
@@ -36,6 +63,9 @@
 		src="https://platform.getbring.com/widgets/import.js"
 		on:load={createBringButton}
 	></script>
+	{#if recipe}
+		{@html getJsonLd(recipe)}
+	{/if}
 </svelte:head>
 
 {#if recipe}

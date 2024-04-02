@@ -20,11 +20,11 @@
 		if (e.target === null) return;
 		const time = (e.target as HTMLInputElement).value;
 
-        const hoursMatch = time.match(/\d+h/);
-        const hours = parseInt(hoursMatch ? hoursMatch[0] : '0h');
-        const minutesMatch = time.match(/\d+m/);
-        const minutes = parseInt(minutesMatch ? minutesMatch[0] : '0m');
-        recipe.cookingTime = hours * 60 + minutes || 0;
+		const hoursMatch = time.match(/\d+h/);
+		const hours = parseInt(hoursMatch ? hoursMatch[0] : '0h');
+		const minutesMatch = time.match(/\d+m/);
+		const minutes = parseInt(minutesMatch ? minutesMatch[0] : '0m');
+		recipe.cookingTime = hours * 60 + minutes || 0;
 	}
 
 	function getCookingTime() {

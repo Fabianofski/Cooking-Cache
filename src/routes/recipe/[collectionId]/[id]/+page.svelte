@@ -55,19 +55,16 @@
 			recipe.accessToken = newToken;
 		}
 
-		const url = new URL(window.location.href);
-		url.searchParams.set('key', recipe.accessToken);
-		const finalUrl =
-			'https://cooking-cache.web.app' + url.pathname + '?' + url.searchParams.toString();
+		const url = `https://cooking-cache.web.app/recipe/${recipe.collectionId}/${recipe.id}/share?key=${recipe.accessToken}`;
 
 		if (Capacitor.isNativePlatform()) {
 			await Share.share({
 				title: recipe.title,
 				text: 'Schau dir das Rezept an!\n',
-				url: finalUrl
+				url: url
 			});
 		} else {
-			navigator.clipboard.writeText(finalUrl);
+			navigator.clipboard.writeText(url);
 			createNewAlert({
 				type: 'success',
 				message: 'Der Link zum Rezept wurde in die Zwischenablage kopiert'
@@ -91,13 +88,6 @@
 		await deleteRecipeFromCollection($currentUser, recipe);
 		loadingDeletion = false;
 	}
-
-	onMount(async () => {
-		if (!recipe && data.accessToken) {
-			recipe = await getRecipeWithAccessToken(data.collectionId, data.id, data.accessToken);
-			loading = false;
-		}
-	});
 </script>
 
 <svelte:head>
