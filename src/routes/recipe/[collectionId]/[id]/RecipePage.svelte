@@ -46,6 +46,7 @@
 	$: recipe, numberOfServings, createBringLink();
 	async function createBringLink() {
 		if (!recipe) return;
+		bringImportLink = '';
 		bringImportLink = await getBringImportLink(
 			`https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`,
 			recipe?.numberOfServings || 4,
@@ -245,9 +246,14 @@
 	</div>
 
 	<div class="flex justify-center">
-		<a href={bringImportLink} class="btn btn-primary bring-import-link-dark">
-			<img class="h-6" src="/bring.svg" alt="bring" />
-			Zu Bring!
+		<a
+			href={bringImportLink}
+			target="_blank"
+			class:btn-disabled={bringImportLink === ''}
+			class="btn bg-[#37474f] hover:bg-[#304047] w-full max-w-sm text-white font-bold"
+		>
+			<img class="h-8" src="/bring.png" alt="bring" />
+			Auf Einkaufsliste setzen!
 		</a>
 	</div>
 
