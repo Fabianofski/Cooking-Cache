@@ -1,6 +1,7 @@
 <script lang="ts">
 	import RecipePage from '../RecipePage.svelte';
+	import SharePage from './SharePage.svelte';
 	export let data;
 </script>
 
-<RecipePage recipe={data.recipe} />
+<SharePage recipe={data.recipe} />

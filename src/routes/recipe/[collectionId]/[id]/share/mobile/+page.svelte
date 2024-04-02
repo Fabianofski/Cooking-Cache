@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-	import RecipePage from "../../RecipePage.svelte";
 	import type { Recipe } from "../../../../../../models/Recipe";
 	import { getRecipeWithAccessToken } from "$lib/http/recipe.handler";
+	import SharePage from "../SharePage.svelte";
 
     export let data;
     let recipe: Recipe | undefined;
@@ -13,5 +13,5 @@
     });
 
 </script>
-<RecipePage recipe={recipe} />
+<SharePage recipe={recipe} />
 
