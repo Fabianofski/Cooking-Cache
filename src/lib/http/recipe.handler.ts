@@ -134,9 +134,33 @@ async function generateRecipeAccessToken(
 		});
 }
 
+async function getBringImportLink(
+	url: string,
+	quantity: number,
+	requestedQuantity: number
+): Promise<string | undefined> {
+	return axios
+		.get(`${PUBLIC_BASE_URL}/api/recipe/import/bring`, {
+			params: {
+				url,
+				baseQuantity: quantity,
+				requestedQuantity: requestedQuantity
+			}
+		})
+		.then((res) => {
+			if (res.status !== 200) return Promise.reject(res);
+			return res.data;
+		})
+		.catch((error) => {
+			console.error(error);
+			return undefined;
+		});
+}
+
 export {
 	addRecipeToCollection,
 	deleteRecipeFromCollection,
 	getRecipeWithAccessToken,
-	generateRecipeAccessToken
+	generateRecipeAccessToken,
+	getBringImportLink
 };

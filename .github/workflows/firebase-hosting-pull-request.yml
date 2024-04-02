@@ -15,6 +15,7 @@ jobs:
       DATABASE_URL: '${{ secrets.DATABASE_URL }}'
       STORAGE_URL: '${{ secrets.STORAGE_URL }}'
       YOUTUBE_API_KEY: '${{ secrets.YOUTUBE_API_KEY }}'
+      GOOGLE_AD_ID: '${{ secrets.GOOGLE_AD_ID }}'
       PUBLIC_BASE_URL: ''
     steps:
       - uses: actions/checkout@v3

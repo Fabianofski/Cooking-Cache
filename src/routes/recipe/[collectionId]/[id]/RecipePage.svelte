@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
 	import { browser } from '$app/environment';
+	import { getBringImportLink } from '$lib/http/recipe.handler';
 
 	export let recipe: Recipe | undefined;
 
@@ -12,22 +13,6 @@
 
 		const multiplier = numberOfServings / (recipe?.numberOfServings || 4);
 		return Number((multiplier * amount).toFixed(2));
-	}
-
-	$: recipe, createBringButton();
-	onMount(createBringButton);
-
-	function createBringButton() {
-		if (!recipe || !browser) return;
-		const bringBtn = document.getElementById('bringBtn');
-		if (!bringBtn) return;
-
-		const url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`;
-
-		// @ts-ignore
-		window.bringwidgets?.import.render(bringBtn, {
-			url: url
-		});
 	}
 
 	function convertIngredientsToArray(recipe: Recipe) {
@@ -55,14 +40,22 @@
 		});
 		return `<script type="application/ld+json">${data}<\/script>`;
 	}
+
+	let bringImportLink: string | undefined = '';
+
+	$: recipe, numberOfServings, createBringLink();
+	async function createBringLink() {
+		if (!recipe) return;
+		bringImportLink = '';
+		bringImportLink = await getBringImportLink(
+			`https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`,
+			recipe?.numberOfServings || 4,
+			numberOfServings
+		);
+	}
 </script>
 
 <svelte:head>
-	<script
-		async
-		src="https://platform.getbring.com/widgets/import.js"
-		on:load={createBringButton}
-	></script>
 	{#if recipe}
 		{@html getJsonLd(recipe)}
 	{/if}
@@ -253,7 +246,15 @@
 	</div>
 
 	<div class="flex justify-center">
-		<div class="w-full max-w-xs" id="bringBtn" />
+		<a
+			href={bringImportLink}
+			target="_blank"
+			class:btn-disabled={bringImportLink === ''}
+			class="btn bg-[#37474f] hover:bg-[#304047] w-full max-w-sm text-white font-bold"
+		>
+			<img class="h-8" src="/bring.png" alt="bring" />
+			Auf Einkaufsliste setzen!
+		</a>
 	</div>
 
 	<div class="divider" />

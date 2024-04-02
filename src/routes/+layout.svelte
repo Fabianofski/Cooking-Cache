@@ -56,7 +56,7 @@
 		App.addListener('appUrlOpen', async (data) => {
 			let slug = data.url.split('cooking-cache.web.app')[1];
 			if (slug.includes('collection/join')) slug = slug.replace('/join', '/join/mobile');
-            if (slug.includes('/share?key=')) slug = slug.replace('/share', '/share/mobile');
+			if (slug.includes('/share?key=')) slug = slug.replace('/share', '/share/mobile');
 			if (slug) goto(slug);
 		});
 
