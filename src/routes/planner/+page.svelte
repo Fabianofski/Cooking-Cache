@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 	import Header from '../../components/Header.svelte';
 	import SmallRecipeCard from '../../components/SmallRecipeCard.svelte';
 	import type { Recipe } from '../../models/Recipe';
@@ -70,7 +71,13 @@
 		>
 			«
 		</button>
-		<button class="join-item btn">
+		<button
+			class="join-item btn"
+			on:click={() => {
+				offset = 0;
+				days = getDatesOfWeek();
+			}}
+		>
 			{new Date(days[0]).toLocaleDateString()} - {new Date(
 				days[days.length - 1]
 			).toLocaleDateString()}
@@ -101,7 +108,18 @@
 						{#if weeklyPlan[day]}
 							{#each weeklyPlan[day].recipes as meal, index}
 								<div class="flex">
-									<SmallRecipeCard recipe={getRecipe(meal.recipeId, meal.collectionId)} />
+									<a
+										class="w-full"
+										href={`/recipe/${generateShortCollectionId(
+											$recipeCollectionsStore[meal.collectionId],
+											$recipeCollectionsStore
+										)}/${generateShortRecipeId(
+											getRecipe(meal.recipeId, meal.collectionId),
+											$recipeCollectionsStore[meal.collectionId].recipes
+										)}`}
+									>
+										<SmallRecipeCard recipe={getRecipe(meal.recipeId, meal.collectionId)} />
+									</a>
 									<button class="btn h-full" on:click={() => removeRecipeFromPlan(day, index)}>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"

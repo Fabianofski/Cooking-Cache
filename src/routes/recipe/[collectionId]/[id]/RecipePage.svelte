@@ -31,7 +31,7 @@
 			'@type': 'Recipe',
 			author: 'Cooking Cache',
 			totalTime: `PT${recipe.cookingTime}M`,
-			datePublished: recipe.createdTime.split('T')[0],
+			datePublished: recipe.createdTime?.split('T')[0] || new Date(),
 			image: recipe.image,
 			recipeIngredient: convertIngredientsToArray(recipe),
 			name: recipe.title,
