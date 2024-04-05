@@ -3,10 +3,11 @@
 	import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 	import Header from '../../components/Header.svelte';
 	import SmallRecipeCard from '../../components/SmallRecipeCard.svelte';
+	import SmallRecipeSkeleton from '../../components/SmallRecipeSkeleton.svelte';
 	import type { Recipe } from '../../models/Recipe';
 	import type WeeklyPlan from '../../models/WeeklyPlan';
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
-	import { currentUser, weeklyPlanStore } from '../../stores/store';
+	import { currentUser, weeklyPlanStore, weeklyPlanLoadingStore } from '../../stores/store';
 	import SelectRecipeModal from './SelectRecipeModal.svelte';
 
 	let offset = 0;
@@ -52,7 +53,6 @@
 	}
 
 	function getRecipe(recipeId: string, collectionId: string) {
-		console.log($recipeCollectionsStore);
 		if (!$recipeCollectionsStore[collectionId]) return;
 		const recipes = $recipeCollectionsStore[collectionId].recipes;
 		return recipes.find((recipe) => recipe.id === recipeId);
@@ -97,9 +97,9 @@
 			»
 		</button>
 	</div>
-	<div class="w-full">
+	<div class="flex flex-col gap-4 w-full">
 		{#each days as day}
-			<div class="min-h-24">
+			<div>
 				<h2 class="text-lg font-bold">
 					{new Date(day).toLocaleDateString('de-DE', {
 						weekday: 'long',
@@ -110,7 +110,9 @@
 				</h2>
 				<div class="grid grid-cols-fluid gap-4">
 					<div class="flex flex-col gap-2">
-						{#if weeklyPlan[day]}
+						{#if $weeklyPlanLoadingStore === 'LOADING'}
+							<SmallRecipeSkeleton />
+						{:else if weeklyPlan[day]}
 							{#each weeklyPlan[day].recipes as meal, index}
 								<div class="flex">
 									<a
@@ -125,7 +127,10 @@
 									>
 										<SmallRecipeCard recipe={getRecipe(meal.recipeId, meal.collectionId)} />
 									</a>
-									<button class="btn h-full" on:click={() => removeRecipeFromPlan(day, index)}>
+									<button
+										class="btn btn-ghost h-full"
+										on:click={() => removeRecipeFromPlan(day, index)}
+									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											fill="none"
@@ -147,6 +152,7 @@
 						<button
 							class="btn"
 							on:click={() => openSelectRecipeModal(day)}
+							disabled={$weeklyPlanLoadingStore !== 'FINISHED'}
 						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"

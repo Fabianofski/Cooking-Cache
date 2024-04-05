@@ -8,3 +8,4 @@ export type LoadingState = 'LOADING' | 'NOUSER' | 'FINISHED';
 export const loadingStateStore = writable<LoadingState>('LOADING');
 
 export const weeklyPlanStore = writable<WeeklyPlan | null>();
+export const weeklyPlanLoadingStore = writable<LoadingState>('LOADING');

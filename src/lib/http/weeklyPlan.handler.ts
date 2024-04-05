@@ -5,26 +5,26 @@ import { createNewAlert } from '../../components/alerts/alert.handler';
 import { weeklyPlanStore } from '../../stores/store';
 
 async function getWeeklyPlan(user: User) {
-    const token = await user.getIdToken();
-    return axios
-        .get(`${PUBLIC_BASE_URL}/api/weeklyPlan`, {
-            headers: {
-                Authorization: token
-            }
-        })
-        .then((res) => {
-            if (res.status !== 200) return Promise.reject(res);
+	const token = await user.getIdToken();
+	return axios
+		.get(`${PUBLIC_BASE_URL}/api/weeklyPlan`, {
+			headers: {
+				Authorization: token
+			}
+		})
+		.then((res) => {
+			if (res.status !== 200) return Promise.reject(res);
 
-            weeklyPlanStore.set(res.data);
-        })
-        .catch((error) => {
-            createNewAlert({
-                message:
-                    'Beim Laden des Wochenplans ist ein Fehler aufgetreten!' +
-                    (error.status ? ` (Error ${error.status})` : ''),
-                type: 'error'
-            });
-        });
+			weeklyPlanStore.set(res.data);
+		})
+		.catch((error) => {
+			createNewAlert({
+				message:
+					'Beim Laden des Wochenplans ist ein Fehler aufgetreten!' +
+					(error.status ? ` (Error ${error.status})` : ''),
+				type: 'error'
+			});
+		});
 }
 
 async function addRecipeToWeeklyPlan(
