@@ -1,16 +1,24 @@
 <script lang="ts">
+	import { addRecipeToWeeklyPlan, removeRecipeFromWeeklyPlan } from '$lib/http/weeklyPlan.handler';
 	import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 	import Header from '../../components/Header.svelte';
 	import SmallRecipeCard from '../../components/SmallRecipeCard.svelte';
 	import type { Recipe } from '../../models/Recipe';
 	import type WeeklyPlan from '../../models/WeeklyPlan';
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
+	import { currentUser, weeklyPlanStore } from '../../stores/store';
 	import SelectRecipeModal from './SelectRecipeModal.svelte';
 
 	let offset = 0;
 	let days = getDatesOfWeek();
 	let selectedDay: string = '';
+
 	let weeklyPlan: WeeklyPlan = {};
+	weeklyPlanStore.subscribe((value) => {
+		if (!value) return;
+		console.log(value);
+		weeklyPlan = value;
+	});
 
 	function getDatesOfWeek() {
 		const todayWithOffset = new Date();
@@ -22,7 +30,7 @@
 			const date = new Date(monday);
 			date.setDate(date.getDate() + i);
 			date.setUTCHours(0, 0, 0, 0);
-			return date.toISOString();
+			return date.toISOString().replace('.000Z', '');
 		});
 	}
 
@@ -32,23 +40,21 @@
 		selectRecipeModal.showModal();
 	}
 
-	function selectedHandler(recipe: Recipe) {
-		if (!weeklyPlan[selectedDay]) weeklyPlan[selectedDay] = { recipes: [] };
-		weeklyPlan[selectedDay].recipes.push({
-			recipeId: recipe.id,
-			collectionId: recipe.collectionId
-		});
-		weeklyPlan = { ...weeklyPlan };
+	async function selectedHandler(recipe: Recipe) {
+		if (!$currentUser) return;
+		await addRecipeToWeeklyPlan($currentUser, selectedDay, recipe.collectionId, recipe.id);
 
 		selectRecipeModal.close();
 	}
 
-	function removeRecipeFromPlan(day: string, mealIndex: number) {
-		weeklyPlan[day].recipes.splice(mealIndex, 1);
-		weeklyPlan = { ...weeklyPlan };
+	async function removeRecipeFromPlan(day: string, mealIndex: number) {
+		if (!$currentUser) return;
+		await removeRecipeFromWeeklyPlan($currentUser, day, mealIndex);
 	}
 
 	function getRecipe(recipeId: string, collectionId: string) {
+		console.log($recipeCollectionsStore);
+		if (!$recipeCollectionsStore[collectionId]) return;
 		const recipes = $recipeCollectionsStore[collectionId].recipes;
 		return recipes.find((recipe) => recipe.id === recipeId);
 	}
