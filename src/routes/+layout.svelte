@@ -15,6 +15,7 @@
 	import { App } from '@capacitor/app';
 	import AuthPage from './login/AuthPage.svelte';
 	import PullToRefresh from 'pulltorefreshjs';
+	import { getWeeklyPlan } from '$lib/http/weeklyPlan.handler';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -47,6 +48,8 @@
 
 			await getUserRecipeCollections(value);
 			loadingStateStore.set('FINISHED');
+
+            await getWeeklyPlan(value);
 		});
 
 		App.addListener('backButton', async () => {

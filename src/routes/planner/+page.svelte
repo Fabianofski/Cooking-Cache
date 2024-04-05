@@ -16,7 +16,6 @@
 	let weeklyPlan: WeeklyPlan = {};
 	weeklyPlanStore.subscribe((value) => {
 		if (!value) return;
-		console.log(value);
 		weeklyPlan = value;
 	});
 
@@ -146,7 +145,7 @@
 							{/each}
 						{/if}
 						<button
-							class="flex justify-center items-center bg-base-200 rounded-lg w-full h-12 shadow-md shadow-neutral/50"
+							class="btn"
 							on:click={() => openSelectRecipeModal(day)}
 						>
 							<svg
