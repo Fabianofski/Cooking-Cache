@@ -5,28 +5,35 @@
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
 	import SelectRecipeModal from './SelectRecipeModal.svelte';
 
-	let days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+	let days = getDatesOfWeek();
 	let selectedDay: string = '';
-	let meals = ['Frühstück', 'Mittagessen', 'Abendessen', 'Snack'];
-	let selectedMeal: string = '';
 	let weeklyPlan: WeeklyPlan = {};
 
+	function getDatesOfWeek() {
+		const today = new Date();
+		const day = today.getDay();
+		const diff = today.getDate() - day + (day === 0 ? -6 : 1);
+		const monday = new Date(today.setDate(diff));
+		return Array.from({ length: 7 }, (_, i) => {
+			const date = new Date(monday);
+			date.setDate(date.getDate() + i);
+			return date.toISOString();
+		});
+	}
+
 	let selectRecipeModal: HTMLDialogElement;
-	function openSelectRecipeModal(day: string, meal: string) {
+	function openSelectRecipeModal(day: string) {
 		selectedDay = day;
-		selectedMeal = meal;
 		selectRecipeModal.showModal();
 	}
 
 	function selectedHandler(recipe: Recipe) {
-		if (!weeklyPlan[selectedDay]) weeklyPlan[selectedDay] = {};
-		if (!weeklyPlan[selectedDay][selectedMeal])
-			weeklyPlan[selectedDay][selectedMeal] = {
-				recipeId: '',
-				collectionId: ''
-			};
-		weeklyPlan[selectedDay][selectedMeal].recipeId = recipe.id;
-		weeklyPlan[selectedDay][selectedMeal].collectionId = recipe.collectionId;
+		if (!weeklyPlan[selectedDay]) weeklyPlan[selectedDay] = { recipes: [] };
+		weeklyPlan[selectedDay].recipes.push({
+			recipeId: recipe.id,
+			collectionId: recipe.collectionId
+		});
+		weeklyPlan = { ...weeklyPlan };
 
 		selectRecipeModal.close();
 	}
@@ -44,37 +51,37 @@
 <div class="flex flex-col gap-4">
 	{#each days as day}
 		<div class="min-h-24">
-			<h2 class="text-lg font-bold">{day}</h2>
+			<h2 class="text-lg font-bold">
+				{new Date(day).toLocaleDateString('de-DE', {
+					weekday: 'long',
+					day: 'numeric',
+					month: 'numeric',
+					year: 'numeric'
+				})}
+			</h2>
 			<div class="grid grid-cols-fluid gap-4">
-				{#each meals as meal}
-					<div class="flex flex-col gap-2">
-						<h3 class="text-md">{meal}</h3>
-						{#if weeklyPlan[day] && weeklyPlan[day][meal]}
-							<SmallRecipeCard
-								recipe={getRecipe(
-									weeklyPlan[day][meal].recipeId,
-									weeklyPlan[day][meal].collectionId
-								)}
-							/>
-						{:else}
-							<button
-								class="flex justify-center items-center bg-base-200 rounded-lg w-full h-12 shadow-md shadow-neutral/50"
-								on:click={() => openSelectRecipeModal(day, meal)}
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke-width="1.5"
-									stroke="currentColor"
-									class="w-6 h-6"
-								>
-									<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-								</svg>
-							</button>
-						{/if}
-					</div>
-				{/each}
+				<div class="flex flex-col gap-2">
+					{#if weeklyPlan[day]}
+						{#each weeklyPlan[day].recipes as meal}
+							<SmallRecipeCard recipe={getRecipe(meal.recipeId, meal.collectionId)} />
+						{/each}
+					{/if}
+					<button
+						class="flex justify-center items-center bg-base-200 rounded-lg w-full h-12 shadow-md shadow-neutral/50"
+						on:click={() => openSelectRecipeModal(day)}
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="w-6 h-6"
+						>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+						</svg>
+					</button>
+				</div>
 			</div>
 		</div>
 	{/each}
