@@ -8,13 +8,14 @@
 	import '../app.css';
 	import Alerts from '../components/alerts/Alerts.svelte';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
-	import { currentUser, loadingStateStore } from '../stores/store';
+	import { currentUser, loadingStateStore, weeklyPlanLoadingStore } from '../stores/store';
 	import { navigating } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { App } from '@capacitor/app';
 	import AuthPage from './login/AuthPage.svelte';
 	import PullToRefresh from 'pulltorefreshjs';
+	import { getWeeklyPlan } from '$lib/http/weeklyPlan.handler';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -37,16 +38,21 @@
 	onMount(() => {
 		auth.onAuthStateChanged(async (value) => {
 			loadingStateStore.set('LOADING');
+			weeklyPlanLoadingStore.set('LOADING');
 			currentUser.set(value);
 
 			if (value === null) {
 				loadingStateStore.set('NOUSER');
+				weeklyPlanLoadingStore.set('NOUSER');
 				recipeCollectionsStore.set({});
 				return;
 			}
 
 			await getUserRecipeCollections(value);
 			loadingStateStore.set('FINISHED');
+
+			await getWeeklyPlan(value);
+			weeklyPlanLoadingStore.set('FINISHED');
 		});
 
 		App.addListener('backButton', async () => {
