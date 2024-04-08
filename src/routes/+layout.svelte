@@ -75,7 +75,8 @@
 			instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
 			instructionsRefreshing: 'Aktualisiere...',
 			shouldPullToRefresh: () => {
-				return scrollBar.scrollTop === 0;
+                const modals = document.querySelectorAll('dialog');
+				return scrollBar.scrollTop === 0 && !Array.from(modals).some((modal) => modal.open);
 			}
 		});
 	});
