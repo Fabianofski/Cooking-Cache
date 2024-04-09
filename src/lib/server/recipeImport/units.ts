@@ -6,6 +6,7 @@ const units: string[] = [
 	'Esslöffel',
 	'Milliliter',
 	'Medium',
+    'Stück',
 	'Gramm',
 	'gram',
 	'clove',
@@ -27,6 +28,7 @@ const units: string[] = [
 	'TL',
 	'ml',
 	'kg',
+    'St.',
 	'g'
 ];
 
