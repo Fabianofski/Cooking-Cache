@@ -25,14 +25,15 @@ export function extractIngredientFromLines(lines: string[]): Ingredient[] {
 	const ingredients: Ingredient[] = [];
 
 	for (let line of lines) {
+        line = line + ' ';
 		let unit = line.match(unitRegex)?.[0] || '';
-		unit = unit.substring(1).trim();
+		unit = unit.substring(1);
 		line = line.replace(unit, '').trim();
 
 		const amount = line.match(/(\d+(?:[,.]\d+)?)/g)?.[0] || '';
 		line = line.replace(amount, '').trim();
 
-		line = line.replace('of', '');
+		line = line.replace('of ', '');
 		line = line.replace('-', '');
 		line = line.trim();
 		const name = line;
@@ -40,7 +41,7 @@ export function extractIngredientFromLines(lines: string[]): Ingredient[] {
 		ingredients.push({
 			name: name,
 			amount: parseFloat(amount.replace(',', '.')),
-			unit: unit
+			unit: unit.trim()
 		});
 	}
 
