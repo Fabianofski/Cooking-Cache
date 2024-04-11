@@ -16,6 +16,7 @@
 	import AuthPage from './login/AuthPage.svelte';
 	import PullToRefresh from 'pulltorefreshjs';
 	import { getWeeklyPlan } from '$lib/http/weeklyPlan.handler';
+	import { SendIntent } from 'send-intent';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -65,6 +66,11 @@
 			if (slug.includes('/share?key=')) slug = slug.replace('/share', '/share/mobile');
 			if (slug) goto(slug);
 		});
+
+        SendIntent.checkSendIntentReceived().then((data) => {
+            console.log("Received SendIntent data:")
+            console.log(data);
+        });
 
 		PullToRefresh.init({
 			mainElement: '#ptr',
