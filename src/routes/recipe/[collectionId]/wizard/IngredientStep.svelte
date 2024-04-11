@@ -274,7 +274,7 @@
 								</svg>
 							</div>
 						</td>
-						<td class="pl-0 pr-0.5 py-0 w-36">
+						<td class="pl-0 pr-0.5 py-0 max-w-36">
 							<input
 								type="number"
 								placeholder="0"
@@ -283,7 +283,7 @@
 								bind:value={recipe.ingredients[category][i].amount}
 							/>
 						</td>
-						<td class="pl-0 pr-0.5 py-0 w-36">
+						<td class="pl-0 pr-0.5 py-0 max-w-36">
 							<input
 								type="text"
 								placeholder="-"

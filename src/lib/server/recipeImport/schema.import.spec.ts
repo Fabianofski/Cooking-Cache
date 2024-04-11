@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { extractCheerioSchemaRecipe } from './schema.import';
 import * as cheerio from 'cheerio';
 
@@ -184,10 +184,12 @@ describe('Schema Import', () => {
         const $ = cheerio.load(
             '<script type="application/ld+json">{"@type":"Recipe","name":"Recipe Name","url":"https://example.com/recipe","prepTime":"PT30M","cookTime":"PT1H","totalTime":"PT1H30M","recipeIngredient":["1 cup sugar","2 cups flour"],"recipeInstructions":"Mix all ingredients","recipeYield":"4","keywords":"tag1, tag2","nutrition":{"calories":"100","proteinContent":"10","fatContent":"5","carbohydrateContent":"20"}}</script>'
         );
+        const mockedDate = new Date('2021-01-01T00:00:00.000Z');
+        vi.spyOn(global, 'Date').mockImplementation(() => mockedDate);
         const recipe = extractCheerioSchemaRecipe($);
         expect(recipe).toMatchObject({
-            createdTime: new Date().toISOString(),
-            updatedTime: new Date().toISOString()
+            createdTime: mockedDate.toISOString(),
+            updatedTime: mockedDate.toISOString()
         });
     });
 });
