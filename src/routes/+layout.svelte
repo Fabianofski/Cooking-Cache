@@ -75,8 +75,14 @@
 			instructionsReleaseToRefresh: 'Zum Aktualisieren loslassen',
 			instructionsRefreshing: 'Aktualisiere...',
 			shouldPullToRefresh: () => {
-                const modals = document.querySelectorAll('dialog');
-				return scrollBar.scrollTop === 0 && !Array.from(modals).some((modal) => modal.open);
+				const modals = document.querySelectorAll('dialog');
+				const isCreatingRecipe =
+					$page.url.pathname.includes('/create') || $page.url.pathname.includes('/edit');
+				return (
+					scrollBar.scrollTop === 0 &&
+					!isCreatingRecipe &&
+					!Array.from(modals).some((modal) => modal.open)
+				);
 			}
 		});
 	});
