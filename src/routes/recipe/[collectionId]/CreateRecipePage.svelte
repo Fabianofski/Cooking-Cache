@@ -14,6 +14,7 @@
 	import { generateShortRecipeId, getCollectionFromShortId } from '$lib/id.handler';
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import { createNewAlert } from '../../../components/alerts/alert.handler';
+	import { PUBLIC_BASE_URL } from '$env/static/public';
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
@@ -66,12 +67,13 @@
 
 		loadingImport = true;
 		try {
-			const response = await axios.get<Recipe>(`/api/recipe/import?url=${recipe.url}`);
+			const response = await axios.get<Recipe>(`${PUBLIC_BASE_URL}/api/recipe/import?url=${recipe.url}`);
 			const data = response.data;
 
 			data.collectionId = collectionId;
 
 			importedRecipes[recipe.url] = data;
+            data.url = recipe.url;
 			recipe = data;
 
 			loadingImport = false;

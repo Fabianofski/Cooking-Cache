@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Recipe } from '../../../../models/Recipe';
+	import { Capacitor } from '@capacitor/core';
 
 	export let recipe: Recipe;
 	export let importRecipe: boolean;
@@ -8,7 +9,7 @@
 
 	let inputFocus: HTMLElement;
 	onMount(() => {
-		inputFocus.focus();
+		if (!Capacitor.isNativePlatform()) inputFocus.focus();
 	});
 </script>
 
