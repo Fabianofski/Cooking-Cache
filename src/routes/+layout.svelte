@@ -17,6 +17,9 @@
 	import PullToRefresh from 'pulltorefreshjs';
 	import { getWeeklyPlan } from '$lib/http/weeklyPlan.handler';
 	import { SendIntent } from 'send-intent';
+	import SelectCollectionModal from './SelectCollectionModal.svelte';
+	import type { RecipeCollection } from '../models/RecipeCollections';
+	import { generateShortCollectionId } from '$lib/id.handler';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -67,11 +70,6 @@
 			if (slug) goto(slug);
 		});
 
-        SendIntent.checkSendIntentReceived().then((data) => {
-            console.log("Received SendIntent data:")
-            console.log(data);
-        });
-
 		PullToRefresh.init({
 			mainElement: '#ptr',
 			onRefresh() {
@@ -92,6 +90,25 @@
 			}
 		});
 	});
+
+	let intentUrl: string = '';
+	let selectCollectionModal: HTMLDialogElement;
+	SendIntent.checkSendIntentReceived().then((data) => {
+		if (data && data.url) {
+			intentUrl = data.url;
+			selectCollectionModal.showModal();
+		}
+	});
+
+	function selectedCollectionHandler(collection: RecipeCollection) {
+        selectCollectionModal.close();
+		goto(
+			`/recipe/${generateShortCollectionId(
+				collection,
+				$recipeCollectionsStore
+			)}/create?url=${intentUrl}`
+		);
+	}
 </script>
 
 <svelte:head>
@@ -202,6 +219,10 @@
 		</div>
 	{/if}
 </div>
+<SelectCollectionModal
+	bind:modal={selectCollectionModal}
+    selectedHandler={selectedCollectionHandler}
+/>
 
 <style>
 	:global(.ptr--icon, .ptr--text) {

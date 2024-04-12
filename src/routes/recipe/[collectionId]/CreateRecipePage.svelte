@@ -15,6 +15,7 @@
 	import { recipeCollectionsStore } from '../../../stores/recipeCollectionsStore';
 	import { createNewAlert } from '../../../components/alerts/alert.handler';
 	import { PUBLIC_BASE_URL } from '$env/static/public';
+	import { onMount } from 'svelte';
 
 	let files: FileList | null = null;
 	let steps: string[] = ['Import', 'Allgemein', 'Tags', 'Zutaten', 'Zubereitung', 'Vorschau'];
@@ -22,6 +23,7 @@
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let shortId: string;
+    export let url: string | undefined = undefined
 	let collectionId: string = '';
 
 	export let recipe: Recipe = {
@@ -29,7 +31,7 @@
 		title: '',
 		tags: [],
 		ingredients: { Default: [{ amount: undefined, name: '', unit: '' }] },
-		url: '',
+		url: url || '',
 		createdTime: new Date().toISOString(),
 		updatedTime: new Date().toISOString(),
 		cookingTime: 20,
@@ -117,6 +119,10 @@
 		await addRecipeToCollection($currentUser, formData, collectionId);
 		loading = false;
 	}
+
+    onMount(() => {
+        if (url) importRecipe = true;
+    })
 </script>
 
 <svelte:head>
