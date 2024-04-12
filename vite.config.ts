@@ -10,5 +10,8 @@ export default defineConfig({
 			include: ['src/**/*.svelte', 'src/**/*.ts'],
 			exclude: ['src/models/*', 'src/app.d.ts']
 		}
-	}
+	},
+    ssr: {
+        noExternal: ['send-intent']
+    }
 });
