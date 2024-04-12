@@ -5,4 +5,4 @@
 	const shortId = data.collectionId;
 </script>
 
-<CreateRecipePage {shortId} mode="CREATE" />
+<CreateRecipePage {shortId} mode="CREATE" url={data.url} />

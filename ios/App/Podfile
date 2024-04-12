@@ -16,6 +16,7 @@ def capacitor_pods
   pod 'CapacitorShare', :path => '../../node_modules/@capacitor/share'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
   pod 'MauricewegnerCapacitorNavigationBar', :path => '../../node_modules/@mauricewegner/capacitor-navigation-bar'
+  pod 'SendIntent', :path => '../../node_modules/send-intent'
 end
 
 target 'App' do

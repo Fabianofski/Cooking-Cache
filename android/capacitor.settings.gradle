@@ -16,3 +16,6 @@ project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacit
 
 include ':mauricewegner-capacitor-navigation-bar'
 project(':mauricewegner-capacitor-navigation-bar').projectDir = new File('../node_modules/@mauricewegner/capacitor-navigation-bar/android')
+
+include ':send-intent'
+project(':send-intent').projectDir = new File('../node_modules/send-intent/android')
