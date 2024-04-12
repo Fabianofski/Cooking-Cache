@@ -101,7 +101,7 @@
 	});
 
 	function selectedCollectionHandler(collection: RecipeCollection) {
-        selectCollectionModal.close();
+		selectCollectionModal.close();
 		goto(
 			`/recipe/${generateShortCollectionId(
 				collection,
@@ -221,7 +221,7 @@
 </div>
 <SelectCollectionModal
 	bind:modal={selectCollectionModal}
-    selectedHandler={selectedCollectionHandler}
+	selectedHandler={selectedCollectionHandler}
 />
 
 <style>

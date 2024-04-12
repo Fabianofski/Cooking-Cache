@@ -25,7 +25,7 @@ export function extractIngredientFromLines(lines: string[]): Ingredient[] {
 	const ingredients: Ingredient[] = [];
 
 	for (let line of lines) {
-        line = line + ' ';
+		line = line + ' ';
 		let unit = line.match(unitRegex)?.[0] || '';
 		unit = unit.substring(1);
 		line = line.replace(unit, '').trim();
