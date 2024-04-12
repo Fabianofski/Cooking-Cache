@@ -11,7 +11,7 @@ export default defineConfig({
 			exclude: ['src/models/*', 'src/app.d.ts']
 		}
 	},
-    ssr: {
-        noExternal: ['send-intent']
-    }
+	ssr: {
+		noExternal: ['send-intent']
+	}
 });

@@ -13,7 +13,7 @@ export async function extractSchemaRecipe(url: string): Promise<Recipe> {
 /* c8 ignore stop */
 
 export function removeInvalidControlCharacters(text: string): string {
-    return text.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+	return text.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
 }
 
 export function extractCheerioSchemaRecipe($: cheerio.CheerioAPI): Recipe {
@@ -22,21 +22,20 @@ export function extractCheerioSchemaRecipe($: cheerio.CheerioAPI): Recipe {
 	let schemaRecipe: SchemaRecipe | undefined = undefined;
 	for (let element of script) {
 		// @ts-ignore
-        const text = removeInvalidControlCharacters(element.children[0].data);
+		const text = removeInvalidControlCharacters(element.children[0].data);
 		const data = JSON.parse(text);
 
-        if (data['@type'] === 'Recipe') {
-            schemaRecipe = data;
-            break;
-        }
-        else if (Array.isArray(data)) {
-            for (let schema of data) {
-                if (schema['@type'] === 'Recipe') {
-                    schemaRecipe = schema;
-                    break;
-                }
-            }
-        }
+		if (data['@type'] === 'Recipe') {
+			schemaRecipe = data;
+			break;
+		} else if (Array.isArray(data)) {
+			for (let schema of data) {
+				if (schema['@type'] === 'Recipe') {
+					schemaRecipe = schema;
+					break;
+				}
+			}
+		}
 	}
 	if (!schemaRecipe) throw new Error('No schema recipe found');
 

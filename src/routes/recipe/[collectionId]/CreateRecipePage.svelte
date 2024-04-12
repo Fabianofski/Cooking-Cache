@@ -23,7 +23,7 @@
 
 	export let mode: 'CREATE' | 'EDIT' = 'CREATE';
 	export let shortId: string;
-    export let url: string | undefined = undefined
+	export let url: string | undefined = undefined;
 	let collectionId: string = '';
 
 	export let recipe: Recipe = {
@@ -69,13 +69,15 @@
 
 		loadingImport = true;
 		try {
-			const response = await axios.get<Recipe>(`${PUBLIC_BASE_URL}/api/recipe/import?url=${recipe.url}`);
+			const response = await axios.get<Recipe>(
+				`${PUBLIC_BASE_URL}/api/recipe/import?url=${recipe.url}`
+			);
 			const data = response.data;
 
 			data.collectionId = collectionId;
 
 			importedRecipes[recipe.url] = data;
-            data.url = recipe.url;
+			data.url = recipe.url;
 			recipe = data;
 
 			loadingImport = false;
@@ -120,9 +122,9 @@
 		loading = false;
 	}
 
-    onMount(() => {
-        if (url) importRecipe = true;
-    })
+	onMount(() => {
+		if (url) importRecipe = true;
+	});
 </script>
 
 <svelte:head>

@@ -14,9 +14,9 @@
 		<h3 class="text-lg font-bold">Wähle eine Rezeptsammlung</h3>
 		<div class="flex flex-col gap-2 h-[34rem] overflow-y-auto">
 			{#if $loadingStateStore !== 'FINISHED'}
-                {#each Array.from({ length: 5 }) as _}
-                    <SmallRecipeSkeleton />
-                {/each}
+				{#each Array.from({ length: 5 }) as _}
+					<SmallRecipeSkeleton />
+				{/each}
 			{:else}
 				{#each Object.values($recipeCollectionsStore) as collection}
 					<SmallRecipeCollectionCard recipeCollection={collection} clickHandler={selectedHandler} />
