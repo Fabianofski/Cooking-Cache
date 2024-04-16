@@ -60,13 +60,6 @@ describe('RecipeCard', () => {
 		currentUser.set(testUser);
 	});
 
-	it('should have a link to recipes page of the recipe', () => {
-		const { getByTestId } = render(RecipeCard, { recipe: recipe });
-
-		const link = getByTestId('recipe-link');
-		expect(link.getAttribute('href')).toBe(`/recipe/test-recipe-collection/title_recipe-id-1`);
-	});
-
 	it('should have the title of the recipe', () => {
 		const { getByText } = render(RecipeCard, { recipe: recipe });
 

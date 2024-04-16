@@ -11,16 +11,19 @@
 	import FilterModal from './FilterModal.svelte';
 	import { fullTextFilter } from './filter';
 	import { sorters } from './sort';
+    import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
+	import type { RecipeCollection } from '../../../models/RecipeCollections';
 
 	export let data;
 
 	let recipes: Recipe[] = [];
 	let collectionName: string;
+    let recipeCollection: RecipeCollection;
 	recipeCollectionsStore.subscribe((value) => {
-		const collection = getCollectionFromShortId(data.collectionId, value);
-		if (!collection) return;
-		recipes = collection.recipes || [];
-		collectionName = collection.name;
+		recipeCollection = getCollectionFromShortId(data.collectionId, value);
+		if (!recipeCollection) return;
+		recipes = recipeCollection.recipes || [];
+		collectionName = recipeCollection.name;
 	});
 
 	let loadingState: LoadingState;
@@ -184,7 +187,15 @@
 				</p>
 			{:else}
 				{#each getRecipesFromPage(recipes, page, searchPattern, filters, sorting, reverse) as recipe}
-					<RecipeCard {recipe} />
+					<a
+						class="w-full"
+						href={`/recipe/${generateShortCollectionId(
+							recipeCollection,
+							$recipeCollectionsStore
+						)}/${generateShortRecipeId(recipe, recipeCollection.recipes)}`}
+					>
+						<RecipeCard {recipe} />
+					</a>
 				{/each}
 			{/if}
 		</div>
