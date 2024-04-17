@@ -35,7 +35,7 @@
 			image: recipe.image,
 			recipeIngredient: convertIngredientsToArray(recipe),
 			name: recipe.title,
-			recipeInstructions: recipe.description.join('\n'),
+			recipeInstructions: (recipe.description || []).join('\n'),
 			recipeYield: recipe.numberOfServings
 		});
 		return `<script type="application/ld+json">${data}<\/script>`;
@@ -284,7 +284,7 @@
 
 	<div class="px-4">
 		{#if recipe}
-			{#each recipe?.description.filter((x) => x.trim() != '') || [] as step, index}
+			{#each recipe?.description?.filter((x) => x.trim() != '') || [] as step, index}
 				<div class="flex mb-2">
 					<span class="text-xl w-8">{index + 1}.</span>
 					<span class="self-center text-justify text-sm w-full">{step}</span>
