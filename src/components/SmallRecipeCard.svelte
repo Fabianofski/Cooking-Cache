@@ -12,7 +12,7 @@
 	class="card w-full bg-base-200 shadow-md shadow-neutral/50"
 >
 	<div class="flex items-center gap-2 h-14">
-		<img class="w-24 h-full object-cover" src={recipe?.image} alt={recipe?.title} />
+		<img class="w-24 h-full object-cover rounded-lg" src={recipe?.image} alt={recipe?.title} />
 		<h4 class="font-bold">{recipe?.title}</h4>
 	</div>
 </button>
