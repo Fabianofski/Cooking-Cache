@@ -11,14 +11,14 @@
 	import FilterModal from './FilterModal.svelte';
 	import { fullTextFilter } from './filter';
 	import { sorters } from './sort';
-    import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
+	import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 	import type { RecipeCollection } from '../../../models/RecipeCollections';
 
 	export let data;
 
 	let recipes: Recipe[] = [];
 	let collectionName: string;
-    let recipeCollection: RecipeCollection;
+	let recipeCollection: RecipeCollection;
 	recipeCollectionsStore.subscribe((value) => {
 		recipeCollection = getCollectionFromShortId(data.collectionId, value);
 		if (!recipeCollection) return;

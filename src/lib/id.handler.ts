@@ -25,13 +25,13 @@ function generateShortCollectionId(
 }
 
 function removeUnwantedCharacters(value: string) {
-    value = value.replaceAll(" ", "-").replaceAll("_", "").toLowerCase();
-    return value.replace(/[^a-zA-Z0-9-]/g, '');
+	value = value.replaceAll(' ', '-').replaceAll('_', '').toLowerCase();
+	return value.replace(/[^a-zA-Z0-9-]/g, '');
 }
 
 function generateShortId(value: any, values: any[], column: string) {
 	const valuesWithSameName = values.filter((x) => x[column] === value[column]);
-	const name = removeUnwantedCharacters(value[column]); 
+	const name = removeUnwantedCharacters(value[column]);
 	if (valuesWithSameName.length === 1) {
 		return name;
 	} else {
@@ -71,7 +71,7 @@ function getValueFromShortId(shortId: string, values: any[], column: string) {
 	const id = shortId.replaceAll(name + '_', '');
 	const value = values.find((x) => {
 		const idIsEqual = id !== '' || x.id.slice(0, id.length) === id;
-		const valueName = removeUnwantedCharacters(x[column]); 
+		const valueName = removeUnwantedCharacters(x[column]);
 		return valueName === name && idIsEqual;
 	});
 	return value;

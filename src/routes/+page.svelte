@@ -5,6 +5,7 @@
 	import type { RecipeCollection } from '../models/RecipeCollections';
 	import RecipeSkeleton from '../components/RecipeSkeleton.svelte';
 	import SmallRecipeCard from '../components/SmallRecipeCard.svelte';
+	import SmallRecipeSkeleton from '../components/SmallRecipeSkeleton.svelte';
 
 	const recipes: Recipe[] = [];
 	recipeCollectionsStore.subscribe((value) => {
@@ -48,9 +49,13 @@
 	{/if}
 
 	{#if $loadingStateStore !== 'FINISHED'}
-		<div class="flex flex-col gap-1 items-center">
-			<span class="skeleton w-64 h-8" />
-			<RecipeSkeleton />
+		<div class="flex flex-col items-center">
+			<span class="skeleton w-64 h-8 mb-2" />
+			<div class="flex flex-col gap-2 w-full">
+				{#each new Array(5) as _}
+					<SmallRecipeSkeleton />
+				{/each}
+			</div>
 		</div>
 	{:else}
 		<div>
