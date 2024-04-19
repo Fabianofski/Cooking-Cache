@@ -1,9 +1,8 @@
 <script lang="ts">
 	import type { Recipe } from '../models/Recipe';
-	import { currentUser, loadingStateStore } from '../stores/store';
+	import { currentUser, loadingStateStore, dailyRecipeStore } from '../stores/store';
 	import { recipeCollectionsStore } from '../stores/recipeCollectionsStore';
 	import type { RecipeCollection } from '../models/RecipeCollections';
-	import RecipeSkeleton from '../components/RecipeSkeleton.svelte';
 	import SmallRecipeCard from '../components/SmallRecipeCard.svelte';
 	import SmallRecipeSkeleton from '../components/SmallRecipeSkeleton.svelte';
 
@@ -46,6 +45,26 @@
 			<br />
 			{$currentUser?.displayName}
 		</h1>
+	{/if}
+
+	{#if !$dailyRecipeStore}
+		<div class="flex flex-col gap-2 items-center">
+			<span class="skeleton w-64 h-8" />
+			<div class="skeleton w-full h-72" />
+			<span class="skeleton w-52 h-8" />
+		</div>
+	{:else}
+		<div class="flex flex-col gap-2">
+			<h2 class="text-2xl font-bold text-center mb-2">Tägliches Rezept 🍽️</h2>
+			<a href="/daily">
+				<img
+					class="w-full h-72 object-cover rounded-lg"
+					src={$dailyRecipeStore.image}
+					alt={$dailyRecipeStore.title}
+				/>
+			</a>
+			<h2 class="text-lg text-center font-bold">{$dailyRecipeStore?.title}</h2>
+		</div>
 	{/if}
 
 	{#if $loadingStateStore !== 'FINISHED'}

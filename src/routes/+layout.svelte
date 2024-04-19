@@ -16,6 +16,7 @@
 	import AuthPage from './login/AuthPage.svelte';
 	import PullToRefresh from 'pulltorefreshjs';
 	import { getWeeklyPlan } from '$lib/http/weeklyPlan.handler';
+	import { getDailyRecipe } from '$lib/http/dailyRecipe.handler';
 	import { SendIntent } from 'send-intent';
 	import SelectCollectionModal from './SelectCollectionModal.svelte';
 	import type { RecipeCollection } from '../models/RecipeCollections';
@@ -57,6 +58,8 @@
 
 			await getWeeklyPlan(value);
 			weeklyPlanLoadingStore.set('FINISHED');
+
+			await getDailyRecipe();
 		});
 
 		App.addListener('backButton', async () => {
