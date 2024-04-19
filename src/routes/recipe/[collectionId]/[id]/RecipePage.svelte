@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
-	import { browser } from '$app/environment';
 	import { getBringImportLink } from '$lib/http/recipe.handler';
 
 	export let recipe: Recipe | undefined;
@@ -47,8 +46,13 @@
 	async function createBringLink() {
 		if (!recipe) return;
 		bringImportLink = '';
+		let url: string;
+		if ($page.url.pathname.startsWith('/daily')) url = 'https://cooking-cache.web.app/daily/ssr';
+		else
+			url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`;
+
 		bringImportLink = await getBringImportLink(
-			`https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`,
+			url,
 			recipe?.numberOfServings || 4,
 			numberOfServings
 		);

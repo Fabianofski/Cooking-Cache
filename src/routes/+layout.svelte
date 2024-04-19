@@ -36,11 +36,13 @@
 
 	function isViewingRecipeWithAccessToken(currentPage: typeof $page) {
 		return (
-			currentPage.url.searchParams.has('key') && currentPage.url.pathname.startsWith('/recipe')
+			(currentPage.url.searchParams.has('key') && currentPage.url.pathname.startsWith('/recipe')) ||
+			currentPage.url.pathname.startsWith('/daily')
 		);
 	}
 
 	onMount(() => {
+		getDailyRecipe();
 		auth.onAuthStateChanged(async (value) => {
 			loadingStateStore.set('LOADING');
 			weeklyPlanLoadingStore.set('LOADING');
@@ -53,13 +55,13 @@
 				return;
 			}
 
-			await getUserRecipeCollections(value);
-			loadingStateStore.set('FINISHED');
+			getUserRecipeCollections(value).then(() => {
+				loadingStateStore.set('FINISHED');
+			});
 
-			await getWeeklyPlan(value);
-			weeklyPlanLoadingStore.set('FINISHED');
-
-			await getDailyRecipe();
+			getWeeklyPlan(value).then(() => {
+				weeklyPlanLoadingStore.set('FINISHED');
+			});
 		});
 
 		App.addListener('backButton', async () => {
@@ -167,7 +169,8 @@
 			</a>
 			<a
 				class:active={$page.url.pathname.startsWith('/recipe') ||
-					$page.url.pathname.startsWith('/collection')}
+					$page.url.pathname.startsWith('/collection') ||
+					isViewingRecipeWithAccessToken($page)}
 				href="/recipes"
 			>
 				<svg
