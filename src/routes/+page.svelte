@@ -10,6 +10,7 @@
 	import type { RecipeCollection } from '../models/RecipeCollections';
 	import SmallRecipeCard from '../components/SmallRecipeCard.svelte';
 	import SmallRecipeSkeleton from '../components/SmallRecipeSkeleton.svelte';
+	import { generateShortCollectionId, generateShortRecipeId } from '$lib/id.handler';
 
 	const recipes: Recipe[] = [];
 	recipeCollectionsStore.subscribe((value) => {
@@ -191,7 +192,18 @@
 			>
 				{#if recipes.length > 0}
 					{#each getRandomRecipes() as recipe}
-						<SmallRecipeCard {recipe} />
+						<a
+                            class="w-full"
+							href={`/recipe/${generateShortCollectionId(
+								$recipeCollectionsStore[recipe.collectionId],
+								$recipeCollectionsStore
+							)}/${generateShortRecipeId(
+								recipe,
+								$recipeCollectionsStore[recipe.collectionId].recipes
+							)}`}
+						>
+							<SmallRecipeCard {recipe} />
+						</a>
 					{/each}
 				{:else}
 					<p class="italic text-center col-span-full text-neutral-400">
