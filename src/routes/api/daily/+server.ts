@@ -4,15 +4,25 @@ import type MealDbRecipe from '../../../models/MealDbRecipe';
 import type { Recipe } from '../../../models/Recipe';
 import { json } from '@sveltejs/kit';
 import type Ingredient from '../../../models/Ingredient';
+import translate from 'translate';
 
-function getIngredients(mealDbRecipe: MealDbRecipe): { [key: string]: Ingredient[] } {
+translate.engine = 'google';
+
+async function getIngredients(mealDbRecipe: MealDbRecipe): Promise<{ [key: string]: Ingredient[] }> {
 	const obj = mealDbRecipe as any;
 
 	const ingredients: Ingredient[] = [];
 	for (let i = 1; i <= 20; i++) {
-		const ingredient = obj['strIngredient' + i];
+		let ingredient = obj['strIngredient' + i];
 		let measure = obj['strMeasure' + i];
+
 		if (!ingredient) break;
+        ingredient = await translate(ingredient, 'de');
+        if (measure) {
+            measure = await translate(measure + ' ingrdient', 'de');
+            measure = measure.replace("Zutat", "").trim() 
+        }
+
 
 		const amount = measure.match(/(\d+(?:[,.]\d+)?)/g)?.[0] || '';
 		measure = measure.replace(amount, '').trim();
@@ -26,10 +36,12 @@ function getIngredients(mealDbRecipe: MealDbRecipe): { [key: string]: Ingredient
 	return { Default: ingredients };
 }
 
-function convertMealDbRecipeToRecipe(mealDbRecipe: MealDbRecipe) {
+async function convertMealDbRecipeToRecipe(mealDbRecipe: MealDbRecipe) {
+    mealDbRecipe.strInstructions = await translate(mealDbRecipe.strInstructions, "de");
+
 	const recipe: Recipe = {
 		image: mealDbRecipe.strMealThumb,
-		title: mealDbRecipe.strMeal,
+		title: await translate(mealDbRecipe.strMeal, 'de'),
 		url: mealDbRecipe.strSource,
 		tags: mealDbRecipe.strTags ? mealDbRecipe.strTags.split(',') : undefined,
 		createdTime: new Date().toISOString(),
@@ -38,7 +50,7 @@ function convertMealDbRecipeToRecipe(mealDbRecipe: MealDbRecipe) {
 		cookingTime: 45,
 		difficulty: 'medium',
 
-		ingredients: getIngredients(mealDbRecipe),
+		ingredients: await getIngredients(mealDbRecipe),
 		description: mealDbRecipe.strInstructions.split('\r\n'),
 		nutrition: undefined,
 
@@ -76,7 +88,7 @@ export async function GET() {
 			mealDbRecipe = data.meals[0];
 		}
 
-		return json(convertMealDbRecipeToRecipe(mealDbRecipe));
+		return json(await convertMealDbRecipeToRecipe(mealDbRecipe));
 	} catch (err) {
 		console.error(err);
 		return new Response('500 Internal Server Error', { status: 500 });
