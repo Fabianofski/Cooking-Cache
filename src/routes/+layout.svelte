@@ -21,6 +21,7 @@
 	import SelectCollectionModal from './SelectCollectionModal.svelte';
 	import type { RecipeCollection } from '../models/RecipeCollections';
 	import { generateShortCollectionId } from '$lib/id.handler';
+	import { browser } from '$app/environment';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -35,8 +36,9 @@
 	});
 
 	function isViewingRecipeWithAccessToken(currentPage: typeof $page) {
+		const urlHasKey = browser && currentPage.url.searchParams.has('key');
 		return (
-			(currentPage.url.searchParams.has('key') && currentPage.url.pathname.startsWith('/recipe')) ||
+			(urlHasKey && currentPage.url.pathname.startsWith('/recipe')) ||
 			currentPage.url.pathname.startsWith('/daily')
 		);
 	}
