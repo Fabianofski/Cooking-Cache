@@ -22,9 +22,9 @@ async function addRecipeToCollection(user: User, formData: FormData, collectionI
 			const recipe = res.data as Recipe;
 			recipeCollectionsStore.update((value) => {
 				if (!value[collectionId]) return value;
-                let oldRecipeIndex = value[collectionId].recipes.findIndex((x) => x.id === recipe.id);
-                if (oldRecipeIndex === -1) value[collectionId].recipes.push(recipe);
-                else value[collectionId].recipes[oldRecipeIndex] = recipe;
+				let oldRecipeIndex = value[collectionId].recipes.findIndex((x) => x.id === recipe.id);
+				if (oldRecipeIndex === -1) value[collectionId].recipes.push(recipe);
+				else value[collectionId].recipes[oldRecipeIndex] = recipe;
 
 				goto(
 					`/recipe/${generateShortCollectionId(

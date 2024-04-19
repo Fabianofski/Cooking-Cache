@@ -16,10 +16,12 @@
 	import AuthPage from './login/AuthPage.svelte';
 	import PullToRefresh from 'pulltorefreshjs';
 	import { getWeeklyPlan } from '$lib/http/weeklyPlan.handler';
+	import { getDailyRecipe } from '$lib/http/dailyRecipe.handler';
 	import { SendIntent } from 'send-intent';
 	import SelectCollectionModal from './SelectCollectionModal.svelte';
 	import type { RecipeCollection } from '../models/RecipeCollections';
 	import { generateShortCollectionId } from '$lib/id.handler';
+	import { browser } from '$app/environment';
 
 	if (Capacitor.isNativePlatform()) {
 		StatusBar.setBackgroundColor({ color: '#161c24' });
@@ -34,12 +36,15 @@
 	});
 
 	function isViewingRecipeWithAccessToken(currentPage: typeof $page) {
+		const urlHasKey = browser && currentPage.url.searchParams.has('key');
 		return (
-			currentPage.url.searchParams.has('key') && currentPage.url.pathname.startsWith('/recipe')
+			(urlHasKey && currentPage.url.pathname.startsWith('/recipe')) ||
+			currentPage.url.pathname.startsWith('/daily')
 		);
 	}
 
 	onMount(() => {
+		getDailyRecipe();
 		auth.onAuthStateChanged(async (value) => {
 			loadingStateStore.set('LOADING');
 			weeklyPlanLoadingStore.set('LOADING');
@@ -52,11 +57,13 @@
 				return;
 			}
 
-			await getUserRecipeCollections(value);
-			loadingStateStore.set('FINISHED');
+			getUserRecipeCollections(value).then(() => {
+				loadingStateStore.set('FINISHED');
+			});
 
-			await getWeeklyPlan(value);
-			weeklyPlanLoadingStore.set('FINISHED');
+			getWeeklyPlan(value).then(() => {
+				weeklyPlanLoadingStore.set('FINISHED');
+			});
 		});
 
 		App.addListener('backButton', async () => {
@@ -164,7 +171,8 @@
 			</a>
 			<a
 				class:active={$page.url.pathname.startsWith('/recipe') ||
-					$page.url.pathname.startsWith('/collection')}
+					$page.url.pathname.startsWith('/collection') ||
+					isViewingRecipeWithAccessToken($page)}
 				href="/recipes"
 			>
 				<svg

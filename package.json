@@ -57,6 +57,7 @@
 		"mmmagic": "^0.5.3",
 		"pulltorefreshjs": "^0.1.22",
 		"send-intent": "^5.0.0",
+		"translate": "^3.0.0",
 		"uuid": "^9.0.1"
 	},
 	"overrides": {
