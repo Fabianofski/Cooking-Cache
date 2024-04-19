@@ -3,6 +3,28 @@ import axios from 'axios';
 import type MealDbRecipe from '../../../models/MealDbRecipe';
 import type { Recipe } from '../../../models/Recipe';
 import { json } from '@sveltejs/kit';
+import type Ingredient from '../../../models/Ingredient';
+
+function getIngredients(mealDbRecipe: MealDbRecipe): { [key: string]: Ingredient[] } {
+	const obj = mealDbRecipe as any;
+
+	const ingredients: Ingredient[] = [];
+	for (let i = 1; i <= 20; i++) {
+		const ingredient = obj['strIngredient' + i];
+		let measure = obj['strMeasure' + i];
+		if (!ingredient) break;
+
+		const amount = measure.match(/(\d+(?:[,.]\d+)?)/g)?.[0] || '';
+		measure = measure.replace(amount, '').trim();
+
+		ingredients.push({
+			name: ingredient,
+			amount: parseFloat(amount.replace(',', '.')),
+			unit: measure
+		});
+	}
+	return { Default: ingredients };
+}
 
 function convertMealDbRecipeToRecipe(mealDbRecipe: MealDbRecipe) {
 	const recipe: Recipe = {
@@ -16,7 +38,7 @@ function convertMealDbRecipeToRecipe(mealDbRecipe: MealDbRecipe) {
 		cookingTime: 45,
 		difficulty: 'medium',
 
-		ingredients: {},
+		ingredients: getIngredients(mealDbRecipe),
 		description: mealDbRecipe.strInstructions.split('\r\n'),
 		nutrition: undefined,
 

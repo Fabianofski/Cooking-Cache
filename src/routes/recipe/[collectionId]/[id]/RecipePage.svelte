@@ -69,6 +69,7 @@
 			alt={`${recipe.title} Cover`}
 		/>
 	</figure>
+	<h1 class="font-bold text-2xl mt-4">{recipe.title}</h1>
 {:else}
 	<div class="skeleton h-72 w-full rounded mt-4 self-center" />
 {/if}
