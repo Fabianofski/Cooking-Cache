@@ -193,7 +193,7 @@
 				{#if recipes.length > 0}
 					{#each getRandomRecipes() as recipe}
 						<a
-                            class="w-full"
+							class="w-full"
 							href={`/recipe/${generateShortCollectionId(
 								$recipeCollectionsStore[recipe.collectionId],
 								$recipeCollectionsStore
