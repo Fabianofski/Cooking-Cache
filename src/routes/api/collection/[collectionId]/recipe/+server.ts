@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Recipe } from '../../../../../models/Recipe.js';
 import type { RecipeCollection } from '../../../../../models/RecipeCollections.js';
 import { uploadFileToStorage } from '$lib/server/firebase.utils.js';
+import axios from 'axios';
+import { STORAGE_URL } from '$env/static/private';
 
 export async function GET({ params, url }) {
 	const collectionId = params.collectionId;
@@ -49,7 +51,14 @@ export async function POST({ request, params }) {
 				return new Response('403 Forbidden', { status: 403 });
 
 			if (!recipe.id) recipe.id = uuidv4();
-			const cover = formData.get('cover') as File;
+			let cover = formData.get('cover') as File;
+
+			if (!recipe.image.includes(STORAGE_URL)) {
+				const response = await axios.get(recipe.image, { responseType: 'arraybuffer' });
+				const contentType = response.headers['content-type'];
+				cover = new File([new Uint8Array(response.data)], 'cover', { type: contentType });
+			}
+
 			if (cover)
 				recipe.image = await uploadFileToStorage(
 					cover,
