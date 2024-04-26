@@ -49,7 +49,7 @@
 	});
 
 	function formIsInvalid(recipe: Recipe) {
-		return recipe.title === '' || recipe.description[0] === '';
+		return recipe.title === '';
 	}
 
 	let importRecipe: boolean = false;
