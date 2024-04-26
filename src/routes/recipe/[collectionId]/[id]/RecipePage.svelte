@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { difficultyLabels, type Recipe } from '../../../../models/Recipe';
-	import { getBringImportLink } from '$lib/http/recipe.handler';
+	import { generateRecipeAccessToken, getBringImportLink } from '$lib/http/recipe.handler';
+	import { currentUser } from '../../../../stores/store';
 
 	export let recipe: Recipe | undefined;
 
@@ -44,12 +45,28 @@
 
 	$: recipe, numberOfServings, createBringLink();
 	async function createBringLink() {
+		if ($page.url.pathname.includes('/create')) return;
 		if (!recipe) return;
+
 		bringImportLink = '';
 		let url: string;
-		if ($page.url.pathname.startsWith('/daily')) url = 'https://cooking-cache.web.app/daily/ssr';
-		else
+
+		if ($page.url.pathname.startsWith('/daily')) {
+			url = 'https://cooking-cache.web.app/daily/ssr';
+		} else {
+			if (!recipe.accessToken) {
+				if (!$currentUser) return;
+				const newToken = await generateRecipeAccessToken(
+					$currentUser,
+					recipe.collectionId,
+					recipe.id
+				);
+				if (!newToken) return;
+				recipe.accessToken = newToken;
+			}
+
 			url = `https://cooking-cache.web.app/recipe/${recipe?.collectionId}/${recipe?.id}/share?key=${recipe?.accessToken}`;
+		}
 
 		bringImportLink = await getBringImportLink(
 			url,

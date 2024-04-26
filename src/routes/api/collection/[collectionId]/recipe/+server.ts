@@ -53,7 +53,7 @@ export async function POST({ request, params }) {
 			if (!recipe.id) recipe.id = uuidv4();
 			let cover = formData.get('cover') as File;
 
-			if (!recipe.image.includes("blob:") && !recipe.image.includes(STORAGE_URL)) {
+			if (!recipe.image.includes('blob:') && !recipe.image.includes(STORAGE_URL)) {
 				const response = await axios.get(recipe.image, { responseType: 'arraybuffer' });
 				const contentType = response.headers['content-type'];
 				cover = new File([new Uint8Array(response.data)], 'cover', { type: contentType });
