@@ -75,9 +75,9 @@
 	{/if}
 
 	{#if $loadingStateStore !== 'FINISHED'}
-		<div class="flex gap-1 my-0.5">
+		<div class="flex gap-1 my-0.5 flex-wrap justify-center">
 			{#each new Array(3) as _}
-				<div class="skeleton h-28 w-full" />
+				<div class="skeleton h-28 stat" />
 			{/each}
 		</div>
 	{:else}
