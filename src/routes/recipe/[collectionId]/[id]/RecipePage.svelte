@@ -12,8 +12,8 @@
 		if (!numberOfServings) numberOfServings = recipe?.numberOfServings || 4;
 
 		const multiplier = numberOfServings / (recipe?.numberOfServings || 4);
-        const amountPerServing = Number((multiplier * amount).toFixed(2));
-        return amountPerServing === 0 ? '' : amountPerServing;
+		const amountPerServing = Number((multiplier * amount).toFixed(2));
+		return amountPerServing === 0 ? '' : amountPerServing;
 	}
 
 	function convertIngredientsToArray(recipe: Recipe) {

@@ -129,7 +129,7 @@
 				continue;
 
 			const ingredientBounds = ingredientElement.getBoundingClientRect();
-			if (mousePos <= ingredientBounds.top ) {
+			if (mousePos <= ingredientBounds.top) {
 				currentHandlePosition = parseInt(ingredientElement.dataset.index);
 				currentHandleCategory = ingredientElement.dataset.category;
 				break;

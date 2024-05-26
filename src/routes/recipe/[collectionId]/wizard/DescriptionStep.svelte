@@ -72,9 +72,9 @@
 		let description = recipe.description[oldIndex];
 		recipe.description.splice(oldIndex, 1);
 
-        if (oldIndex < currentHandlePosition) currentHandlePosition--;
+		if (oldIndex < currentHandlePosition) currentHandlePosition--;
 		recipe.description.splice(currentHandlePosition, 0, description);
-        recipe.description = [...recipe.description];
+		recipe.description = [...recipe.description];
 
 		document.body.style.cursor = 'auto';
 		document.body.style.userSelect = 'auto';
@@ -93,7 +93,7 @@
 	<div class="flex flex-col gap-2 step-list relative">
 		{#each recipe.description as { }, index}
 			{#if currentHandlePosition === index && draggedStep}
-				<div class="w-full h-16"/>
+				<div class="w-full h-16" />
 			{/if}
 			<div class="flex" data-index={index}>
 				<div
