@@ -37,7 +37,7 @@
 		cookingTime: 20,
 		difficulty: 'medium',
 		numberOfServings: 4,
-		description: [],
+		description: [''],
 		id: '',
 		collectionId: '',
 		creatorId: ''

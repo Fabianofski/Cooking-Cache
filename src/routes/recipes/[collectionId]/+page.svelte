@@ -54,7 +54,7 @@
 	}
 
 	let page = 0;
-	let pageSize = 6;
+	let pageSize = 32;
 	let sorting: string = 'createdAt';
 	let reverse: boolean = false;
 	function getRecipesFromPage(

@@ -129,8 +129,7 @@
 				continue;
 
 			const ingredientBounds = ingredientElement.getBoundingClientRect();
-			const center = ingredientBounds.top + ingredientBounds.height / 2;
-			if (mousePos < center) {
+			if (mousePos <= ingredientBounds.top) {
 				currentHandlePosition = parseInt(ingredientElement.dataset.index);
 				currentHandleCategory = ingredientElement.dataset.category;
 				break;
