@@ -12,7 +12,8 @@
 		if (!numberOfServings) numberOfServings = recipe?.numberOfServings || 4;
 
 		const multiplier = numberOfServings / (recipe?.numberOfServings || 4);
-		return Number((multiplier * amount).toFixed(2));
+        const amountPerServing = multiplier * amount;
+        return amountPerServing === 0 ? '' : amountPerServing.toFixed(2);
 	}
 
 	function convertIngredientsToArray(recipe: Recipe) {
@@ -232,7 +233,7 @@
 				<table class="table px-8">
 					<tbody>
 						{#each recipe.ingredients[category] as ingredient}
-							{#if ingredient.name !== '' && ingredient.amount}
+							{#if ingredient.name !== ''}
 								<tr class="hover">
 									<td class="w-54 pl-16">
 										<strong>
