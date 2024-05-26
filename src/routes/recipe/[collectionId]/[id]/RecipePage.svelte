@@ -7,12 +7,12 @@
 	export let recipe: Recipe | undefined;
 
 	let numberOfServings = recipe?.numberOfServings || 4;
-	function getIngredientPerServing(amount: number, numberOfServings: number) {
+	function getIngredientPerServing(amount: number | undefined, numberOfServings: number) {
 		if (numberOfServings < 0) numberOfServings = -numberOfServings;
 		if (!numberOfServings) numberOfServings = recipe?.numberOfServings || 4;
 
 		const multiplier = numberOfServings / (recipe?.numberOfServings || 4);
-		const amountPerServing = Number((multiplier * amount).toFixed(2));
+		const amountPerServing = Number((multiplier * (amount || 0)).toFixed(2));
 		return amountPerServing === 0 ? '' : amountPerServing;
 	}
 
