@@ -83,15 +83,28 @@ Cooking Cache simplifies recipe management, offering a centralized platform for 
    ```sh
    npm install
    ```
-3. Create a Firebase Project at [https://console.firebase.google.com](https://console.firebase.google.com)
+3. Create a Firebase Project at [https://console.firebase.google.com](https://console.firebase.google.com) and configure the project.
+   - See [FIREBASE-SETUP.md](FIREBASE-SETUP.md) for more details.
 4. Enter your Secrets in `.env`
-   ```env
-    PRIVATE_KEY='PRIVATE_KEY'
-    PROJECT_ID='PROJECT_ID'
-    CLIENT_EMAIL='CLIENT_EMAIL'
-    DATABASE_URL='DATABASE_URL'
-    STORAGE_URL='STORAGE_URL'
+
+   ```yaml
+   PROJECT_ID='PROJECT_ID'
+   DATABASE_URL='DATABASE_URL'
+   STORAGE_URL='STORAGE_URL'
+
+   PRIVATE_KEY='PRIVATE_KEY'
+   CLIENT_EMAIL='CLIENT_EMAIL'
+
+   # optional for importing recipes from youtube and instagram
+   YOUTUBE_API_KEY='YOUTUBE_API_KEY'
+   INSTAGRAM_ACCESS_TOKEN='INSTAGRAM_ACCESS_TOKEN'
+
+   GOOGLE_AD_ID='GOOGLE_AD_ID' (optional, can be '')
+
+   PUBLIC_BASE_URL='PUBLIC_BASE_URL' # '' or 'https://cooking-cache.web.app' (for mobile app)
+   ADAPTER='ADAPTER' # '' or 'static' (for mobile app)
    ```
+
 5. Run the app
    ```sh
    npm run dev
