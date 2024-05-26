@@ -2,21 +2,6 @@
 	import type { Recipe } from '../../../../models/Recipe';
 
 	export let recipe: Recipe;
-
-	stepInputChanged(recipe.description.length - 1);
-
-	function stepInputChanged(index: number) {
-		if (index + 1 === recipe.description.length && recipe.description[index] !== '')
-			recipe.description.push('');
-
-		let count = -1;
-		for (let j = recipe.description.length - 1; j >= 0; j--) {
-			const step = recipe.description[j];
-			if (step !== '') break;
-			count++;
-		}
-		recipe.description = recipe.description.slice(0, recipe.description.length - count);
-	}
 </script>
 
 <div class="form-control col-span-full">
@@ -30,27 +15,24 @@
 					{index + 1}.
 				</p>
 				<textarea
-					class="input input-bordered h-12 w-full min-h-12 max-h-48"
+					class="input input-bordered h-16 w-full min-h-12 max-h-48"
 					placeholder={`Schritt ${index + 1}`}
 					bind:value={recipe.description[index]}
-					on:input={() => {
-						stepInputChanged(index);
-					}}
 				/>
 				<button
-					class="btn btn-square btn-ghost"
+					class="btn btn-ghost btn-sm"
 					on:click={() => {
 						recipe.description.splice(index, 1);
 						recipe.description = [...recipe.description];
 					}}
-					disabled={recipe.description.length === 1 || index === recipe.description.length - 1}
+					class:invisible={recipe.description.length === 1}
 				>
 					<svg
-						class="w-6 h-6"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
 						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 32 32"
+						stroke="currentColor"
+						class="w-5 h-5"
 					>
 						<path
 							stroke-linecap="round"
@@ -62,5 +44,13 @@
 				</button>
 			</div>
 		{/each}
+		<button
+			class="btn btn-neutral btn-sm w-52 ml-8"
+			on:click={() => {
+				recipe.description = [...recipe.description, ''];
+			}}
+		>
+			+
+		</button>
 	</div>
 </div>
