@@ -7,7 +7,7 @@
 	import type { Recipe } from '../../models/Recipe';
 	import type WeeklyPlan from '../../models/WeeklyPlan';
 	import { recipeCollectionsStore } from '../../stores/recipeCollectionsStore';
-	import { currentUser, weeklyPlanStore, weeklyPlanLoadingStore } from '../../stores/store';
+	import { currentUser, weeklyPlanStore, weeklyPlanLoadingStore, loadingStateStore } from '../../stores/store';
 	import SelectRecipeModal from './SelectRecipeModal.svelte';
 
 	let offset = 0;
@@ -119,7 +119,7 @@
 							year: 'numeric'
 						})}
 					</h2>
-					{#if $weeklyPlanLoadingStore === 'LOADING'}
+					{#if $weeklyPlanLoadingStore === 'LOADING' || $loadingStateStore === 'LOADING'}
 						<SmallRecipeSkeleton />
 					{:else if weeklyPlan[day]}
 						{#each weeklyPlan[day].recipes as meal, index}
