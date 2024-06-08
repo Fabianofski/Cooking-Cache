@@ -174,7 +174,7 @@
 				{:else if user && user.photoURL}
 					<img src={user.photoURL} alt="Profile" referrerpolicy="no-referrer" />
 				{:else}
-					<img src={'/default-cover.jpg'} alt="Default Profile" />
+					<img src={'/default-avatar.svg'} alt="Default Profile" />
 				{/if}
 			</div>
 		</div>
