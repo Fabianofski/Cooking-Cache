@@ -20,7 +20,7 @@
 		const ingredients = [];
 		for (const category in recipe.ingredients) {
 			for (const ingredient of recipe.ingredients[category]) {
-				ingredients.push(`${ingredient.amount}${ingredient.unit || ''} ${ingredient.name}`);
+				ingredients.push(`${ingredient.amount || 0} ${ingredient.unit || ''} ${ingredient.name}`);
 			}
 		}
 		return ingredients;
@@ -38,7 +38,7 @@
 			name: recipe.title,
 			recipeInstructions: (recipe.description || []).join('\n'),
 			recipeYield: recipe.numberOfServings
-		});
+		}, null, 2);
 		return `<script type="application/ld+json">${data}<\/script>`;
 	}
 
