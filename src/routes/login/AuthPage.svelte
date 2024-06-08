@@ -105,7 +105,8 @@
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(async (userCredential) => {
 				await updateProfile(userCredential.user, {
-					displayName: displayName
+					displayName: displayName,
+                    photoURL: '/default-avatar.svg'
 				})
 					.then(() => {
 						loggedInHandler(userCredential);
