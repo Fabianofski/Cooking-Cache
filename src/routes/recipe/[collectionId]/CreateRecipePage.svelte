@@ -113,7 +113,6 @@
 				value.filter((ingredient) => !ingredient.amount || ingredient.name !== '')
 			])
 		);
-		recipe.description.pop();
 
 		recipe.creatorId = $currentUser.uid;
 

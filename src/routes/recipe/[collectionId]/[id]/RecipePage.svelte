@@ -20,7 +20,9 @@
 		const ingredients = [];
 		for (const category in recipe.ingredients) {
 			for (const ingredient of recipe.ingredients[category]) {
-				ingredients.push(`${ingredient.amount || 0} ${ingredient.unit || ''} ${ingredient.name}`);
+                const amount = !ingredient.amount || ingredient.amount === 0 ? '' : ingredient.amount + ' ';
+                const unit = ingredient.unit ? ingredient.unit + ' ' : '';
+				ingredients.push(`${amount}${unit}${ingredient.name}`);
 			}
 		}
 		return ingredients;
